@@ -1,0 +1,35 @@
+.galleri__title {
+  max-width: 16ch;
+}
+
+.galleri {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 36px);
+}
+
+.galleri__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  gap: clamp(16px, 2.5vw, 28px);
+  align-items: start;
+}
+/* Drops the middle frame so the row reads as a hand-laid spread rather than a
+   grid. Collapses to zero when the row wraps. */
+.galleri__item--offset {
+  padding-top: clamp(0px, 4vw, 48px);
+}
+
+.galleri__closer {
+  max-width: 70%;
+}
+@media (max-width: 640px) {
+  .galleri__closer {
+    max-width: 100%;
+  }
+}
+
+.galleri__caption {
+  margin-top: 10px;
+  font-size: 13px;
+}

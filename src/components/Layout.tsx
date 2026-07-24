@@ -1,0 +1,19 @@
+import { Outlet } from 'react-router-dom';
+
+import Footer from './Footer';
+import Header from './Header';
+
+export default function Layout() {
+  return (
+    <>
+      <a className="skip-link" href="#indhold">
+        Gå til indhold
+      </a>
+      <Header />
+      <main id="indhold">
+        <Outlet />
+      </main>
+      <Footer />
+    </>
+  );
+}

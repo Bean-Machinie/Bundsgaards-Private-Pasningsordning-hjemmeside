@@ -1,0 +1,218 @@
+.kontakt__title {
+  margin: 14px 0 18px;
+  max-width: 14ch;
+  font-size: clamp(32px, 4.2vw, 50px);
+}
+.kontakt__lead {
+  max-width: 44ch;
+  color: color-mix(in srgb, var(--color-text) 82%, transparent);
+}
+
+/* — contact details ————————————————————————————————————————— */
+
+.kontakt__details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 28px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-divider);
+}
+.kontakt__detail {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.kontakt__detail-label {
+  width: 80px;
+  flex: none;
+  padding-top: 3px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+.kontakt__detail-value {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* — the decorative map ——————————————————————————————————————— */
+
+.kontakt__map {
+  margin-top: 26px;
+  border: 1px solid var(--color-divider);
+  border-radius: calc(var(--radius-lg) * 1.2);
+  overflow: hidden;
+}
+.kontakt__map-canvas {
+  position: relative;
+  height: 210px;
+  background: var(--color-accent-2-100);
+}
+.kontakt__map-pin {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  margin: 0;
+  padding: 8px 15px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+  font-size: 13px;
+}
+.kontakt__map-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: var(--color-surface);
+}
+.kontakt__map-note {
+  font-size: 13.5px;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+.kontakt__map-link {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+/* — the form ————————————————————————————————————————————————— */
+
+.kontakt__form-title {
+  margin: 0 0 6px;
+  font-size: clamp(22px, 2.6vw, 28px);
+}
+.kontakt__form-note {
+  margin: 0 0 22px;
+  font-size: 14.5px;
+  color: color-mix(in srgb, var(--color-text) 68%, transparent);
+}
+
+.kontakt__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.field__error {
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--color-accent-800);
+}
+.input[aria-invalid='true'] {
+  border-color: var(--color-accent-700);
+}
+
+.kontakt__slots {
+  margin: 4px 0 20px;
+  padding: 0;
+  border: 0;
+}
+.kontakt__slots-legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+
+/* Pill radio group for the preferred visiting time. The native input stays in
+   the DOM for keyboard and screen-reader use, visually hidden behind the pill. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  border: 1px solid var(--color-divider);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 13.5px;
+  cursor: pointer;
+}
+/* Visually hidden, but still focusable and still in the accessibility tree.
+   Deliberately not the design system's `.radio input` recipe — that one uses
+   zero size plus pointer-events:none, which takes the control off the keyboard
+   tab order entirely. */
+.chip input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+.chip:hover {
+  background: color-mix(in srgb, var(--color-text) 7%, transparent);
+}
+.chip--selected,
+.chip--selected:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-bg);
+}
+.chip:has(input:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.kontakt__message {
+  margin-bottom: 18px;
+}
+.kontakt__textarea {
+  min-height: 110px;
+  padding: 12px 16px;
+  border-radius: 22px;
+}
+
+.kontakt__error {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  color: var(--color-accent-800);
+}
+
+.kontakt__submit {
+  padding: 14px;
+  font-size: 15px;
+}
+
+.kontakt__privacy {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 12.5px;
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+/* — the thank-you state ——————————————————————————————————————— */
+
+.kontakt__receipt {
+  padding: 30px 10px;
+  text-align: center;
+}
+.kontakt__receipt-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--color-accent-2-200);
+  color: var(--color-accent-2-800);
+}
+.kontakt__receipt-title {
+  margin: 0 0 10px;
+  font-size: 26px;
+}
+.kontakt__receipt-body {
+  max-width: 34ch;
+  margin: 0 auto;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--color-text) 75%, transparent);
+}

@@ -1,0 +1,41 @@
+.ommig__portrait {
+  position: sticky;
+  top: 96px;
+}
+@media (max-width: 780px) {
+  .ommig__portrait {
+    position: static;
+  }
+}
+
+.ommig__name {
+  margin: 14px 0 18px;
+  font-size: clamp(32px, 4.2vw, 50px);
+}
+
+.ommig__para {
+  color: color-mix(in srgb, var(--color-text) 84%, transparent);
+}
+
+.ommig__credentials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
+  gap: 14px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ommig__credential {
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+.ommig__credential-title {
+  margin-bottom: 3px;
+  font-family: var(--font-heading);
+  font-size: 19px;
+}
+.ommig__credential-note {
+  font-size: 13.5px;
+  color: color-mix(in srgb, var(--color-text) 62%, transparent);
+}

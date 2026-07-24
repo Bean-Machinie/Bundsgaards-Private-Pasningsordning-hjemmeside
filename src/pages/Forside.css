@@ -1,0 +1,167 @@
+/* — hero ————————————————————————————————————————————————————— */
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: clamp(24px, 4vw, 56px);
+  align-items: center;
+  padding-block: clamp(28px, 5vw, 64px) clamp(20px, 3vw, 40px);
+}
+.hero__tag {
+  margin-bottom: 18px;
+}
+.hero__title {
+  max-width: 12ch;
+}
+.hero__lead {
+  margin-bottom: 12px;
+}
+.hero__byline {
+  margin-bottom: 26px;
+  font-size: 15px;
+}
+.hero__availability {
+  margin-top: 26px;
+  width: fit-content;
+}
+
+.hero__media {
+  position: relative;
+}
+/* Small badge overlapping the hero photo's lower-left corner. */
+.hero__badge {
+  position: absolute;
+  left: -14px;
+  bottom: 26px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-sm);
+  font-size: 13px;
+}
+.hero__badge-number {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  color: var(--color-accent);
+}
+
+/* — headline facts ————————————————————————————————————————— */
+
+/* Hairline grid: a 1px gap over an ink background draws the rules for free. */
+.factstrip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+  gap: 1px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+.factstrip__cell {
+  padding: 20px 22px;
+  background: var(--color-bg);
+}
+.factstrip__value {
+  margin-bottom: 2px;
+  font-family: var(--font-heading);
+  font-size: 22px;
+}
+.factstrip__label {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+}
+
+/* — the three pillars ——————————————————————————————————————— */
+
+.intro {
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+.intro__body {
+  margin: 0;
+}
+
+.pillar {
+  padding: 26px 24px;
+  gap: 10px;
+}
+.pillar__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+}
+.pillar__icon--accent {
+  background: var(--color-accent-100);
+  color: var(--color-accent-700);
+}
+.pillar__icon--sage {
+  background: var(--color-accent-2-100);
+  color: var(--color-accent-2-800);
+}
+.pillar__title {
+  font-size: 19px;
+}
+.pillar__body {
+  font-size: 14.5px;
+  opacity: 0.75;
+}
+
+/* — section headers with a trailing action ————————————————— */
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: clamp(26px, 4vw, 42px);
+}
+.section-head--baseline {
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.section-head__title {
+  margin-bottom: 0;
+}
+
+/* — the day, in four pictures ——————————————————————————————— */
+
+.daycard--offset {
+  padding-top: clamp(0px, 4vw, 44px);
+}
+.daycard__time {
+  margin: 14px 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--color-accent-2-300);
+}
+.daycard__title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+
+/* — closing call to action ——————————————————————————————————— */
+
+.cta {
+  text-align: center;
+}
+.cta__tag {
+  margin-bottom: 18px;
+}
+.cta__title {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 3.6vw, 42px);
+}
+.cta__body {
+  max-width: 46ch;
+  margin: 0 auto 26px;
+}
+.cta__actions {
+  justify-content: center;
+}
