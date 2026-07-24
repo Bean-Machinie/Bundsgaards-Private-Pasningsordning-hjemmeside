@@ -49,7 +49,7 @@ export default function Forside() {
       {/* — hero ————————————————————————————————————————————————— */}
       <section className="shell section hero">
         <div>
-          <span className="tag tag-accent-2 hero__tag">
+          <span className="tag tag-secondary hero__tag">
             Privatpasning i {site.city} · {site.ageRange}
           </span>
           <h1 className="title-hero hero__title">Et lille sted at være lille</h1>
@@ -157,7 +157,7 @@ export default function Forside() {
       </section>
 
       {/* — a day in pictures ——————————————————————————————————— */}
-      <section className="band band--sage">
+      <section className="band band--primary">
         <div className="shell">
           <div className="section-head">
             <div>
@@ -228,9 +228,9 @@ export default function Forside() {
       </section>
 
       {/* — closing call to action ——————————————————————————————— */}
-      <section className="band band--accent">
+      <section className="band band--secondary">
         <div className="shell shell--narrow cta">
-          <span className="tag tag-accent-2 cta__tag">{site.availability}</span>
+          <span className="tag tag-accent cta__tag">{site.availability}</span>
           <h2 className="cta__title">Kom forbi og se stedet</h2>
           <p className="prose prose--large cta__body">
             Det bedste er at mødes. Kom en formiddag, hvor børnene er her, så I kan mærke

@@ -1,0 +1,132 @@
+/* ═════════════════════════════════════════════════════════════════════════
+   Theme tokens — the single source of truth for the site's look.
+
+   Palette, type and radius come from the "Website UI/UX for Daycare" design:
+   an amber-cream ground, deep forest green as the acting colour, sage as a
+   secondary surface, and terracotta held back for small labels only.
+
+   Nothing outside this file may hard-code a colour, a font name, a radius or
+   a spacing value. If a rule needs one, it takes a var() from here.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..700;1,9..144,200..700&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+
+:root {
+  /* ── Ground ────────────────────────────────────────────────────────────
+     Four warm steps, lightest to deepest. Sunk is for controls that should
+     read as recessed (inputs); muted is for image wells and empty states. */
+  --color-bg: #e2dccb;
+  --color-surface: #d6d0bc;
+  --color-surface-sunk: #cec8b4;
+  --color-muted: #c8c2ac;
+
+  /* ── Ink ───────────────────────────────────────────────────────────────
+     One ink at four strengths. The design leans on opacity rather than on
+     separate grey values, so these are mixes of the same base — that keeps
+     text tinted by the warm ground instead of going flat grey. */
+  --color-ink: #1b1710;
+  --color-ink-2: color-mix(in srgb, #1b1710 62%, transparent);
+  --color-ink-3: color-mix(in srgb, #1b1710 45%, transparent);
+  --color-ink-4: color-mix(in srgb, #1b1710 28%, transparent);
+  --color-ink-soft: #5a5341;
+
+  /* ── Brand ─────────────────────────────────────────────────────────────
+     Primary is the acting colour: buttons, active nav, dots, the dark bands.
+     Accent is terracotta and is deliberately rationed — small uppercase
+     labels and tiny marks only, never a button fill or a paragraph. */
+  --color-primary: #213624;
+  --color-primary-hover: #2c4630;
+  --color-on-primary: #e2dccb;
+  --color-secondary: #b8ceaf;
+  --color-accent: #8f4018;
+  --color-danger: #b83220;
+
+  /* ── Ink on dark bands ────────────────────────────────────────────────
+     Used over --color-ink and --color-primary backgrounds. */
+  --color-on-dark: #e2dccb;
+  --color-on-dark-2: color-mix(in srgb, #e2dccb 55%, transparent);
+  --color-on-dark-3: color-mix(in srgb, #e2dccb 32%, transparent);
+  --color-on-dark-4: color-mix(in srgb, #e2dccb 15%, transparent);
+
+  /* ── Lines ─────────────────────────────────────────────────────────────
+     This design is border-driven, not shadow-driven: hairlines do the
+     structural work that elevation does elsewhere. */
+  --color-border: rgba(27, 23, 16, 0.1);
+  --color-border-strong: rgba(27, 23, 16, 0.22);
+  --color-ring: rgba(33, 54, 36, 0.3);
+
+  /* ── Type ──────────────────────────────────────────────────────────────
+     Fraunces for display, set light — its weight comes from size, not from
+     boldness. Figtree for everything else. */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-display-weight: 300;
+  --font-body: 'Figtree', system-ui, sans-serif;
+
+  /* Small uppercase labels are a signature of this design: tiny, widely
+     tracked, always in accent or a faded ink. */
+  --label-size: 9.5px;
+  --label-tracking: 0.24em;
+
+  /* ── Space — a plain 4px scale ────────────────────────────────────────
+     Whole numbers matter here: the radius concentricity formula below adds
+     a spacing step to a radius, and fractional pixels would round badly. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Radius — proportional scale ──────────────────────────────────────
+     A bigger box needs a bigger radius to look equally rounded: 3px on a
+     full-width panel reads as a sharp corner, while 3px on a 20px badge
+     reads as noticeably soft. So the token is picked by the element's
+     physical size, not by what the element is called.
+
+       --radius-sm   1px   micro    badges, tags, chips
+       --radius-md   3px   small    buttons, inputs, menu rows
+       --radius-lg   5px   medium   cards, content blocks
+       --radius-xl   8px   large    hero banners, modals, big panels
+       --radius-full 999px round    avatars, dots, spinners, pill counters
+
+     Values are deliberately tiny — this design is near-square, not
+     pill-shaped. Never hard-code a px radius; always take a token.
+
+     ── Nested concentricity ───────────────────────────────────────────
+     When a rounded box sits inside another with padding between them, the
+     two curves only stay parallel if
+
+         outer radius = inner radius + padding
+
+     Otherwise the gap pinches at the corner: even along the straight edges,
+     narrowing or bulging where it turns. So a container wrapping rounded
+     children gets a calc(), not simply the next token up:
+
+         border-radius: calc(var(--radius-md) + var(--space-1));
+
+     At this scale the formula is a nudge rather than exact maths — a
+     container with --space-2 padding still reads correctly with --space-1
+     in the calc, and the sub-pixel difference is invisible. Flush children
+     (zero padding) share the parent's radius exactly.
+     ─────────────────────────────────────────────────────────────────── */
+  --radius-sm: 1px;
+  --radius-md: 3px;
+  --radius-lg: 5px;
+  --radius-xl: 8px;
+  --radius-full: 999px;
+
+  /* ── Elevation ────────────────────────────────────────────────────────
+     Used sparingly — a shadow here is for things that genuinely float
+     (menus, the map pin), not for cards. Cards get a border. */
+  --shadow-sm: 0 1px 2px rgba(27, 23, 16, 0.08);
+  --shadow-md: 0 6px 20px rgba(27, 23, 16, 0.1);
+  --shadow-lg: 0 16px 44px rgba(27, 23, 16, 0.16);
+
+  /* ── Layout ───────────────────────────────────────────────────────────*/
+  --shell-max: 1340px;
+  --shell-gutter: clamp(20px, 4vw, 48px);
+  --header-height: 66px;
+}

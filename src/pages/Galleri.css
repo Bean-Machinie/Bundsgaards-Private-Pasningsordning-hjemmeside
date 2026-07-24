@@ -30,6 +30,6 @@
 }
 
 .galleri__caption {
-  margin-top: 10px;
-  font-size: 13px;
+  margin-top: var(--space-3);
+  font-size: 12px;
 }

@@ -20,8 +20,7 @@ interface ImageSlotProps {
  * sidecar JSON file — useful inside the design canvas, meaningless in a
  * deployed site. Here the slot simply renders the photo when the registry in
  * content/photos.ts has one, and a labelled placeholder describing the wanted
- * picture when it doesn't. The `.washed` treatment from the design system is
- * applied to real photos only; washing the placeholder would just grey it out.
+ * picture when it doesn't.
  */
 export default function ImageSlot({
   photo,
@@ -33,7 +32,7 @@ export default function ImageSlot({
   const frameClass = [
     'image-slot',
     `image-slot--${rounding}`,
-    photo.src ? 'washed' : 'image-slot--empty',
+    photo.src ? '' : 'image-slot--empty',
     className,
   ]
     .filter(Boolean)

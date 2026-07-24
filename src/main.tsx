@@ -4,7 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 
-import './styles/organic.css';
+import './styles/theme.css';
+import './styles/base.css';
 import './styles/global.css';
 
 const container = document.getElementById('root');

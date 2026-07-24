@@ -112,27 +112,33 @@ export default function Kontakt() {
                 preserveAspectRatio="none"
                 aria-hidden="true"
               >
-                <rect width="400" height="210" fill="#e1eecc" />
+                {/* Decorative — colours pulled from the theme palette. */}
+                <rect width="400" height="210" fill="var(--color-secondary)" />
                 <path
                   d="M-10 150 C 90 130, 150 170, 260 120 S 380 60, 420 70"
-                  stroke="#ccdbb2"
+                  stroke="color-mix(in srgb, var(--color-primary) 22%, transparent)"
                   strokeWidth="26"
                   fill="none"
                 />
                 <path
                   d="M60 -10 C 80 60, 40 120, 90 220"
-                  stroke="#f5ead8"
+                  stroke="var(--color-bg)"
                   strokeWidth="14"
                   fill="none"
                 />
                 <path
                   d="M-10 96 C 120 80, 260 108, 420 84"
-                  stroke="#f5ead8"
+                  stroke="var(--color-bg)"
                   strokeWidth="18"
                   fill="none"
                 />
-                <circle cx="196" cy="92" r="30" fill="#aebf92" opacity="0.45" />
-                <circle cx="196" cy="92" r="9" fill="#c67139" />
+                <circle
+                  cx="196"
+                  cy="92"
+                  r="30"
+                  fill="color-mix(in srgb, var(--color-primary) 30%, transparent)"
+                />
+                <circle cx="196" cy="92" r="9" fill="var(--color-accent)" />
               </svg>
               <p className="kontakt__map-pin">
                 {site.street} · 5 min. fra {site.city} st.

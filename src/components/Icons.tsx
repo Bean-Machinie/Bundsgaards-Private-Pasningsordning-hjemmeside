@@ -12,7 +12,12 @@ interface IconProps {
   className?: string;
 }
 
-function Svg({ size = 20, className, children }: IconProps & { children: React.ReactNode }) {
+function Svg({
+  size = 20,
+  className,
+  strokeWidth = 1.75,
+  children,
+}: IconProps & { strokeWidth?: number; children: React.ReactNode }) {
   return (
     <svg
       width={size}
@@ -20,7 +25,7 @@ function Svg({ size = 20, className, children }: IconProps & { children: React.R
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={2.75}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}

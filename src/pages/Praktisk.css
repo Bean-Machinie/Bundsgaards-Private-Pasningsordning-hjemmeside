@@ -3,46 +3,46 @@
 }
 
 .praktisk__panel-title {
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-4);
   font-size: 20px;
 }
 .praktisk__panel-intro {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-2);
   font-size: 15px;
-  line-height: 1.65;
+  line-height: 1.75;
 }
 /* In the price panel the rows follow a paragraph, so they need a rule above
    rather than below. */
 .praktisk__panel-intro ~ .spec-row {
-  padding-block: 9px;
-  border-top: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
+  padding-block: var(--space-2);
+  border-top: 1px solid var(--color-border);
   border-bottom: 0;
 }
 .praktisk__footnote {
-  margin: 14px 0 0;
-  font-size: 13.5px;
-  color: color-mix(in srgb, var(--color-text) 62%, transparent);
+  margin: var(--space-4) 0 0;
+  font-size: 13px;
+  color: var(--color-ink-3);
 }
 
 .praktisk__note-title {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   font-size: 19px;
 }
 .praktisk__note-body {
   margin: 0;
   font-size: 15px;
-  line-height: 1.65;
-  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  line-height: 1.75;
+  color: var(--color-ink-2);
 }
 
 /* — FAQ accordion ————————————————————————————————————————————— */
 
 .praktisk__faq-heading {
-  margin-bottom: 22px;
+  margin-bottom: var(--space-6);
 }
 
 .faq {
-  border-top: 1px solid var(--color-divider);
+  border-top: 1px solid var(--color-border);
 }
 .faq__heading {
   margin: 0;
@@ -52,20 +52,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--space-4);
   width: 100%;
-  padding: 18px 0;
+  padding: var(--space-5) 0;
   background: transparent;
   border: 0;
   cursor: pointer;
   text-align: left;
-  font-family: var(--font-heading);
-  font-weight: var(--font-heading-weight);
-  font-size: 18px;
-  color: var(--color-text);
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight);
+  font-size: 19px;
+  color: var(--color-ink);
+  transition: color 0.2s ease;
 }
 .faq__trigger:hover {
-  color: var(--color-accent-700);
+  color: var(--color-primary);
 }
 .faq__sign {
   display: grid;
@@ -73,22 +74,23 @@
   width: 26px;
   height: 26px;
   flex: none;
-  border-radius: 50%;
-  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1;
 }
 .faq__answer {
-  margin: -4px 0 20px;
+  margin: -4px 0 var(--space-5);
   max-width: 56ch;
-  font-size: 15.5px;
-  line-height: 1.7;
-  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--color-ink-2);
 }
 
 .faq__outro {
   margin-top: 2px;
-  padding-top: 22px;
-  border-top: 1px solid var(--color-divider);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
 }

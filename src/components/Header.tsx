@@ -36,13 +36,8 @@ export default function Header() {
     <header className="site-header">
       <div className="site-header__bar shell">
         <Link to={routes.forside.path} className="brand" aria-label={`${site.name} — forside`}>
-          <span className="brand__mark" aria-hidden="true">
-            B
-          </span>
-          <span className="brand__text">
-            <span className="brand__name">{site.name}</span>
-            <span className="brand__tagline">{site.tagline}</span>
-          </span>
+          <span className="brand__name">{site.name}</span>
+          <span className="brand__tagline">{site.tagline}</span>
         </Link>
 
         <nav className="site-nav" aria-label="Hovedmenu">

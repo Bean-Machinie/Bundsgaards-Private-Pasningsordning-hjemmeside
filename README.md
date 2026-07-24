@@ -22,7 +22,8 @@ npm run dev
 
 ```
 src/
-  styles/organic.css   Design system — tokens + component classes. Vendored.
+  styles/theme.css     Design tokens — palette, type, spacing, radius scale.
+  styles/base.css      Element defaults + component classes (.btn/.card/.tag…).
   styles/global.css    App layer — layout primitives built on those tokens.
   content/             All copy and data, typed. Edit text here, not in JSX.
   components/          Header, Footer, Layout, ImageSlot, Icons.
@@ -32,18 +33,48 @@ src/
 
 ### Styling
 
-Two layers, and the distinction matters:
+Three layers, loaded in this order:
 
-- **`organic.css` is vendored** from the Claude Design project this site was
-  built from. It owns every colour, font, radius, shadow and spacing step, plus
-  the `.btn` / `.card` / `.tag` / `.input` component classes. Retune the design
-  by editing the tokens at the top of that file — don't fork its classes.
-- **`global.css` is ours.** Layout primitives (`.shell`, `.section`, `.band`,
-  `.grid`, `.kicker`, `.panel` …) composed from those tokens, and shared across
-  pages. Page-specific rules live next to the page in `src/pages/*.css`.
+- **`theme.css` — the tokens.** Amber-cream ground, deep forest green as the
+  acting colour, sage as a secondary surface, terracotta rationed to small
+  labels. Fraunces display + Figtree body. A 4px spacing scale and the radius
+  scale below. This is the only file with raw hex values; retune the look here.
+- **`base.css` — element defaults + component classes** (`.btn`, `.card`,
+  `.tag`, `.input`, `.field` …), all built from the tokens.
+- **`global.css` — layout primitives** (`.shell`, `.section`, `.band`,
+  `.grid`, `.kicker`, `.panel` …). Page-specific rules live next to the page in
+  `src/pages/*.css`.
 
-No component hard-codes a hex, a font name or a raw spacing value. If something
-needs a colour, it comes from a `var(--color-*)`.
+Outside `theme.css`, nothing hard-codes a hex, a font name, a radius or a raw
+spacing value — everything is a `var(--…)`.
+
+#### Radius standard
+
+A bigger box needs a bigger radius to look equally rounded, so the token is
+picked by the element's **physical size**, not by what it is:
+
+| Token | Value | Size bucket → used for |
+| --- | --- | --- |
+| `--radius-sm` | 1px | micro — badges, tags, chips |
+| `--radius-md` | 3px | small — buttons, inputs, menu rows |
+| `--radius-lg` | 5px | medium — cards, content blocks |
+| `--radius-xl` | 8px | large — hero banners, modals, big panels |
+| `--radius-full` | 999px | fully round — avatars, dots, pill counters |
+
+Values are deliberately tiny — this design is near-square, not pill-shaped.
+Never hard-code a px radius; always take a token.
+
+**Nested concentricity.** When a rounded box wraps rounded children with padding
+between them, the curves only stay parallel if `outer = inner + padding`. So a
+container uses a `calc()`, not the next token up:
+
+```css
+border-radius: calc(var(--radius-lg) + var(--space-1));
+```
+
+That's `.panel` in `global.css` (child cards at `--radius-lg`, padding a
+spacing step). Flush children — zero padding — share the parent's radius
+exactly. The full rationale is commented at the top of `theme.css`.
 
 ### Content
 
@@ -60,15 +91,19 @@ Everything a non-developer would want to change is in `src/content/`:
 
 ### Photos
 
-The design ships with empty image slots. `src/content/photos.ts` names every one
-and describes the picture that belongs there. To fill a slot:
+`src/content/photos.ts` is the photo registry. It ships filled with the
+Unsplash photography from the source design (hotlinked from the Unsplash CDN
+under the [Unsplash license](https://unsplash.com/license) — see
+`ATTRIBUTIONS` note below), and `index.html` preconnects to that host.
+
+To swap in your own photography:
 
 1. Drop the file in `public/images/`.
-2. Set `src: '/images/<file>.jpg'` and write a real `alt` on that entry.
+2. Set that entry's `src` to `/images/<file>.jpg` and write a real `alt`.
 
-Until then `<ImageSlot>` renders a labelled placeholder showing the brief, so an
-unfinished page still reads as intentional. Real photos get the design system's
-`.washed` treatment automatically.
+Any entry whose `src` is `null` renders as a labelled placeholder showing the
+brief for the wanted picture, so a half-finished registry still reads as
+intentional.
 
 ### The contact form
 
@@ -96,15 +131,21 @@ Carried over from the prototype and still needing real values:
 
 - Phone number (`00 00 00 00` in `src/content/site.ts`)
 - Holiday dates in `src/content/practical.ts`
-- Every photo
+- Photos are Unsplash stand-ins — replace with real photography of the place
 - The "Persondatapolitik" link in the footer goes nowhere yet
 
 ## Origin
 
-Built from the Claude Design prototype *Bundsgård dagpleje prototype*
-(`Bundsgård.dc.html`) using the **Organic** design system. The prototype's
-runtime — `<x-dc>`, `sc-if` / `sc-for`, the `<image-slot>` web component, the
-Desktop/Mobile preview toggle — was a canvas-only harness and is not part of
-this codebase. Its conditional pages became routes, its `sc-for` lists became
-typed content modules, its inline styles became the CSS layers above, and the
-fixed 412px "mobile" shell became real media queries.
+The **structure** — routing, typed content, components — was built from the
+Claude Design prototype *Bundsgård dagpleje prototype* (`Bundsgård.dc.html`).
+Its conditional pages became routes, its `sc-for` lists became typed content
+modules, and its canvas-only runtime (`<x-dc>`, `sc-if`/`sc-for`, the
+`<image-slot>` web component, the Desktop/Mobile toggle) was dropped in favour
+of real React and media queries.
+
+The **look** — the amber-cream + forest-green + terracotta palette, the
+Fraunces/Figtree pairing, the near-square radius standard, and the Unsplash
+photography — comes from the later "Website UI/UX for Daycare" design (a Figma
+Make export). Its Tailwind theme was reworked into the plain-CSS token layer in
+`theme.css`; its shadcn/ui component set was not used. Photos are from Unsplash
+under their license, hotlinked as in the source.
