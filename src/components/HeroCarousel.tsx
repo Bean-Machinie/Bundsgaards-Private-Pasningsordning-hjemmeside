@@ -65,7 +65,6 @@ export default function HeroCarousel() {
       },
     });
     instanceRef.current = slider;
-    (window as unknown as { __slider?: unknown }).__slider = slider;
 
     // Re-measure after the browser has laid the frame out — on the initial
     // mount keen-slider can measure the track before its final size is
