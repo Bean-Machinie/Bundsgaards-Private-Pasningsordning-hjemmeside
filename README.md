@@ -25,11 +25,32 @@ src/
   styles/theme.css     Design tokens — palette, type, spacing, radius scale.
   styles/base.css      Element defaults + component classes (.btn/.card/.tag…).
   styles/global.css    App layer — layout primitives built on those tokens.
+  assets/              Local images; stock.ts names each photo (see Photos).
   content/             All copy and data, typed. Edit text here, not in JSX.
-  components/          Header, Footer, Layout, ImageSlot, Icons.
+  components/          Header (nav + drawer), Footer, Layout, HeroCarousel,
+                       ImageSlot, Icons.
   pages/               One component + one stylesheet per route.
   routes.ts            Paths, nav labels and document titles, in one place.
 ```
+
+### Header
+
+The top panel carries a soft shadow that deepens once the page scrolls
+(`.site-header.is-scrolled`). On desktop the nav has a single sliding highlight
+— one absolutely-positioned `.site-nav__highlight` that measures the hovered
+`<li>` against the live list and animates its `transform`/`width`, so adding a
+nav item needs no other change. Below 1080px the nav collapses to a menu-icon
+button and an **overlay** drawer (`Header.tsx`): it's `position: fixed` below the
+header, fades its backdrop in, slides the panel down, and locks body scroll —
+it never pushes the page content.
+
+### Hero
+
+`components/HeroCarousel.tsx` is a self-contained slide carousel: seamless
+infinite loop (clone-based, snapped on a timeout so it can't strand),
+self-re-arming autoplay that resets on any interaction and pauses on a hidden
+tab, morphing dots (circle → amber bar), arrows, and touch/pointer swipe. Slides
+live in `content/heroSlides.ts` — add one entry and the dots and looping follow.
 
 ### Styling
 
@@ -91,19 +112,23 @@ Everything a non-developer would want to change is in `src/content/`:
 
 ### Photos
 
-`src/content/photos.ts` is the photo registry. It ships filled with the
-Unsplash photography from the source design (hotlinked from the Unsplash CDN
-under the [Unsplash license](https://unsplash.com/license) — see
-`ATTRIBUTIONS` note below), and `index.html` preconnects to that host.
+All imagery is **local** — no external image hosts. Files live in
+`src/assets/images/stock/`; `src/assets/stock.ts` imports each one under a
+friendly name (so Vite fingerprints and bundles them), and
+`src/content/photos.ts` / `content/heroSlides.ts` reference those names.
 
-To swap in your own photography:
+The source photos were 6000px originals (~23 MB total); they were downscaled to
+a 2000px cap and re-encoded (mozjpeg q78) to ~3 MB total. `sharp` is a
+devDependency kept for re-running that if you add more.
 
-1. Drop the file in `public/images/`.
-2. Set that entry's `src` to `/images/<file>.jpg` and write a real `alt`.
+To use a caretaker's own photography: replace a file in `stock/` (keep the
+import name), or add a file, import it in `stock.ts`, and reference it. Any
+registry entry whose `src` is `null` renders as a labelled placeholder — the two
+"Portræt af Dorte" slots are left null on purpose, since no real photo of the
+caretaker exists yet.
 
-Any entry whose `src` is `null` renders as a labelled placeholder showing the
-brief for the wanted picture, so a half-finished registry still reads as
-intentional.
+Photos are stock imagery of children outdoors, standing in until real
+photography of the place is taken.
 
 ### The contact form
 
@@ -131,7 +156,9 @@ Carried over from the prototype and still needing real values:
 
 - Phone number (`00 00 00 00` in `src/content/site.ts`)
 - Holiday dates in `src/content/practical.ts`
-- Photos are Unsplash stand-ins — replace with real photography of the place
+- Photos are stock stand-ins — replace with real photography of the place
+- Two "Portræt af Dorte" image slots are intentionally blank until a real
+  caretaker photo exists
 - The "Persondatapolitik" link in the footer goes nowhere yet
 
 ## Origin
@@ -144,8 +171,8 @@ modules, and its canvas-only runtime (`<x-dc>`, `sc-if`/`sc-for`, the
 of real React and media queries.
 
 The **look** — the amber-cream + forest-green + terracotta palette, the
-Fraunces/Figtree pairing, the near-square radius standard, and the Unsplash
-photography — comes from the later "Website UI/UX for Daycare" design (a Figma
-Make export). Its Tailwind theme was reworked into the plain-CSS token layer in
-`theme.css`; its shadcn/ui component set was not used. Photos are from Unsplash
-under their license, hotlinked as in the source.
+Fraunces/Figtree pairing, and the near-square radius standard — comes from the
+later "Website UI/UX for Daycare" design (a Figma Make export). Its Tailwind
+theme was reworked into the plain-CSS token layer in `theme.css`; its shadcn/ui
+component set was not used. Photography is local stock imagery (Pexels),
+optimised and bundled from `src/assets/`.

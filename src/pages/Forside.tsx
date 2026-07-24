@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 
+import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
 import { ClockIcon, HouseIcon, SproutIcon } from '../components/Icons';
 import { photos } from '../content/photos';
 import { headlineFacts, quickFacts } from '../content/practical';
-import { fullAddress, site } from '../content/site';
+import { site } from '../content/site';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { gridMin } from '../lib/css';
@@ -46,46 +47,11 @@ export default function Forside() {
 
   return (
     <div className="enter">
-      {/* — hero ————————————————————————————————————————————————— */}
-      <section className="shell section hero">
-        <div>
-          <span className="tag tag-secondary hero__tag">
-            Privatpasning i {site.city} · {site.ageRange}
-          </span>
-          <h1 className="title-hero hero__title">Et lille sted at være lille</h1>
-          <p className="lead measure hero__lead">
-            Jeg passer fire børn i mit eget hjem på Bundsvej i {site.city}. Her er der tid
-            til nærvær, leg og små oplevelser i hverdagen — og god plads til at komme
-            udenfor hver dag.
-          </p>
-          <p className="muted hero__byline">
-            {site.owner} · {fullAddress}
-          </p>
-          <div className="row">
-            <Link to={routes.kontakt.path} className="btn btn-primary btn--lg">
-              Book et besøg
-            </Link>
-            <Link to={routes.hverdagen.path} className="btn btn-secondary btn--lg">
-              Se hverdagen
-            </Link>
-          </div>
-          <p className="availability hero__availability">
-            <span className="availability__dot" aria-hidden="true" />
-            {site.availability} · {site.availabilityNote}
-          </p>
-        </div>
-
-        <div className="hero__media">
-          <ImageSlot photo={photos.hero} ratio="4 / 5" rounding="xl" eager className="elev-md" />
-          <p className="hero__badge">
-            <span className="hero__badge-number">{site.childCount}</span>
-            <span>børn — og aldrig flere</span>
-          </p>
-        </div>
-      </section>
+      {/* — hero carousel ——————————————————————————————————————— */}
+      <HeroCarousel />
 
       {/* — headline facts ————————————————————————————————————— */}
-      <section className="shell section section--flush-top">
+      <section className="shell section">
         <div className="factstrip">
           {headlineFacts.map((fact) => (
             <div key={fact.label} className="factstrip__cell">

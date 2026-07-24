@@ -40,6 +40,9 @@
   --color-secondary: #b8ceaf;
   --color-accent: #8f4018;
   --color-danger: #b83220;
+  /* Warm amber — reads on dark photos where terracotta goes muddy. Used for
+     the hero highlight word and the nav highlight's underline. */
+  --color-highlight: #f2c14e;
 
   /* ── Ink on dark bands ────────────────────────────────────────────────
      Used over --color-ink and --color-primary backgrounds. */

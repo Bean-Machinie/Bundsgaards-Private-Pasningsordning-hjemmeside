@@ -1,0 +1,197 @@
+.hero-carousel {
+  position: relative;
+}
+
+.hero-carousel__viewport {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(520px, 82svh, 820px);
+  background: var(--color-ink);
+  touch-action: pan-y;
+}
+
+.hero-carousel__track {
+  display: flex;
+  height: 100%;
+  min-height: inherit;
+  /* Fast-out ease: covers most of the distance early, then settles. */
+  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.hero-carousel__slide {
+  position: relative;
+  flex: none;
+  min-height: inherit;
+  overflow: hidden;
+}
+
+.hero-carousel__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Warm dark wash — heavier on the left so the text stays legible over any
+   photo, with a darker foot on small screens where content bottom-aligns. */
+.hero-carousel__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--color-ink) 78%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 38%,
+      color-mix(in srgb, var(--color-ink) 20%, transparent) 70%,
+      transparent 100%
+    );
+}
+
+.hero-carousel__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: inherit;
+  /* A content column aligned to the 1340px shell without a wrapper element,
+     since the slide itself must stay full-bleed. */
+  padding-block: clamp(80px, 12vh, 140px);
+  padding-right: var(--shell-gutter);
+  padding-left: max(
+    var(--shell-gutter),
+    calc((100vw - var(--shell-max)) / 2 + var(--shell-gutter))
+  );
+  max-width: min(100%, calc((100vw - var(--shell-max)) / 2 + var(--shell-gutter) + 620px));
+  color: var(--color-on-dark);
+}
+
+.hero-carousel__kicker {
+  margin-bottom: var(--space-4);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-highlight) 88%, white);
+}
+
+.hero-carousel__headline {
+  margin: 0 0 var(--space-5);
+  max-width: 16ch;
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight);
+  font-size: clamp(2.6rem, 5.6vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--color-on-dark);
+  text-shadow: 0 1px 24px color-mix(in srgb, var(--color-ink) 45%, transparent);
+}
+.hero-carousel__highlight {
+  font-style: italic;
+  color: var(--color-highlight);
+}
+
+.hero-carousel__subtext {
+  margin: 0 0 var(--space-8);
+  max-width: 42ch;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-on-dark) 88%, transparent);
+}
+
+.hero-carousel__cta {
+  align-self: flex-start;
+}
+
+/* — arrows ————————————————————————————————————————————————————— */
+
+.hero-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  transform: translateY(-50%);
+  border: 1px solid color-mix(in srgb, var(--color-on-dark) 35%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-ink) 32%, transparent);
+  color: var(--color-on-dark);
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.hero-carousel__arrow:hover {
+  background: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  border-color: var(--color-on-dark);
+}
+.hero-carousel__arrow--prev {
+  left: clamp(12px, 2vw, 28px);
+}
+.hero-carousel__arrow--next {
+  right: clamp(12px, 2vw, 28px);
+}
+
+/* — dots ——————————————————————————————————————————————————————— */
+
+.hero-carousel__dots {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 4vh, 40px);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transform: translateX(-50%);
+}
+/* The active dot morphs from an 8px circle into a short amber bar — a shape
+   change, not a colour swap, so it stays legible at this size. */
+.hero-carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-on-dark) 55%, transparent);
+  cursor: pointer;
+  transition: width 0.22s ease, border-radius 0.22s ease, background-color 0.22s ease;
+}
+.hero-carousel__dot:hover {
+  background: var(--color-on-dark);
+}
+.hero-carousel__dot--active,
+.hero-carousel__dot--active:hover {
+  width: 26px;
+  border-radius: var(--radius-md);
+  background: var(--color-highlight);
+}
+
+@media (max-width: 720px) {
+  .hero-carousel__viewport {
+    min-height: clamp(460px, 74svh, 640px);
+  }
+  .hero-carousel__content {
+    justify-content: flex-end;
+    padding-bottom: clamp(72px, 14vh, 120px);
+  }
+  /* Darker foot so bottom-aligned text stays readable over any photo. */
+  .hero-carousel__overlay {
+    background:
+      linear-gradient(
+        to top,
+        color-mix(in srgb, var(--color-ink) 82%, transparent) 0%,
+        color-mix(in srgb, var(--color-ink) 45%, transparent) 42%,
+        color-mix(in srgb, var(--color-ink) 22%, transparent) 100%
+      );
+  }
+  .hero-carousel__arrow {
+    display: none;
+  }
+}
