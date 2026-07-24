@@ -18,6 +18,11 @@
   transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel__track {
+    transition-duration: 0.01ms;
+  }
+}
 
 .hero-carousel__slide {
   position: relative;
@@ -59,7 +64,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  min-height: inherit;
+  height: 100%;
   /* A content column aligned to the 1340px shell without a wrapper element,
      since the slide itself must stay full-bleed. */
   padding-block: clamp(80px, 12vh, 140px);

@@ -5,14 +5,14 @@
   background: color-mix(in srgb, var(--color-bg) 94%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-border);
-  /* A soft shadow at rest lifts the panel off the content; it deepens once
-     the page scrolls under it. */
-  box-shadow: 0 2px 10px color-mix(in srgb, var(--color-ink) 7%, transparent);
+  /* The prominent shadow is the resting state, so the panel reads as lifted
+     off the content from the start; it deepens a touch more once scrolled. */
+  box-shadow: 0 6px 22px color-mix(in srgb, var(--color-ink) 12%, transparent);
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 .site-header.is-scrolled {
   background: color-mix(in srgb, var(--color-bg) 98%, transparent);
-  box-shadow: 0 6px 22px color-mix(in srgb, var(--color-ink) 12%, transparent);
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--color-ink) 15%, transparent);
 }
 
 .site-header__bar {
@@ -33,44 +33,30 @@
   line-height: 1;
   color: inherit;
   text-decoration: none;
+  /* The title is a logo, not selectable body text. */
+  user-select: none;
+  /* The whole lockup reacts as one unit on hover. */
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
 }
 .brand__name {
-  position: relative;
   font-family: var(--font-display);
   font-size: 24px;
   letter-spacing: -0.01em;
   color: var(--color-ink);
   transition: color 0.25s ease;
 }
-/* An amber rule sweeps in from the left on hover. */
-.brand__name::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -3px;
-  height: 2px;
-  background: var(--color-highlight);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-}
 .brand__tagline {
   font-size: 9.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-ink-3);
-  transition: color 0.25s ease, letter-spacing 0.25s ease;
+  /* The terracotta the tagline used to reach only on hover — now always. */
+  color: var(--color-accent);
+}
+.brand:hover {
+  transform: translateY(-2px);
 }
 .brand:hover .brand__name {
   color: var(--color-primary);
-}
-.brand:hover .brand__name::after {
-  transform: scaleX(1);
-}
-.brand:hover .brand__tagline {
-  color: var(--color-accent);
-  letter-spacing: 0.26em;
 }
 .brand:focus-visible {
   outline: 2px solid var(--color-ring);
@@ -84,24 +70,31 @@
   display: flex;
   align-items: center;
   gap: var(--space-6);
+  height: 100%;
 }
 .site-nav__list {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   height: 100%;
   margin: 0;
   padding: 0;
   list-style: none;
-  gap: clamp(2px, 0.8vw, 12px);
+  /* No gap — items butt right up against each other; the only spacing is the
+     buttons' own padding. */
+  gap: 0;
 }
 .site-nav__item {
   display: flex;
+  align-items: stretch;
 }
 .site-nav__link {
   position: relative;
   z-index: 1;
-  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 clamp(12px, 1.4vw, 20px);
   font-size: 12.5px;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -120,17 +113,16 @@
 }
 
 /* The single moving element. It is measured against the live DOM, so it needs
-   no knowledge of item labels or count. Text always paints over it (z-index). */
+   no knowledge of item labels or count. Text always paints over it (z-index).
+   Full panel height, with a soft green fill — distinct from the cream ground. */
 .site-nav__highlight {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 0;
   z-index: 0;
-  height: 38px;
-  margin-top: -19px;
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--color-highlight) 16%, transparent);
-  box-shadow: inset 0 -2px 0 0 var(--color-highlight);
+  height: 100%;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
   pointer-events: none;
   /* Fast-out ease covers most of the distance early, then settles — so it
      reads as one box flowing between items, not a crossfade. */
@@ -138,6 +130,18 @@
     transform 0.36s cubic-bezier(0.22, 1, 0.36, 1),
     width 0.36s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.24s ease;
+}
+/* The amber underline: thicker, and it pokes out past the panel's bottom
+   border so it reads as a tab marker. */
+.site-nav__highlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--color-highlight);
 }
 
 .site-nav__cta {
@@ -259,10 +263,9 @@
   }
 }
 
-/* No hover pill without a pointer; respect reduced motion for the sweeps. */
 @media (prefers-reduced-motion: reduce) {
   .site-nav__highlight,
-  .brand__name::after,
+  .brand,
   .site-menu__panel,
   .site-menu__link {
     transition-duration: 0.01ms;

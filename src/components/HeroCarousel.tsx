@@ -12,28 +12,28 @@ const SWIPE_THRESHOLD = 48;
 const TRANSITION_MS = 620;
 
 /**
- * The front-page hero.
+ * The front-page hero — a sliding carousel that loops seamlessly.
  *
- * A slide track that loops seamlessly: the rendered strip is
- * [clone of last, …slides, clone of first], so advancing past the end lands on
- * a clone that looks identical to the real first slide, and we then snap back
- * without a transition on transitionend. `pos` is the index into that extended
- * strip (starts at 1, the real first slide).
+ * The rendered strip is [clone of last, …slides, clone of first]; `pos` is the
+ * index into it (starts at 1, the real first slide). Advancing past the end
+ * lands on a clone that looks identical to the real slide, then we snap back
+ * onto the real one with the transition disabled so the jump is invisible.
  *
- * Autoplay is a self-re-arming timeout keyed on `timerKey`: every interaction —
- * arrow, dot, swipe — and every auto-advance bumps the key, which tears down
- * the pending timeout and starts a fresh countdown. So any interaction buys a
- * full interval rather than inheriting whatever was left, and there is no
- * interval that could fire mid-gesture.
+ * A single move runs at a time: `movingRef` locks input for the duration of the
+ * transition, so however fast the controls are pressed `pos` can only ever step
+ * one place and can never run off the strip into empty space. The lock clears
+ * on a timeout, which also performs the seamless snap.
+ *
+ * Autoplay is a self-re-arming timeout keyed on `timerKey`: every interaction
+ * and every auto-advance bumps the key, tearing down the pending timeout and
+ * starting a fresh countdown. It parks while the tab is hidden.
  */
 export default function HeroCarousel() {
   const count = heroSlides.length;
   const [pos, setPos] = useState(1);
   const [animate, setAnimate] = useState(true);
   const [timerKey, setTimerKey] = useState(0);
-
-  // Live drag offset in px, layered on top of the % transform.
-  const [dragPx, setDragPx] = useState(0);
+  const movingRef = useRef(false);
   const dragRef = useRef<{ startX: number; active: boolean }>({ startX: 0, active: false });
 
   const slideWidthPct = 100 / (count + 2);
@@ -41,44 +41,58 @@ export default function HeroCarousel() {
 
   const resetTimer = useCallback(() => setTimerKey((k) => k + 1), []);
 
-  const advance = useCallback((dir: 1 | -1) => {
-    setAnimate(true);
-    setPos((p) => p + dir);
-  }, []);
-
-  const goTo = useCallback(
-    (index: number) => {
+  // Every navigation goes through here, so the input lock is honoured in one
+  // place. `to` is an index into the extended strip.
+  const moveTo = useCallback(
+    (to: number) => {
+      if (movingRef.current || to === pos) return;
+      movingRef.current = true;
       setAnimate(true);
-      setPos(index + 1);
+      setPos(to);
       resetTimer();
     },
-    [resetTimer],
+    [pos, resetTimer],
   );
 
-  const next = useCallback(() => {
-    advance(1);
-    resetTimer();
-  }, [advance, resetTimer]);
+  const next = useCallback(() => moveTo(pos + 1), [moveTo, pos]);
+  const prev = useCallback(() => moveTo(pos - 1), [moveTo, pos]);
+  const goTo = useCallback((realIndex: number) => moveTo(realIndex + 1), [moveTo]);
 
-  const prev = useCallback(() => {
-    advance(-1);
-    resetTimer();
-  }, [advance, resetTimer]);
+  // When a move finishes: snap off a clone onto its real twin (transition
+  // disabled), then release the lock. Driven by a timeout rather than
+  // `transitionend` so it can't be left stranded if that event doesn't fire.
+  useEffect(() => {
+    if (!movingRef.current) return;
+    const id = window.setTimeout(() => {
+      if (pos === count + 1) {
+        setAnimate(false);
+        setPos(1);
+      } else if (pos === 0) {
+        setAnimate(false);
+        setPos(count);
+      }
+      movingRef.current = false;
+    }, TRANSITION_MS + 20);
+    return () => window.clearTimeout(id);
+  }, [pos, count]);
 
-  // Autoplay — pauses when the tab is hidden or the user prefers reduced motion.
+  // Autoplay — parks while the tab is hidden or reduced motion is preferred.
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced || document.hidden) return;
 
     const id = window.setTimeout(() => {
-      advance(1);
-      setTimerKey((k) => k + 1);
+      if (!movingRef.current) {
+        movingRef.current = true;
+        setAnimate(true);
+        setPos((p) => p + 1);
+        setTimerKey((k) => k + 1);
+      }
     }, AUTOPLAY_MS);
     return () => window.clearTimeout(id);
-  }, [timerKey, advance]);
+  }, [timerKey]);
 
-  // Re-arm autoplay when the tab becomes visible again (it stays parked while
-  // hidden, so it doesn't race ahead in a background tab).
+  // Re-arm autoplay when the tab becomes visible again.
   useEffect(() => {
     const onVisible = () => {
       if (!document.hidden) resetTimer();
@@ -87,45 +101,24 @@ export default function HeroCarousel() {
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, [resetTimer]);
 
-  // Seamless wrap: once a transition into a clone has had time to finish, snap
-  // onto the matching real slide with the transition disabled so the jump is
-  // invisible. Driven by a timeout rather than `transitionend` so it can't be
-  // left stranded if that event doesn't fire.
-  useEffect(() => {
-    if (pos !== 0 && pos !== count + 1) return;
-    const id = window.setTimeout(() => {
-      setAnimate(false);
-      setPos(pos === 0 ? count : 1);
-    }, TRANSITION_MS + 20);
-    return () => window.clearTimeout(id);
-  }, [pos, count]);
-
-  // — drag / swipe ————————————————————————————————————————————————
+  // — swipe: advance on release past a threshold ————————————————————
   const onPointerDown = (event: React.PointerEvent) => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     dragRef.current = { startX: event.clientX, active: true };
-    setAnimate(false);
-    resetTimer();
-  };
-  const onPointerMove = (event: React.PointerEvent) => {
-    if (!dragRef.current.active) return;
-    setDragPx(event.clientX - dragRef.current.startX);
   };
   const endDrag = (event: React.PointerEvent) => {
     if (!dragRef.current.active) return;
     const dx = event.clientX - dragRef.current.startX;
     dragRef.current.active = false;
-    setDragPx(0);
-    setAnimate(true);
     if (Math.abs(dx) > SWIPE_THRESHOLD) {
-      advance(dx < 0 ? 1 : -1);
-      resetTimer();
+      if (dx < 0) next();
+      else prev();
     }
   };
 
   const trackStyle: CSSProperties = {
     width: `${(count + 2) * 100}%`,
-    transform: `translate3d(calc(${(-pos * slideWidthPct).toFixed(4)}% + ${dragPx}px), 0, 0)`,
+    transform: `translate3d(${(-pos * slideWidthPct).toFixed(4)}%, 0, 0)`,
     transition: animate ? undefined : 'none',
   };
 
@@ -137,14 +130,11 @@ export default function HeroCarousel() {
       <div
         className="hero-carousel__viewport"
         onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
-        onPointerLeave={endDrag}
       >
         <div className="hero-carousel__track" style={trackStyle}>
           {strip.map((slide, i) => {
-            // Only the currently-shown real slide is exposed to the a11y tree.
             const realIndex = ((i - 1) % count + count) % count;
             const isCurrent = i >= 1 && i <= count && realIndex === currentSlide;
             return (
