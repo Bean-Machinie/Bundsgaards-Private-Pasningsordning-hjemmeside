@@ -61,15 +61,39 @@
 
 /* — details columns ——————————————————————————————————————————————————— */
 
+/* Two regions: the text columns share the fluid left, the location panel holds
+   a fixed square on the right where the fourth column used to be. */
 .site-footer__cols {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  grid-template-columns: minmax(0, 1fr) clamp(210px, 22vw, 280px);
   gap: clamp(28px, 4vw, 56px);
+  align-items: start;
   /* A calm gap under the wordmark slot; the slot itself reserves the rest. */
-  padding-top: clamp(28px, 3vw, 46px);
+  padding-top: clamp(10px, 1.5vw, 22px);
 }
 
-.site-footer__col {
+/* The panel is its own object, not a fourth column. It's taken out of flow and
+   anchored to the bottom of the columns, so the address never drops below their
+   last line (e.g. "Galleri") — being the taller block, that also lifts it up
+   toward the top of the footer. A hairline down its left edge sets it apart. */
+.site-footer__place {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: clamp(210px, 22vw, 280px);
+  padding-left: clamp(24px, 2.4vw, 40px);
+  border-left: 1px solid var(--color-on-dark-4);
+}
+
+.site-footer__text {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: clamp(28px, 4vw, 56px);
+}
+
+.site-footer__col,
+.site-footer__place {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -77,9 +101,71 @@
   color: var(--color-on-dark-2);
 }
 
+/* — location panel ——————————————————————————————————————————————————— */
+
+.site-footer__map {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  /* Same roundness rule as any medium content block — token, never a literal.
+     Zero padding, so the clipped iframe shares this radius exactly. */
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-on-dark-4);
+  box-shadow: var(--shadow-md);
+  background: var(--color-primary-hover);
+}
+.site-footer__map iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  /* Ease the tiles' saturation so the map settles into the forest band. */
+  filter: saturate(0.92);
+}
+/* The panel's heading centres over the map, unlike the left-aligned column
+   labels — it reads as a caption for the square rather than a column title. */
+.site-footer__place .site-footer__label {
+  text-align: center;
+}
+.site-footer__address {
+  margin-top: var(--space-1);
+  font-style: normal;
+  text-align: center;
+  color: var(--color-on-dark);
+  font-weight: 500;
+}
+
+/* Below the two-region width, drop the panel under the text and cap its size
+   so the square map never balloons to the full column width. */
+@media (max-width: 880px) {
+  .site-footer__cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .site-footer__place {
+    /* Stacked below the text: back into normal flow, and swap the left-edge
+       hairline for a rule above it so the separation stays a clear line. */
+    position: static;
+    width: auto;
+    max-width: 260px;
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--color-on-dark-4);
+    padding-top: var(--space-6);
+    margin-top: var(--space-2);
+  }
+}
+
+/* The design's usual tiny-tracked-uppercase label, but sized off the text it
+   heads: one golden-ratio step up from the 1em body beneath it, so the jump is
+   proportional rather than a picked number. */
 .site-footer__label {
   margin-bottom: var(--space-2);
-  font-size: var(--label-size);
+  font-family: var(--font-body);
+  font-size: calc(1em * var(--ratio-golden));
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-on-dark-3);
@@ -95,12 +181,11 @@
   line-height: 1.6;
   color: var(--color-on-dark-3);
 }
+/* Same emphasised-body treatment as the other key facts (owner, address),
+   rather than the display serif — keeps the footer's type to one voice. */
 .site-footer__hours {
-  font-family: var(--font-display);
-  font-weight: var(--font-display-weight);
-  font-size: 22px;
-  line-height: 1.1;
   color: var(--color-on-dark);
+  font-weight: 500;
 }
 
 .site-footer__link {

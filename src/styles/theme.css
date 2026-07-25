@@ -70,6 +70,10 @@
   --label-size: 9.5px;
   --label-tracking: 0.24em;
 
+  /* Golden ratio — for sizing a heading against the text it heads, so the
+     step between the two is proportional rather than an arbitrary pick. */
+  --ratio-golden: 1.618;
+
   /* ── Space — a plain 4px scale ────────────────────────────────────────
      Whole numbers matter here: the radius concentricity formula below adds
      a spacing step to a radius, and fractional pixels would round badly. */
