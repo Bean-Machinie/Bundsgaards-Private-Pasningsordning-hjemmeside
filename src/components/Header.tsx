@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import { site } from '../content/site';
@@ -20,6 +20,9 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [highlight, setHighlight] = useState<HighlightState>(HIDDEN_HIGHLIGHT);
+  // `settling` picks the return easing — a springy overshoot when the wash
+  // bounces back to the active item, versus a smooth slide on hover.
+  const [settling, setSettling] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
   const { pathname } = useLocation();
   const menuId = useId();
@@ -57,17 +60,58 @@ export default function Header() {
   // The sliding highlight is one element measured against the live DOM, so it
   // needs no knowledge of the items' labels, widths or count — add a nav item
   // and it just works. `scrollLeft` keeps it aligned if the list ever scrolls.
-  const moveHighlightTo = useCallback((el: HTMLElement) => {
+  // `bounce` chooses the easing: a smooth slide on hover, a springy overshoot
+  // when settling back onto the active item.
+  const positionAt = useCallback((el: HTMLElement, bounce: boolean) => {
     const list = listRef.current;
     if (!list) return;
     const rect = el.getBoundingClientRect();
     const listRect = list.getBoundingClientRect();
+    setSettling(bounce);
     setHighlight({
       x: rect.left - listRect.left + list.scrollLeft,
       width: rect.width,
       visible: true,
     });
   }, []);
+
+  // The highlight's home is the active route's item: it rests there, follows
+  // the pointer to whatever item is hovered, and springs back here when the
+  // pointer leaves. On a page with no nav item active (the front page) it just
+  // fades away.
+  const settleToActive = useCallback(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const active = list.querySelector<HTMLElement>('.site-nav__link.active');
+    if (active) {
+      positionAt(active, true);
+    } else {
+      setSettling(false);
+      setHighlight((h) => ({ ...h, visible: false }));
+    }
+  }, [positionAt]);
+
+  // Place the highlight on the active item before the browser paints, so it is
+  // simply *there* on load and on navigation — no intro animation — then keep
+  // it aligned as fonts finish loading or the window resizes. Measuring in a
+  // layout effect (rather than rAF) means it settles even before the first
+  // composited frame.
+  useLayoutEffect(() => {
+    settleToActive();
+  }, [pathname, settleToActive]);
+
+  useEffect(() => {
+    const onResize = () => settleToActive();
+    window.addEventListener('resize', onResize);
+    let cancelled = false;
+    document.fonts?.ready.then(() => {
+      if (!cancelled) settleToActive();
+    });
+    return () => {
+      window.removeEventListener('resize', onResize);
+      cancelled = true;
+    };
+  }, [settleToActive]);
 
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
@@ -90,11 +134,12 @@ export default function Header() {
           <ul
             className="site-nav__list"
             ref={listRef}
-            onMouseLeave={() => setHighlight((h) => ({ ...h, visible: false }))}
+            onMouseLeave={settleToActive}
           >
             <span
               className="site-nav__highlight"
               aria-hidden="true"
+              data-settling={settling}
               style={{
                 transform: `translateX(${highlight.x}px)`,
                 width: `${highlight.width}px`,
@@ -105,7 +150,7 @@ export default function Header() {
               <li
                 key={key}
                 className="site-nav__item"
-                onMouseEnter={(event) => moveHighlightTo(event.currentTarget)}
+                onMouseEnter={(event) => positionAt(event.currentTarget, false)}
               >
                 <NavLink to={routes[key].path} className="site-nav__link">
                   {routes[key].navLabel}

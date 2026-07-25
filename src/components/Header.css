@@ -2,17 +2,19 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  background: color-mix(in srgb, var(--color-bg) 94%, transparent);
-  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
-  /* The prominent shadow is the resting state, so the panel reads as lifted
-     off the content from the start; it deepens a touch more once scrolled. */
-  box-shadow: 0 6px 22px color-mix(in srgb, var(--color-ink) 12%, transparent);
+  /* Border-driven at rest — the hairline does the structural work and the
+     shadow is only a whisper; it gathers weight once the page scrolls under
+     it. Negative spread keeps the edge tight rather than a soft cloud. */
+  box-shadow: 0 8px 24px -18px color-mix(in srgb, var(--color-ink) 24%, transparent);
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 .site-header.is-scrolled {
-  background: color-mix(in srgb, var(--color-bg) 98%, transparent);
-  box-shadow: 0 8px 28px color-mix(in srgb, var(--color-ink) 15%, transparent);
+  background: color-mix(in srgb, var(--color-bg) 97%, transparent);
+  box-shadow: 0 12px 30px -16px color-mix(in srgb, var(--color-ink) 30%, transparent);
 }
 
 .site-header__bar {
@@ -20,9 +22,6 @@
   align-items: center;
   gap: var(--space-8);
   height: var(--header-height);
-  /* Bias the panel's spare vertical space to the bottom, so the extra air
-     sits beneath the wordmark rather than being split evenly above it. */
-  padding-bottom: 10px;
 }
 
 /* — brand ————————————————————————————————————————————————————— */
@@ -31,6 +30,10 @@
   display: flex;
   align-items: center;
   margin-right: auto;
+  /* The wordmark alone carries the extra breathing room beneath it: a bottom
+     margin lifts just the logo within the centred bar, so the nav links and
+     CTA stay optically centred on the full panel height. */
+  margin-bottom: 10px;
   color: inherit;
   text-decoration: none;
   /* The title is a logo, not selectable body text. */
@@ -96,59 +99,61 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 clamp(12px, 1.4vw, 20px);
-  font-size: 12.5px;
+  padding: 0 clamp(14px, 1.5vw, 22px);
+  font-size: 14.5px;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.005em;
   color: var(--color-ink-2);
   text-decoration: none;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
 }
 .site-nav__link:hover {
   color: var(--color-ink);
 }
-/* Active route — persistent, and deliberately quiet: it tints the current
-   page's label without competing with the transient hover pill. */
+/* Active route — green is the acting colour for active nav. The persistent
+   highlight rests on this item and carries the amber marker, so the label
+   itself needs no separate underline. */
 .site-nav__link.active {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 /* The single moving element. It is measured against the live DOM, so it needs
    no knowledge of item labels or count. Text always paints over it (z-index).
-   Full panel height, with a soft green fill — distinct from the cream ground. */
+   A compact, centred, near-square wash of green — sitting off the panel's
+   edges so it reads as a light resting place for the label, not a tab. It is
+   positioned in X by an inline transform from the component, so vertical
+   centring is done with top + margin rather than a second transform. */
 .site-nav__highlight {
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 0;
   z-index: 0;
-  height: 100%;
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+  height: 44px;
+  margin-top: -22px;
+  /* Roundness follows the system's control token, matching the buttons. */
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
   pointer-events: none;
-  /* Fast-out ease covers most of the distance early, then settles — so it
-     reads as one box flowing between items, not a crossfade. */
-  transition:
-    transform 0.36s cubic-bezier(0.22, 1, 0.36, 1),
-    width 0.36s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.24s ease;
+  /* Default: a smooth slide between items on hover. The component swaps in a
+     springy overshoot (data-settling) when the wash bounces back to the active
+     item; the first placement is done in a layout effect, so it lands without
+     any intro animation. */
+  transition-property: transform, width, opacity;
+  transition-duration: 0.34s, 0.34s, 0.24s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
-/* The amber underline: thicker, and it pokes out past the panel's bottom
-   border so it reads as a tab marker. */
-.site-nav__highlight::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
-  height: 4px;
-  border-radius: var(--radius-sm);
-  background: var(--color-highlight);
+.site-nav__highlight[data-settling='true'] {
+  transition-duration: 0.52s, 0.52s, 0.24s;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.site-nav__cta {
-  padding: 10px var(--space-5);
-  font-size: 12px;
+/* Scoped under .site-nav so it outranks the base .btn declarations. */
+.site-nav .site-nav__cta {
+  padding: 13px var(--space-5);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
@@ -267,9 +272,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .site-nav__highlight,
+  .site-nav__highlight[data-settling='true'],
   .brand__logo,
   .site-menu__panel,
   .site-menu__link {
-    transition-duration: 0.01ms;
+    transition-duration: 0.01ms !important;
   }
 }
