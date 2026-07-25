@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { site } from '../content/site';
 import { mobileNav, primaryNav, routes } from '../routes';
 import { CloseIcon, MenuIcon } from './Icons';
-import titleImage from '../assets/images/title-images/title-image-short-green.png';
+import titleImage from '../assets/images/title-images/title-image-lockup-green.png';
 
 import './Header.css';
 

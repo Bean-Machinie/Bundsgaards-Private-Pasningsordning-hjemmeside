@@ -20,6 +20,9 @@
   align-items: center;
   gap: var(--space-8);
   height: var(--header-height);
+  /* Bias the panel's spare vertical space to the bottom, so the extra air
+     sits beneath the wordmark rather than being split evenly above it. */
+  padding-bottom: 10px;
 }
 
 /* — brand ————————————————————————————————————————————————————— */
@@ -35,7 +38,7 @@
 }
 .brand__logo {
   display: block;
-  height: 60px;
+  height: 70px;
   width: auto;
   /* Guard the wordmark: no drag-to-save, no right-click "save image",
      no text/selection handles — it behaves like a logo, not an asset. */
@@ -49,7 +52,7 @@
      and return feel identical — no jerk in either direction. */
   transform: scale(1);
   transform-origin: center center;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
   backface-visibility: hidden;
 }
