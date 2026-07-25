@@ -26,37 +26,36 @@
 
 .brand {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
+  align-items: center;
   margin-right: auto;
-  line-height: 1;
   color: inherit;
   text-decoration: none;
   /* The title is a logo, not selectable body text. */
   user-select: none;
-  /* The whole lockup reacts as one unit on hover. */
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
 }
-.brand__name {
-  font-family: var(--font-display);
-  font-size: 24px;
-  letter-spacing: -0.01em;
-  color: var(--color-ink);
-  transition: color 0.25s ease;
+.brand__logo {
+  display: block;
+  height: 60px;
+  width: auto;
+  /* Guard the wordmark: no drag-to-save, no right-click "save image",
+     no text/selection handles — it behaves like a logo, not an asset. */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  /* Scale the image itself, out from its own centre. Keeping it on a
+     stable composited layer (a resting scale(1) plus will-change) stops
+     the browser from re-rasterising the PNG at the end of the animation,
+     which was the little snap on reset. Symmetric ease-in-out so grow
+     and return feel identical — no jerk in either direction. */
+  transform: scale(1);
+  transform-origin: center center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  backface-visibility: hidden;
 }
-.brand__tagline {
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  /* The terracotta the tagline used to reach only on hover — now always. */
-  color: var(--color-accent);
-}
-.brand:hover {
-  transform: translateY(-2px);
-}
-.brand:hover .brand__name {
-  color: var(--color-primary);
+.brand:hover .brand__logo {
+  /* Clean, symmetric grow — size only, no lift or skew. */
+  transform: scale(1.06);
 }
 .brand:focus-visible {
   outline: 2px solid var(--color-ring);
@@ -265,7 +264,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .site-nav__highlight,
-  .brand,
+  .brand__logo,
   .site-menu__panel,
   .site-menu__link {
     transition-duration: 0.01ms;

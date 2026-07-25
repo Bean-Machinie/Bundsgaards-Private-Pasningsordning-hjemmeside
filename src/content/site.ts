@@ -31,7 +31,7 @@ export interface SiteInfo {
 
 export const site: SiteInfo = {
   name: 'Bundsgård',
-  tagline: 'Privatpasningsordning',
+  tagline: 'Privat Pasningsordning',
   owner: 'Dorte Thygesen',
   street: 'Bundsvej 16',
   postalCode: '3660',

@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { site } from '../content/site';
 import { mobileNav, primaryNav, routes } from '../routes';
 import { CloseIcon, MenuIcon } from './Icons';
+import titleImage from '../assets/images/title-images/title-image-short-green.png';
 
 import './Header.css';
 
@@ -76,8 +77,13 @@ export default function Header() {
           className="brand"
           aria-label={`${site.name} — forside`}
         >
-          <span className="brand__name">{site.name}</span>
-          <span className="brand__tagline">{site.tagline}</span>
+          <img
+            className="brand__logo"
+            src={titleImage}
+            alt={`${site.name} — ${site.tagline}`}
+            draggable={false}
+            onContextMenu={(event) => event.preventDefault()}
+          />
         </Link>
 
         <nav className="site-nav" aria-label="Hovedmenu">

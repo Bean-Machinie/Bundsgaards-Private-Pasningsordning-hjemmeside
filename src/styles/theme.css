@@ -131,5 +131,5 @@
   /* ── Layout ───────────────────────────────────────────────────────────*/
   --shell-max: 1340px;
   --shell-gutter: clamp(20px, 4vw, 48px);
-  --header-height: 66px;
+  --header-height: 84px;
 }
