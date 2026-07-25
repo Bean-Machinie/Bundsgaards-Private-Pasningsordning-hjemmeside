@@ -1,103 +1,72 @@
 /* The footer is the site's grounding dark band, done in the brand's forest
-   green rather than flat ink so it reads as part of the same warm world. The
-   green wordmark can't sit on green, so the lead lives on a warm surface panel
-   where it reads crisply; the details sit on the green in cream. */
+   green rather than flat ink so it reads as part of the same warm world. An
+   oversized cream wordmark sits at the top and is dropped down so its script
+   tail cuts over the top edge of the structured details below. */
 .site-footer {
   margin-top: auto;
   background: var(--color-primary);
   color: var(--color-on-dark);
+  /* Contain the wordmark's leftward bleed at the viewport edge so it never adds
+     a horizontal scrollbar — clipping here (full width) rather than on the inner
+     shell lets the mark drift into the outer margin instead of being cut off. */
+  overflow-x: clip;
+}
+/* The global selection tint is a faint green — invisible on this green band.
+   Invert it here so highlighted text reads: cream mark, green text. */
+.site-footer ::selection {
+  background: color-mix(in srgb, var(--color-on-dark) 85%, transparent);
+  color: var(--color-primary);
 }
 
 .site-footer__inner {
-  display: grid;
-  gap: clamp(36px, 5vw, 64px);
-  padding-block: clamp(40px, 5vw, 72px) clamp(32px, 4vw, 52px);
+  position: relative;
+  /* Extra top padding drops the oversized wordmark away from the footer's top
+     edge — it overflows its slot upward, so this is what gives it headroom. */
+  padding-block: clamp(72px, 8vw, 120px) clamp(32px, 4vw, 52px);
 }
 
-/* — lead: warm panel with wordmark + CTA ——————————————————————————— */
-
-.site-footer__lead {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-8);
-  padding: clamp(24px, 3.5vw, 44px);
-  background: var(--color-surface);
-  /* A big block, so the largest near-square radius plus its padding step, to
-     keep the corner concentric with the content inside. */
-  border-radius: calc(var(--radius-xl) + var(--space-2));
-  color: var(--color-ink);
-}
-
-.site-footer__lead-brand {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-4);
-  min-width: min(280px, 100%);
+/* — oversized wordmark in a fixed slot ————————————————————————————————
+   The slot reserves a set slice of height; the wordmark is positioned inside
+   it, so changing the logo's size or offset never moves the columns below. */
+.site-footer__brand {
+  position: relative;
+  height: clamp(92px, 9vw, 128px);
 }
 .site-footer__wordmark {
+  position: absolute;
+  bottom: 0;
+  /* Bleed left, scaling with the page's outer margin: a big drift into the
+     whitespace on wide screens, tucking back to the edge on narrow ones so the
+     wordmark is never clipped. */
+  left: calc(
+    -1 * var(--shell-gutter) - 0.55 * max(0px, (100vw - var(--shell-max)) / 2)
+  );
   display: block;
-  height: clamp(52px, 6vw, 76px);
+  height: clamp(116px, 15vw, 210px);
   width: auto;
+  z-index: 2;
   /* A logo, not a saveable/selectable asset — same guards as the header. */
   user-select: none;
   pointer-events: none;
   -webkit-user-drag: none;
 }
-.site-footer__pitch {
-  max-width: 42ch;
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--color-ink-soft);
+/* On slim (phone/tablet) widths there's no whitespace to drift into, so drop
+   the leftward bleed and line the wordmark up with the content gutter — same
+   left edge as the columns below, instead of hugging the screen edge. */
+@media (max-width: 780px) {
+  .site-footer__wordmark {
+    left: 0;
+  }
 }
 
-.site-footer__lead-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-4);
-}
-.site-footer__status {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--color-ink);
-}
-.site-footer__status-dot {
-  width: 8px;
-  height: 8px;
-  flex: none;
-  border-radius: var(--radius-full);
-  background: var(--color-secondary);
-}
-.site-footer__status.is-waitlist .site-footer__status-dot {
-  background: var(--color-accent);
-}
-.site-footer__status-note {
-  flex-basis: 100%;
-  font-weight: 400;
-  font-size: 12.5px;
-  color: var(--color-ink-3);
-}
-.site-footer__cta {
-  align-self: stretch;
-  justify-content: center;
-}
-
-/* — details columns on the green band ——————————————————————————————— */
+/* — details columns ——————————————————————————————————————————————————— */
 
 .site-footer__cols {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: clamp(28px, 4vw, 56px);
-  padding-inline: var(--space-2);
+  /* A calm gap under the wordmark slot; the slot itself reserves the rest. */
+  padding-top: clamp(28px, 3vw, 46px);
 }
 
 .site-footer__col {
@@ -121,6 +90,7 @@
   font-weight: 500;
 }
 .site-footer__muted {
+  max-width: 28ch;
   font-size: 12.5px;
   line-height: 1.6;
   color: var(--color-on-dark-3);
