@@ -130,18 +130,11 @@ caretaker exists yet.
 Photos are stock imagery of children outdoors, standing in until real
 photography of the place is taken.
 
-### The contact form
+### Contact
 
-`src/lib/enquiry.ts` posts the enquiry as JSON to `VITE_CONTACT_ENDPOINT`.
-
-**Until that variable is set, nothing is delivered** — the form logs to the
-console and shows the thank-you state, so the flow is testable in development.
-Point it at a form service or your own function to go live:
-
-```
-# .env.local
-VITE_CONTACT_ENDPOINT=https://…
-```
+There is no contact page or form: the footer is the contact section on every
+page. The "Kontakt" links (header, hero, page CTAs) scroll to it via
+`src/lib/scrollToContact.ts`, which targets the footer's `id="kontakt"`.
 
 ## Deploying
 

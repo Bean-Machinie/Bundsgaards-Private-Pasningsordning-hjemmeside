@@ -5,7 +5,6 @@ import ScrollToTop from './components/ScrollToTop';
 import Forside from './pages/Forside';
 import Galleri from './pages/Galleri';
 import Hverdagen from './pages/Hverdagen';
-import Kontakt from './pages/Kontakt';
 import OmBundsgaard from './pages/OmBundsgaard';
 import OmMig from './pages/OmMig';
 import Praktisk from './pages/Praktisk';
@@ -25,7 +24,6 @@ export default function App() {
           <Route path={routes.ommig.path} element={<OmMig />} />
           <Route path={routes.praktisk.path} element={<Praktisk />} />
           <Route path={routes.galleri.path} element={<Galleri />} />
-          <Route path={routes.kontakt.path} element={<Kontakt />} />
           <Route path="*" element={<Navigate to={routes.forside.path} replace />} />
         </Route>
       </Routes>

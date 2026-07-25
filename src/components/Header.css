@@ -148,15 +148,6 @@
   transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Scoped under .site-nav so it outranks the base .btn declarations. */
-.site-nav .site-nav__cta {
-  padding: 13px var(--space-5);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-}
-
 /* — hamburger / close toggle —————————————————————————————————— */
 
 .menu-toggle {
@@ -248,14 +239,8 @@
 .site-menu__link.active {
   color: var(--color-accent);
 }
-.site-menu__cta {
-  margin-top: var(--space-3);
-  padding: 14px;
-  transition-delay: 0.28s;
-}
 
-/* The desktop nav needs room for seven links plus a button; below that the
-   drawer takes over. */
+/* The desktop nav needs room for the links; below that the drawer takes over. */
 @media (max-width: 1080px) {
   .site-nav {
     display: none;

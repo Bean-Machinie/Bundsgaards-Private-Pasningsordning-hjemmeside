@@ -4,11 +4,12 @@ import KeenSlider, { type KeenSliderInstance } from 'keen-slider';
 import 'keen-slider/keen-slider.min.css';
 
 import { heroCtaPath, heroSlides } from '../content/heroSlides';
+import { scrollToContact } from '../lib/scrollToContact';
 import { ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from './Icons';
 
 import './HeroCarousel.css';
 
-const AUTOPLAY_MS = 7000;
+const AUTOPLAY_MS = 14000;
 
 /**
  * The front-page hero — a keen-slider instance with a hand-rolled autoplay
@@ -126,13 +127,24 @@ export default function HeroCarousel() {
                 <span className="hero-carousel__highlight">{slide.highlight}</span>
               </h1>
               <p className="hero-carousel__subtext">{slide.subtext}</p>
-              <Link
-                to={heroCtaPath(slide.ctaTo)}
-                className="btn btn-primary btn--lg hero-carousel__cta"
-              >
-                {slide.ctaLabel}
-                <ArrowRightIcon size={16} />
-              </Link>
+              {slide.ctaTo === 'contact' ? (
+                <a
+                  href="#kontakt"
+                  className="btn btn-primary btn--lg hero-carousel__cta"
+                  onClick={scrollToContact}
+                >
+                  {slide.ctaLabel}
+                  <ArrowRightIcon size={16} />
+                </a>
+              ) : (
+                <Link
+                  to={heroCtaPath(slide.ctaTo)}
+                  className="btn btn-primary btn--lg hero-carousel__cta"
+                >
+                  {slide.ctaLabel}
+                  <ArrowRightIcon size={16} />
+                </Link>
+              )}
             </div>
           </div>
         ))}

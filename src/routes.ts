@@ -17,8 +17,7 @@ export type RouteKey =
   | 'vaerdier'
   | 'ommig'
   | 'praktisk'
-  | 'galleri'
-  | 'kontakt';
+  | 'galleri';
 
 export const routes: Record<RouteKey, RouteDef> = {
   forside: { path: '/', longLabel: 'Forside', title: 'Forside' },
@@ -53,7 +52,6 @@ export const routes: Record<RouteKey, RouteDef> = {
     longLabel: 'Galleri',
     title: 'Galleri',
   },
-  kontakt: { path: '/kontakt', longLabel: 'Kontakt', title: 'Kontakt' },
 };
 
 /** Pages that get a link in the desktop header. */

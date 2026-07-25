@@ -1,10 +1,10 @@
 import { useId, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { faqs } from '../content/faqs';
 import { practicalNotes, practicalPanels } from '../content/practical';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { gridMin } from '../lib/css';
+import { scrollToContact } from '../lib/scrollToContact';
 import { routes } from '../routes';
 
 import './Praktisk.css';
@@ -90,9 +90,9 @@ export default function Praktisk() {
           })}
 
           <div className="faq__outro">
-            <Link to={routes.kontakt.path} className="btn btn-primary">
+            <a href="#kontakt" className="btn btn-primary" onClick={scrollToContact}>
               Spørg om noget andet
-            </Link>
+            </a>
           </div>
         </div>
       </section>

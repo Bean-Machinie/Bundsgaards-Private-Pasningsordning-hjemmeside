@@ -12,7 +12,8 @@ export interface HeroSlide {
   highlight: string;
   subtext: string;
   ctaLabel: string;
-  ctaTo: RouteKey;
+  /** A route key to link to, or 'contact' to scroll to the footer instead. */
+  ctaTo: RouteKey | 'contact';
 }
 
 /** Add a slide by adding an entry — dots, autoplay and looping all follow. */
@@ -25,8 +26,8 @@ export const heroSlides: HeroSlide[] = [
     highlight: 'lille',
     subtext:
       'Fire børn, ét hjem, og god tid til hver enkelt — hver dag, året rundt.',
-    ctaLabel: 'Book et besøg',
-    ctaTo: 'kontakt',
+    ctaLabel: 'Kontakt',
+    ctaTo: 'contact',
   },
   {
     image: stock.explorers,

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import { site } from '../content/site';
+import { scrollToContact } from '../lib/scrollToContact';
 import { mobileNav, primaryNav, routes } from '../routes';
 import { CloseIcon, MenuIcon } from './Icons';
 import titleImage from '../assets/images/title-images/title-image-lockup-green.png';
@@ -157,10 +158,17 @@ export default function Header() {
                 </NavLink>
               </li>
             ))}
+            {/* Kontakt is a peer of the other items, not a CTA: it scrolls to
+                the footer (the contact section) rather than routing anywhere. */}
+            <li
+              className="site-nav__item"
+              onMouseEnter={(event) => positionAt(event.currentTarget, false)}
+            >
+              <a href="#kontakt" className="site-nav__link" onClick={scrollToContact}>
+                Kontakt
+              </a>
+            </li>
           </ul>
-          <Link to={routes.kontakt.path} className="btn btn-primary site-nav__cta">
-            Book et besøg
-          </Link>
         </nav>
 
         <button
@@ -197,12 +205,19 @@ export default function Header() {
               {routes[key].longLabel}
             </NavLink>
           ))}
-          <Link
-            to={routes.kontakt.path}
-            className="btn btn-primary btn-block site-menu__cta"
+          <a
+            href="#kontakt"
+            className="site-menu__link"
+            style={{
+              transitionDelay: menuOpen ? `${0.04 * mobileNav.length + 0.05}s` : '0s',
+            }}
+            onClick={(event) => {
+              scrollToContact(event);
+              setMenuOpen(false);
+            }}
           >
-            Book et besøg
-          </Link>
+            Kontakt
+          </a>
         </nav>
       </div>
     </header>

@@ -15,7 +15,7 @@ export default function Footer() {
   const mapEmbedUrl = `https://maps.google.com/maps?q=${mapQuery}&t=k&z=17&output=embed`;
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" id="kontakt">
       <div className="shell site-footer__inner">
         {/* The wordmark floats inside a fixed-height slot, so resizing or
             shifting it never nudges the columns below — only the image moves. */}

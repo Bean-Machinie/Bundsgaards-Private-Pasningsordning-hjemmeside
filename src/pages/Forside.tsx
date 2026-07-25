@@ -9,6 +9,7 @@ import { site } from '../content/site';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { gridMin } from '../lib/css';
+import { scrollToContact } from '../lib/scrollToContact';
 import { routes } from '../routes';
 
 import './Forside.css';
@@ -203,9 +204,9 @@ export default function Forside() {
             stemningen — I er velkomne til at tage jeres barn med.
           </p>
           <div className="row cta__actions">
-            <Link to={routes.kontakt.path} className="btn btn-primary btn--lg">
-              Book et besøg
-            </Link>
+            <a href="#kontakt" className="btn btn-primary btn--lg" onClick={scrollToContact}>
+              Kontakt
+            </a>
             <a href={`tel:${site.phoneHref}`} className="btn btn-secondary btn--lg">
               Ring {site.phone}
             </a>
