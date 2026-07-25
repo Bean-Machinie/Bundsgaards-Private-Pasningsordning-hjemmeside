@@ -1,58 +1,140 @@
+/* The footer is the site's grounding dark band, done in the brand's forest
+   green rather than flat ink so it reads as part of the same warm world. The
+   green wordmark can't sit on green, so the lead lives on a warm surface panel
+   where it reads crisply; the details sit on the green in cream. */
 .site-footer {
   margin-top: auto;
-  background: var(--color-ink);
+  background: var(--color-primary);
   color: var(--color-on-dark);
 }
 
-/* Oversized ghost wordmark across the top of the footer. */
+.site-footer__inner {
+  display: grid;
+  gap: clamp(36px, 5vw, 64px);
+  padding-block: clamp(40px, 5vw, 72px) clamp(32px, 4vw, 52px);
+}
+
+/* — lead: warm panel with wordmark + CTA ——————————————————————————— */
+
+.site-footer__lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding: clamp(24px, 3.5vw, 44px);
+  background: var(--color-surface);
+  /* A big block, so the largest near-square radius plus its padding step, to
+     keep the corner concentric with the content inside. */
+  border-radius: calc(var(--radius-xl) + var(--space-2));
+  color: var(--color-ink);
+}
+
+.site-footer__lead-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  min-width: min(280px, 100%);
+}
 .site-footer__wordmark {
-  padding-block: var(--space-12) var(--space-10);
-  border-bottom: 1px solid var(--color-on-dark-4);
+  display: block;
+  height: clamp(52px, 6vw, 76px);
+  width: auto;
+  /* A logo, not a saveable/selectable asset — same guards as the header. */
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
 }
-.site-footer__wordmark p {
+.site-footer__pitch {
+  max-width: 42ch;
   margin: 0;
-  font-family: var(--font-display);
-  font-weight: var(--font-display-weight);
-  font-size: clamp(2.5rem, 8vw, 6rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--color-on-dark-4);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
 }
+
+.site-footer__lead-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+.site-footer__status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+.site-footer__status-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: var(--radius-full);
+  background: var(--color-secondary);
+}
+.site-footer__status.is-waitlist .site-footer__status-dot {
+  background: var(--color-accent);
+}
+.site-footer__status-note {
+  flex-basis: 100%;
+  font-weight: 400;
+  font-size: 12.5px;
+  color: var(--color-ink-3);
+}
+.site-footer__cta {
+  align-self: stretch;
+  justify-content: center;
+}
+
+/* — details columns on the green band ——————————————————————————————— */
 
 .site-footer__cols {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: clamp(28px, 4vw, 56px);
-  padding-block: var(--space-12);
-}
-
-.site-footer__label {
-  display: block;
-  margin-bottom: var(--space-5);
-  font-size: var(--label-size);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  color: var(--color-on-dark-3);
-}
-
-.site-footer__blurb {
-  max-width: 30ch;
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.75;
-  color: var(--color-on-dark-2);
+  padding-inline: var(--space-2);
 }
 
 .site-footer__col {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-on-dark-2);
 }
 
+.site-footer__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--color-on-dark-3);
+}
+
+.site-footer__strong {
+  color: var(--color-on-dark);
+  font-weight: 500;
+}
+.site-footer__muted {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--color-on-dark-3);
+}
+.site-footer__hours {
+  font-family: var(--font-display);
+  font-weight: var(--font-display-weight);
+  font-size: 22px;
+  line-height: 1.1;
+  color: var(--color-on-dark);
+}
+
 .site-footer__link {
-  font-size: 13px;
+  width: fit-content;
   color: var(--color-on-dark-2);
   text-decoration: none;
   transition: color 0.2s ease;
@@ -61,42 +143,21 @@
   color: var(--color-on-dark);
 }
 
-.site-footer__hours {
-  margin: 0 0 var(--space-1);
-  font-size: 13px;
-  color: var(--color-on-dark-2);
-}
-.site-footer__hours-value {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: var(--font-display-weight);
-  font-size: 20px;
-  color: var(--color-on-dark);
-}
-.site-footer__availability {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  margin: var(--space-5) 0 0;
-  font-size: 12px;
-  color: var(--color-on-dark-2);
-}
-.site-footer__dot {
-  width: 6px;
-  height: 6px;
-  flex: none;
-  border-radius: var(--radius-full);
-  background: var(--color-secondary);
-}
-.site-footer__dot--full {
-  background: var(--color-accent);
-}
+/* — legal strip ————————————————————————————————————————————————————— */
 
 .site-footer__legal {
   border-top: 1px solid var(--color-on-dark-4);
 }
 .site-footer__legal-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
   padding-block: var(--space-5);
-  font-size: 10.5px;
+  font-size: 11.5px;
   color: var(--color-on-dark-3);
+}
+.site-footer__legal-by {
+  color: var(--color-on-dark-4);
 }
