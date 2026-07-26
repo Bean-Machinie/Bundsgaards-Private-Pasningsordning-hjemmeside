@@ -92,16 +92,19 @@
      page's display type so it survives the wax texture behind it. */
   font-weight: 700;
   text-transform: uppercase;
-  /* Debossed, lit from above like the rest of the page: glyphs darker than
-     the wax face, a warm sheen glinting off the lower lip of the carve
-     (kept near-crisp — it's what lifts the text off the mottled wax) and
-     a deep shadow tucked under the upper lip. Colours are hand-picked
-     dark/light neighbours of the stamp's terracotta tint (#8f4018), not
-     theme tokens — they must track the wax, not the page. */
+  /* Debossed, lit from above like the rest of the page: glyphs darker
+     than the wax face, and the carve rendered in two layers per lip —
+     a crisp catch of light right on the lower lip (says "pressed") over
+     a soft warm bloom spreading below it (says "polished wax"), mirrored
+     above by a tight dark tuck and a wider soft depth-shadow. Colours
+     are hand-picked dark/light neighbours of the stamp's terracotta tint
+     (#8f4018), not theme tokens — they must track the wax, not the page. */
   color: rgb(48 14 2);
   text-shadow:
-    0 1.5px 1px rgb(255 205 168 / 0.38),
-    0 -1px 1px rgb(28 7 0 / 0.55);
+    0 1px 0 rgb(255 214 178 / 0.5),
+    0 2.5px 3px rgb(255 190 150 / 0.3),
+    0 -1px 1px rgb(28 7 0 / 0.6),
+    0 -2px 4px rgb(40 12 0 / 0.3);
 }
 
 .seal-stamp__line {
