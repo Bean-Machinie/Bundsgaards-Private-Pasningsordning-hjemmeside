@@ -57,7 +57,7 @@ export default function Forside() {
           ))}
         </div>
 
-        <p className="welcome__note">- og vi har én ledig plads til august</p>
+        <p className="welcome__note">— og vi har én ledig plads til august</p>
       </section>
 
       {/* — values teaser ——————————————————————————————————————— */}
