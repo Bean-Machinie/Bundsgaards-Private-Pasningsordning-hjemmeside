@@ -14,6 +14,8 @@ export interface HeroSlide {
   ctaLabel: string;
   /** A route key to link to, or 'contact' to scroll to the footer instead. */
   ctaTo: RouteKey | 'contact';
+  /** Optional in-page anchor on the target route (without the '#'). */
+  ctaAnchor?: string;
 }
 
 /** Add a slide by adding an entry — dots, autoplay and looping all follow. */
@@ -65,4 +67,5 @@ export const heroSlides: HeroSlide[] = [
 ];
 
 /** Paths resolved once, so the component stays declarative. */
-export const heroCtaPath = (key: RouteKey): string => routes[key].path;
+export const heroCtaPath = (key: RouteKey, anchor?: string): string =>
+  anchor ? `${routes[key].path}#${anchor}` : routes[key].path;

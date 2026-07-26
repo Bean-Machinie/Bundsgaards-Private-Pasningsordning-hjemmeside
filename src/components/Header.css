@@ -148,6 +148,149 @@
   transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* — dropdown menu ————————————————————————————————————————————— */
+
+.site-nav__item--menu {
+  position: relative;
+}
+
+/* The trigger is a real <button> wearing the nav-link look. Only
+   font-family is reset — the shorthand would clobber the link rule's size. */
+.site-nav__trigger {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Not an icon: a 7×7 empty box with two borders forming a "v" via rotation.
+   currentColor makes it track the button's text colour automatically. The
+   open state inverts it, flipping the margin to keep it optically centred. */
+.site-nav__chevron {
+  width: 7px;
+  height: 7px;
+  margin-left: var(--space-2);
+  margin-top: -3px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.25s ease, margin-top 0.25s ease;
+}
+.site-nav__chevron--open {
+  transform: rotate(225deg);
+  margin-top: 3px;
+}
+
+/* The wrapper is centred on its trigger and hangs from the bottom of the
+   visual button — the 44px highlight pill (50% + 22px), plus a 10px gap —
+   not from the bottom of the bar. */
+.site-nav__menu {
+  position: absolute;
+  top: calc(50% + 32px);
+  left: 50%;
+  z-index: 20;
+  transform: translateX(-50%);
+}
+
+/* The panel proper: cream, hairline-bordered, floating — one of the few
+   things in this design that genuinely earns a shadow. Radius follows the
+   concentricity rule: entries are --radius-md under --space-1 padding. */
+.site-nav__menu-panel {
+  position: relative;
+  min-width: 180px;
+  padding: var(--space-1);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-strong);
+  border-radius: calc(var(--radius-md) + var(--space-1));
+  box-shadow: var(--shadow-lg);
+  /* The origin sits at the pointer tab, so the pop reads as the panel
+     bursting out of the bar rather than growing from its own middle. */
+  transform-origin: 50% -10px;
+  animation: menu-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* A 10×10 square rotated 45° with only its top and left borders drawn: the
+   two visible edges continue the panel's outline into a speech-bubble tail. */
+.site-nav__menu-panel::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border-strong);
+  border-left: 1px solid var(--color-border-strong);
+  transform: rotate(45deg);
+}
+@keyframes menu-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.site-nav__menu-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--color-ink-2);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+/* Same wash value as the nav highlight, so both hover affordances read as
+   one system. */
+.site-nav__menu-link:hover {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-ink);
+}
+/* A fixed 22×22 icon slot: quiet at rest, waking slightly on hover with a
+   1px nudge. The fixed box means icons of any size stay aligned without
+   shifting text or row height. currentColor keeps it on the row's colour. */
+.site-nav__menu-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  opacity: 0.68;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.site-nav__menu-link:hover .site-nav__menu-icon {
+  opacity: 0.9;
+  transform: translateX(1px);
+}
+/* The active marker — accent on the row, never a fill; the icon follows
+   along via currentColor. */
+.site-nav__menu-link.active {
+  color: var(--color-accent);
+}
+.site-nav__menu-link.active .site-nav__menu-icon {
+  opacity: 1;
+}
+
+/* Kontakt — the header's one filled control. Terracotta, which the palette
+   otherwise rations to labels; here it marks the single call to action, so
+   it stands apart from the nav items and the wash never slides under it. */
+.site-nav .site-nav__cta {
+  padding: 10px var(--space-5);
+  background: var(--color-accent);
+  color: var(--color-on-dark);
+}
+.site-nav .site-nav__cta:hover {
+  background: color-mix(in srgb, var(--color-accent) 88%, var(--color-ink));
+  color: var(--color-on-dark);
+}
+
 /* — hamburger / close toggle —————————————————————————————————— */
 
 .menu-toggle {
@@ -240,6 +383,28 @@
   color: var(--color-accent);
 }
 
+/* A menu group in the drawer: a non-clickable label in the site's small
+   uppercase style, with its pages indented beneath it. */
+.site-menu__group {
+  margin-bottom: calc(-1 * var(--space-3));
+  font-size: var(--label-size);
+  font-weight: 600;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.site-menu.is-open .site-menu__group {
+  opacity: 1;
+  transform: none;
+}
+.site-menu__link--sub {
+  padding-left: var(--space-5);
+  font-size: 19px;
+}
+
 /* The desktop nav needs room for the links; below that the drawer takes over. */
 @media (max-width: 1080px) {
   .site-nav {
@@ -259,8 +424,13 @@
   .site-nav__highlight,
   .site-nav__highlight[data-settling='true'],
   .brand__logo,
+  .site-nav__chevron,
   .site-menu__panel,
-  .site-menu__link {
+  .site-menu__link,
+  .site-menu__group {
     transition-duration: 0.01ms !important;
+  }
+  .site-nav__menu-panel {
+    animation-duration: 0.01ms !important;
   }
 }

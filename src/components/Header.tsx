@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import { site } from '../content/site';
 import { scrollToContact } from '../lib/scrollToContact';
-import { mobileNav, primaryNav, routes } from '../routes';
+import { mobileNav, primaryNav, routes, type NavMenuEntry } from '../routes';
 import { CloseIcon, MenuIcon } from './Icons';
 import titleImage from '../assets/images/title-images/title-image-lockup-green.png';
 
@@ -17,6 +17,55 @@ interface HighlightState {
 
 const HIDDEN_HIGHLIGHT: HighlightState = { x: 0, width: 0, visible: false };
 
+/**
+ * Closing a dropdown on pointerdown means the panel is gone before the click
+ * completes — so the click would land on whatever is now under the cursor and
+ * activate it. This registers a one-shot capture-phase listener that swallows
+ * that single stray click; the timeout is a safety valve in case no click ever
+ * arrives (drag off-window, right-click).
+ */
+function swallowNextClick() {
+  const cleanup = () => {
+    document.removeEventListener('click', handler, true);
+    window.clearTimeout(timer);
+  };
+  const handler = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    cleanup();
+  };
+  document.addEventListener('click', handler, true);
+  const timer = window.setTimeout(cleanup, 500);
+}
+
+/** The drawer flattens nav menus into a group label + indented page links. */
+type DrawerEntry =
+  | { type: 'group'; key: string; label: string }
+  | { type: 'page'; key: string; label: string; to: string; indent: boolean };
+
+const drawerEntries: DrawerEntry[] = mobileNav.flatMap<DrawerEntry>((item) =>
+  item.kind === 'link'
+    ? [
+        {
+          type: 'page',
+          key: item.route,
+          label: routes[item.route].longLabel,
+          to: routes[item.route].path,
+          indent: false,
+        },
+      ]
+    : [
+        { type: 'group', key: `menu:${item.id}`, label: item.label },
+        ...item.items.map<DrawerEntry>(({ route }) => ({
+          type: 'page',
+          key: route,
+          label: routes[route].navLabel ?? routes[route].longLabel,
+          to: routes[route].path,
+          indent: true,
+        })),
+      ],
+);
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -24,13 +73,25 @@ export default function Header() {
   // `settling` picks the return easing — a springy overshoot when the wash
   // bounces back to the active item, versus a smooth slide on hover.
   const [settling, setSettling] = useState(false);
+  // One nullable id rather than a boolean per dropdown: opening one menu
+  // structurally closes any other, because there is only one slot.
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  // Ref registries keyed by menu id — for measuring/refocusing the trigger
+  // and for focusing into the open panel. Callback refs delete on unmount so
+  // the maps never hold stale nodes.
+  const triggerRefs = useRef(new Map<string, HTMLButtonElement>());
+  const menuRefs = useRef(new Map<string, HTMLDivElement>());
+  // A transient one-shot signal, not state: set by keyboard-opens, consumed by
+  // the focus effect after the panel exists, and it must not cause a render.
+  const focusFirstItemRef = useRef(false);
   const { pathname } = useLocation();
   const menuId = useId();
 
-  // Navigating from inside the drawer should close it.
+  // Navigating from inside the drawer or a dropdown should close it.
   useEffect(() => {
     setMenuOpen(false);
+    setOpenMenuId(null);
   }, [pathname]);
 
   // A shadow appears once the page has scrolled, lifting the panel off the
@@ -58,6 +119,44 @@ export default function Header() {
     };
   }, [menuOpen]);
 
+  // Pressing anywhere outside the nav dismisses an open dropdown. Attached
+  // only while one is open, and on pointerdown rather than click so the panel
+  // is gone before the press completes — with the stray click swallowed.
+  useEffect(() => {
+    if (!openMenuId) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (listRef.current && !listRef.current.contains(event.target as Node)) {
+        swallowNextClick();
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, [openMenuId]);
+
+  // Keyboard opens want focus inside the panel — but the panel doesn't exist
+  // until after the open re-render, so the keydown handler only sets a flag
+  // and this effect does the focusing. Mouse opens leave the flag unset.
+  useEffect(() => {
+    if (!openMenuId || !focusFirstItemRef.current) return;
+    focusFirstItemRef.current = false;
+    menuRefs.current
+      .get(openMenuId)
+      ?.querySelector<HTMLElement>('[role="menuitem"]')
+      ?.focus();
+  }, [openMenuId]);
+
+  const toggleMenu = useCallback((id: string) => {
+    setOpenMenuId((current) => (current === id ? null : id));
+  }, []);
+
+  /** The dropdown trigger reads as active when any of its pages is current. */
+  const isMenuActive = useCallback(
+    (items: NavMenuEntry[]) => items.some(({ route }) => pathname === routes[route].path),
+    [pathname],
+  );
+
   // The sliding highlight is one element measured against the live DOM, so it
   // needs no knowledge of the items' labels, widths or count — add a nav item
   // and it just works. `scrollLeft` keeps it aligned if the list ever scrolls.
@@ -79,7 +178,8 @@ export default function Header() {
   // The highlight's home is the active route's item: it rests there, follows
   // the pointer to whatever item is hovered, and springs back here when the
   // pointer leaves. On a page with no nav item active (the front page) it just
-  // fades away.
+  // fades away. The dropdown trigger carries `.active` for its child routes,
+  // so the wash rests on it too.
   const settleToActive = useCallback(() => {
     const list = listRef.current;
     if (!list) return;
@@ -114,6 +214,44 @@ export default function Header() {
     };
   }, [settleToActive]);
 
+  const onTriggerKeyDown = (event: React.KeyboardEvent, id: string) => {
+    if (event.key === 'ArrowDown') {
+      // Stop the page scrolling; open and focus the first entry. Enter and
+      // Space need no handling — a real <button> turns them into click.
+      event.preventDefault();
+      focusFirstItemRef.current = true;
+      setOpenMenuId(id);
+    } else if (event.key === 'Escape' && openMenuId === id) {
+      setOpenMenuId(null);
+    }
+  };
+
+  const onPanelKeyDown = (event: React.KeyboardEvent, id: string) => {
+    if (event.key === 'Escape') {
+      // Return focus to the trigger — otherwise it falls to <body> when the
+      // focused entry unmounts. stopPropagation so no ancestor sees the same
+      // Escape twice.
+      event.stopPropagation();
+      setOpenMenuId(null);
+      triggerRefs.current.get(id)?.focus();
+      return;
+    }
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const panel = menuRefs.current.get(id);
+      if (!panel) return;
+      const items = Array.from(panel.querySelectorAll<HTMLElement>('[role="menuitem"]'));
+      if (items.length === 0) return;
+      const index = items.indexOf(document.activeElement as HTMLElement);
+      const delta = event.key === 'ArrowDown' ? 1 : -1;
+      const next =
+        index === -1
+          ? items[delta === 1 ? 0 : items.length - 1]
+          : items[(index + delta + items.length) % items.length];
+      next.focus();
+    }
+  };
+
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
       <div className="site-header__bar shell">
@@ -147,28 +285,101 @@ export default function Header() {
                 opacity: highlight.visible ? 1 : 0,
               }}
             />
-            {primaryNav.map((key) => (
-              <li
-                key={key}
-                className="site-nav__item"
-                onMouseEnter={(event) => positionAt(event.currentTarget, false)}
-              >
-                <NavLink to={routes[key].path} className="site-nav__link">
-                  {routes[key].navLabel}
-                </NavLink>
-              </li>
-            ))}
-            {/* Kontakt is a peer of the other items, not a CTA: it scrolls to
-                the footer (the contact section) rather than routing anywhere. */}
-            <li
-              className="site-nav__item"
-              onMouseEnter={(event) => positionAt(event.currentTarget, false)}
-            >
-              <a href="#kontakt" className="site-nav__link" onClick={scrollToContact}>
-                Kontakt
-              </a>
-            </li>
+            {primaryNav.map((item) =>
+              item.kind === 'link' ? (
+                <li
+                  key={item.route}
+                  className="site-nav__item"
+                  onMouseEnter={(event) => positionAt(event.currentTarget, false)}
+                >
+                  <NavLink to={routes[item.route].path} className="site-nav__link">
+                    {routes[item.route].navLabel}
+                  </NavLink>
+                </li>
+              ) : (
+                // Click-only: hovering slides the wash here like any item,
+                // but the menu opens on click and stays open until an
+                // outside press, Escape, a navigation or another toggle.
+                <li
+                  key={item.id}
+                  className="site-nav__item site-nav__item--menu"
+                  onMouseEnter={(event) => positionAt(event.currentTarget, false)}
+                >
+                  <button
+                    type="button"
+                    ref={(el) => {
+                      if (el) triggerRefs.current.set(item.id, el);
+                      else triggerRefs.current.delete(item.id);
+                    }}
+                    className={`site-nav__link site-nav__trigger${
+                      isMenuActive(item.items) ? ' active' : ''
+                    }`}
+                    aria-haspopup="menu"
+                    aria-expanded={openMenuId === item.id}
+                    onClick={(event) => {
+                      // detail 0 means the click came from Enter/Space — a
+                      // keyboard open should land focus inside the panel.
+                      if (event.detail === 0 && openMenuId !== item.id) {
+                        focusFirstItemRef.current = true;
+                      }
+                      toggleMenu(item.id);
+                    }}
+                    onKeyDown={(event) => onTriggerKeyDown(event, item.id)}
+                  >
+                    {item.label}
+                    <span
+                      className={`site-nav__chevron${
+                        openMenuId === item.id ? ' site-nav__chevron--open' : ''
+                      }`}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  {/* Conditionally rendered, not hidden: the pop animation
+                      replays on every open, and a closed menu is unreachable
+                      by tab or screen reader for free. */}
+                  {openMenuId === item.id && (
+                    <div
+                      className="site-nav__menu"
+                      onKeyDown={(event) => onPanelKeyDown(event, item.id)}
+                    >
+                      <div
+                        className="site-nav__menu-panel"
+                        role="menu"
+                        aria-label={item.label}
+                        ref={(el) => {
+                          if (el) menuRefs.current.set(item.id, el);
+                          else menuRefs.current.delete(item.id);
+                        }}
+                      >
+                        {item.items.map(({ route, Icon }) => (
+                          <NavLink
+                            key={route}
+                            to={routes[route].path}
+                            role="menuitem"
+                            className="site-nav__menu-link"
+                            onClick={() => setOpenMenuId(null)}
+                          >
+                            {Icon && (
+                              <span className="site-nav__menu-icon">
+                                <Icon size={17} />
+                              </span>
+                            )}
+                            {routes[route].navLabel}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </li>
+              ),
+            )}
           </ul>
+          {/* Kontakt is the header's one CTA: a filled button outside the
+              sliding wash, scrolling to the footer (the contact section)
+              rather than routing anywhere. */}
+          <a href="#kontakt" className="btn site-nav__cta" onClick={scrollToContact}>
+            Kontakt
+          </a>
         </nav>
 
         <button
@@ -194,22 +405,34 @@ export default function Header() {
           onClick={() => setMenuOpen(false)}
         />
         <nav className="site-menu__panel" aria-label="Menu">
-          {mobileNav.map((key, index) => (
-            <NavLink
-              key={key}
-              to={routes[key].path}
-              className="site-menu__link"
-              style={{ transitionDelay: menuOpen ? `${0.04 * index + 0.05}s` : '0s' }}
-              end
-            >
-              {routes[key].longLabel}
-            </NavLink>
-          ))}
+          {drawerEntries.map((entry, index) =>
+            entry.type === 'group' ? (
+              <span
+                key={entry.key}
+                className="site-menu__group"
+                style={{ transitionDelay: menuOpen ? `${0.04 * index + 0.05}s` : '0s' }}
+              >
+                {entry.label}
+              </span>
+            ) : (
+              <NavLink
+                key={entry.key}
+                to={entry.to}
+                className={`site-menu__link${entry.indent ? ' site-menu__link--sub' : ''}`}
+                style={{ transitionDelay: menuOpen ? `${0.04 * index + 0.05}s` : '0s' }}
+                end
+              >
+                {entry.label}
+              </NavLink>
+            ),
+          )}
           <a
             href="#kontakt"
             className="site-menu__link"
             style={{
-              transitionDelay: menuOpen ? `${0.04 * mobileNav.length + 0.05}s` : '0s',
+              transitionDelay: menuOpen
+                ? `${0.04 * drawerEntries.length + 0.05}s`
+                : '0s',
             }}
             onClick={(event) => {
               scrollToContact(event);

@@ -138,7 +138,7 @@ export default function HeroCarousel() {
                 </a>
               ) : (
                 <Link
-                  to={heroCtaPath(slide.ctaTo)}
+                  to={heroCtaPath(slide.ctaTo, slide.ctaAnchor)}
                   className="btn btn-primary btn--lg hero-carousel__cta"
                 >
                   {slide.ctaLabel}
