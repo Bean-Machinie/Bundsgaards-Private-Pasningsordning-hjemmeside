@@ -25,38 +25,6 @@
   color: var(--color-ink-3);
 }
 
-/* — the three pillars ——————————————————————————————————————— */
-
-.intro {
-  margin-bottom: clamp(32px, 4vw, 48px);
-}
-.intro__body {
-  margin: 0;
-}
-
-.pillar {
-  gap: var(--space-3);
-}
-.pillar__icon {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin-bottom: var(--space-2);
-  border-radius: var(--radius-md);
-}
-.pillar__icon--accent {
-  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-  color: var(--color-accent);
-}
-.pillar__icon--sage {
-  background: var(--color-secondary);
-  color: var(--color-primary);
-}
-.pillar__title {
-  font-size: 20px;
-}
-
 /* — section headers with a trailing action ————————————————— */
 
 .section-head {
@@ -90,24 +58,4 @@
 .daycard__title {
   font-family: var(--font-display);
   font-size: 18px;
-}
-
-/* — closing call to action ——————————————————————————————————— */
-
-.cta {
-  text-align: center;
-}
-.cta__tag {
-  margin-bottom: var(--space-5);
-}
-.cta__title {
-  margin: 0 0 var(--space-4);
-  font-size: clamp(2rem, 3.6vw, 3rem);
-}
-.cta__body {
-  max-width: 46ch;
-  margin: 0 auto var(--space-8);
-}
-.cta__actions {
-  justify-content: center;
 }

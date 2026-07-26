@@ -2,14 +2,12 @@ import { Link } from 'react-router-dom';
 
 import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
-import { ClockIcon, HouseIcon, SproutIcon } from '../components/Icons';
 import { photos } from '../content/photos';
 import { headlineFacts, quickFacts } from '../content/practical';
 import { site } from '../content/site';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { gridMin } from '../lib/css';
-import { scrollToContact } from '../lib/scrollToContact';
 import { routes } from '../routes';
 
 import './Forside.css';
@@ -20,27 +18,6 @@ const dayTeasers = [
   { photo: photos.day2, time: '09.00', title: 'Ud af huset' },
   { photo: photos.day3, time: '11.00', title: 'Frokost' },
   { photo: photos.day4, time: '11.45', title: 'Lur i haven' },
-];
-
-const pillars = [
-  {
-    Icon: HouseIcon,
-    tone: 'accent' as const,
-    title: 'Den samme voksne',
-    body: 'Dit barn bliver taget imod af mig hver morgen. Ingen vikarer, ingen skiftende stuer — bare en relation, der får lov at vokse i ro.',
-  },
-  {
-    Icon: SproutIcon,
-    tone: 'sage' as const,
-    title: 'Ud i det fri hver dag',
-    body: 'Have, mark og skovsti ligger lige uden for døren. Vi går ture, samler ting, mærker vejret og kommer hjem med beskidte knæ.',
-  },
-  {
-    Icon: ClockIcon,
-    tone: 'accent' as const,
-    title: 'Rutiner der kan mærkes',
-    body: 'Dagen ligner sig selv. Måltider, lur og leg falder på samme tid, så de mindste ved, hvad der kommer nu — og hvad der kommer bagefter.',
-  },
 ];
 
 export default function Forside() {
@@ -60,34 +37,6 @@ export default function Forside() {
               <div className="factstrip__label">{fact.label}</div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* — what a privatpasningsordning is ————————————————————— */}
-      <section className="band band--surface">
-        <div className="shell">
-          <div className="measure--wide intro">
-            <span className="kicker">Hvad er en privatpasningsordning</span>
-            <h2 className="title-section">Et hjem frem for en institution</h2>
-            <p className="prose prose--large intro__body">
-              Jeg er godkendt af {site.municipality} til at passe børn i mit eget hjem.
-              Kommunen giver tilskud til pladsen, og du vælger selv, hvem der passer dit
-              barn. Det betyder færre børn, færre voksne at forholde sig til, og en
-              hverdag der kan følge barnets tempo.
-            </p>
-          </div>
-
-          <div className="grid" style={gridMin('240px')}>
-            {pillars.map(({ Icon, tone, title, body }) => (
-              <article key={title} className="card panel--bg pillar">
-                <span className={`pillar__icon pillar__icon--${tone}`}>
-                  <Icon />
-                </span>
-                <h3 className="card-title pillar__title">{title}</h3>
-                <p className="card-body pillar__body">{body}</p>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -190,26 +139,6 @@ export default function Forside() {
                 <div className="deflist__value">{fact.value}</div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* — closing call to action ——————————————————————————————— */}
-      <section className="band band--secondary">
-        <div className="shell shell--narrow cta">
-          <span className="tag tag-accent cta__tag">{site.availability}</span>
-          <h2 className="cta__title">Kom forbi og se stedet</h2>
-          <p className="prose prose--large cta__body">
-            Det bedste er at mødes. Kom en formiddag, hvor børnene er her, så I kan mærke
-            stemningen — I er velkomne til at tage jeres barn med.
-          </p>
-          <div className="row cta__actions">
-            <a href="#kontakt" className="btn btn-primary btn--lg" onClick={scrollToContact}>
-              Kontakt
-            </a>
-            <a href={`tel:${site.phoneHref}`} className="btn btn-secondary btn--lg">
-              Ring {site.phone}
-            </a>
           </div>
         </div>
       </section>
