@@ -147,12 +147,13 @@
 .daycard--offset {
   padding-top: clamp(20px, 3vw, 44px);
 }
-/* The photo becomes a medallion: fully round, with a faint ring floating a
-   few pixels outside it. */
+/* The photo becomes a medallion: fully round, sitting on a solid cream disc
+   that reaches the same radius the old hairline ring did. Positioned so the
+   disc is guaranteed to paint over the dotted thread. */
 .daycard .daycard__circle {
+  position: relative;
   border-radius: var(--radius-full);
-  outline: 1px solid var(--color-on-dark-3);
-  outline-offset: 5px;
+  box-shadow: 0 0 0 6px var(--color-on-dark);
 }
 .daycard__time {
   margin: var(--space-3) 0 var(--space-1);
