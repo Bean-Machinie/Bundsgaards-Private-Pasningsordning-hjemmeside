@@ -1,10 +1,10 @@
 /* — welcome intro ——————————————————————————————————————————— */
 
 /* A centred address to the visitor: one handwritten line where a kicker
-   would sit, then a single paragraph — no big title, no columns. */
+   would sit, a single paragraph, then the dot-separated fact strip — no big
+   title, no columns. Sits closer to the hero than a standard section. */
 .welcome {
-  max-width: 680px;
-  margin-inline: auto;
+  padding-top: clamp(24px, 3vw, 44px);
   text-align: center;
 }
 /* The script line is a warm aside, not a heading in the type scale — Caveat
@@ -14,7 +14,7 @@
   margin: 0 0 var(--space-4);
   font-family: var(--font-script);
   font-weight: 500;
-  font-size: clamp(26px, 2.8vw, 36px);
+  font-size: clamp(21px, 2.2vw, 27px);
   line-height: 1.25;
   color: var(--color-accent);
 }
@@ -25,6 +25,49 @@
   font-size: clamp(15px, 1.5vw, 18px);
   line-height: 1.75;
   color: var(--color-ink-2);
+}
+
+/* The fact strip: display-serif values over small muted labels, the cells
+   separated by tiny amber dots rather than hairlines. */
+.welcome__facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 5vw, 72px);
+  margin-top: clamp(36px, 5vw, 60px);
+}
+.welcome__fact-value {
+  margin-bottom: var(--space-1);
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.2vw, 28px);
+}
+.welcome__fact-label {
+  font-size: 13px;
+  color: var(--color-ink-3);
+}
+/* Terracotta sparkles between the cells — a four-point twinkle drawn as an
+   inline SVG (currentColor), tilted a touch, with every second one leaning
+   the other way and a little smaller so the row feels hand-placed. */
+.welcome__dot {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--color-accent);
+  transform: rotate(9deg);
+}
+.welcome__dot:nth-of-type(2n) {
+  transform: rotate(-14deg) scale(0.82);
+}
+
+/* The handwritten afterthought under the strip — same voice as the opening
+   script line, one size down. */
+.welcome__note {
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  font-family: var(--font-script);
+  font-weight: 500;
+  font-size: clamp(19px, 1.9vw, 24px);
+  color: var(--color-accent);
 }
 
 /* — section headers with a trailing action ————————————————— */

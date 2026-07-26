@@ -41,8 +41,8 @@ export const site: SiteInfo = {
   email: 'dorte@bundsgaard.dk',
   bestReachedAt: 'Efter kl. 16, når børnene er hentet',
   municipality: 'Egedal Kommune',
-  openingHours: 'Man–fre 6.00–15.30',
-  ageRange: '0–3 år',
+  openingHours: 'Man-fre 6.00-15.30',
+  ageRange: '0-3 år',
   childCount: 4,
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=Bundsvej+16+3660+Stenl%C3%B8se',

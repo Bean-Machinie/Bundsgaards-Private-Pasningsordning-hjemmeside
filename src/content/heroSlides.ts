@@ -23,7 +23,7 @@ export const heroSlides: HeroSlide[] = [
   {
     image: stock.goldenRun,
     alt: 'To børn løber gennem en solbeskinnet skov',
-    kicker: 'Privatpasning i Stenløse · 0–3 år',
+    kicker: 'Privatpasning i Stenløse · 0-3 år',
     headline: 'Et lille sted at være ',
     highlight: 'lille',
     subtext:

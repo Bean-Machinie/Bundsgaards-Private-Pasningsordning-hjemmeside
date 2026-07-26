@@ -28,7 +28,7 @@ export const practicalPanels: SpecPanel[] = [
     rows: [
       { label: 'Uge 29 og 30', value: 'Sommerferie' },
       { label: 'Uge 42', value: 'Efterårsferie' },
-      { label: '23. dec – 1. jan', value: 'Jul og nytår' },
+      { label: '23. dec - 1. jan', value: 'Jul og nytår' },
       { label: '5 dage', value: 'Efter aftale' },
     ],
     // TODO: erstat med de faktiske datoer for året.
@@ -39,7 +39,7 @@ export const practicalPanels: SpecPanel[] = [
     intro:
       'Egedal Kommune giver tilskud til en privat pasningsordning. Tilskuddet søges hos kommunen, og I betaler forskellen direkte til mig.',
     rows: [
-      { label: 'Fuldtidsplads, 0–3 år', value: 'Oplyses ved kontakt', muted: true },
+      { label: 'Fuldtidsplads, 0-3 år', value: 'Oplyses ved kontakt', muted: true },
       { label: 'Mad og bleer', value: 'Inkluderet' },
     ],
   },
@@ -74,16 +74,24 @@ export interface Fact {
   label: string;
 }
 
+/** The dot-separated strip of headline facts under the front-page welcome. */
+export const headlineFacts: Fact[] = [
+  { value: '4 børn', label: 'fast lille gruppe' },
+  { value: '0-3 år', label: 'til start i børnehave' },
+  { value: '6.00-15.30', label: 'mandag til fredag' },
+  { value: 'Udenfor', label: 'hver dag, året rundt' },
+];
+
 export const quickFacts: Fact[] = [
-  { value: 'Man–fre 6.00–15.30', label: 'Åbningstider' },
-  { value: '0–3 år', label: 'Aldersgruppe' },
+  { value: 'Man-fre 6.00-15.30', label: 'Åbningstider' },
+  { value: '0-3 år', label: 'Aldersgruppe' },
   { value: 'Alle måltider er med', label: 'Mad' },
   { value: 'Efter tilskud — spørg mig', label: 'Pris' },
 ];
 
 /** Credentials shown on /om-mig. */
 export const credentials: Fact[] = [
-  { value: 'Uddannet pædagog', label: 'Med speciale i 0–3 år' },
+  { value: 'Uddannet pædagog', label: 'Med speciale i 0-3 år' },
   { value: 'Godkendt af kommunen', label: 'Egedal Kommune fører tilsyn' },
   { value: 'Førstehjælp', label: 'Opdateret kursus i børneførstehjælp' },
 ];

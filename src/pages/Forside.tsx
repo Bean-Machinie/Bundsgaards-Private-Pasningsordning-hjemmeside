@@ -1,9 +1,10 @@
+import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
 import { photos } from '../content/photos';
-import { quickFacts } from '../content/practical';
+import { headlineFacts, quickFacts } from '../content/practical';
 import { site } from '../content/site';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -29,13 +30,34 @@ export default function Forside() {
       <HeroCarousel />
 
       {/* — welcome intro ——————————————————————————————————————— */}
-      <section className="shell section">
-        <div className="welcome">
-          <h2 className="welcome__script">Privat Pasningsordning tæt på Ganløse</h2>
-          <p className="welcome__body">
-            Bundsgård er en hyggelig gård med stråtag, stor have og egne høns. Vi er ude hver dag og går ofte ture ned til hestene og fårene i området.
-          </p>
+      <section className="shell section welcome">
+        <h2 className="welcome__script">Privat Pasningsordning tæt på Ganløse</h2>
+        <p className="welcome__body">
+          Bundsgård er en hyggelig gård med stråtag, stor have og egne høns. Vi er
+          ude hver dag og går ofte ture ned til hestene og fårene i området.
+        </p>
+
+        <div className="welcome__facts">
+          {headlineFacts.map((fact, index) => (
+            <Fragment key={fact.label}>
+              {index > 0 && (
+                <svg className="welcome__dot" aria-hidden="true" viewBox="0 0 24 24">
+                  {/* Four-point twinkle: concave curves between the tips. */}
+                  <path
+                    d="M12 0c1.1 7.6 4.4 10.9 12 12-7.6 1.1-10.9 4.4-12 12-1.1-7.6-4.4-10.9-12-12C7.6 10.9 10.9 7.6 12 0Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              )}
+              <div className="welcome__fact">
+                <div className="welcome__fact-value">{fact.value}</div>
+                <div className="welcome__fact-label">{fact.label}</div>
+              </div>
+            </Fragment>
+          ))}
         </div>
+
+        <p className="welcome__note">- og vi har én ledig plads til august</p>
       </section>
 
       {/* — values teaser ——————————————————————————————————————— */}
