@@ -29,7 +29,7 @@ export default function Forside() {
       <HeroCarousel />
 
       {/* The wax seal straddles the hero/welcome boundary. */}
-      <SealStamp lines={['Ledige', 'pladser']} subline="August 2027" />
+      <SealStamp lines={['Ledige', 'pladser']} subline={['August', '2027']} />
 
       {/* — welcome intro ——————————————————————————————————————— */}
       <section className="shell section welcome">

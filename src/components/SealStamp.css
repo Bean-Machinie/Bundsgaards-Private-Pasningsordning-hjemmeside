@@ -100,7 +100,7 @@
      theme tokens — they must track the wax, not the page. */
   color: rgb(48 14 2);
   text-shadow:
-    0 2px 1px rgb(255 208 170 / 0.55),
+    0 1.5px 1px rgb(255 205 168 / 0.38),
     0 -1px 1px rgb(28 7 0 / 0.55);
 }
 
@@ -111,9 +111,14 @@
 }
 
 .seal-stamp__subline {
-  margin-top: 9px;
-  font-size: 23px;
+  font-size: 55px;
   line-height: 1.2;
   letter-spacing: 0.14em;
+}
+
+/* The breathing gap belongs between the main imprint and the date block,
+   not between the date's own lines when it spans several. */
+.seal-stamp__line + .seal-stamp__subline {
+  margin-top: 14px;
 }
 

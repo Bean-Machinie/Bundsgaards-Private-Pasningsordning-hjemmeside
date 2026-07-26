@@ -23,8 +23,10 @@ type SealStampProps = {
   /** Main imprint, one array entry per line. Any length — the whole block
    *  is auto-scaled so every line stays inside the seal's inner disc. */
   lines?: string[];
-  /** Smaller line under the main imprint (a date, typically). */
-  subline?: string;
+  /** Smaller text under the main imprint (a date, typically). An array
+   *  splits it over several lines — narrower lines let the circle-fit
+   *  scale the whole imprint up. */
+  subline?: string | string[];
 };
 
 /**
@@ -49,6 +51,7 @@ export default function SealStamp({
   lines = ['Ledige', 'pladser'],
   subline,
 }: SealStampProps) {
+  const sublines = subline == null || Array.isArray(subline) ? subline : [subline];
   const bodyRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const [scale, setScale] = useState(1);
@@ -88,7 +91,7 @@ export default function SealStamp({
     observer.observe(body);
     observer.observe(text);
     return () => observer.disconnect();
-  }, [lines.join('\n'), subline]);
+  }, [lines.join('\n'), sublines?.join('\n')]);
 
   return (
     <div className="seal-stamp">
@@ -111,7 +114,11 @@ export default function SealStamp({
               {line}
             </span>
           ))}
-          {subline && <span className="seal-stamp__subline">{subline}</span>}
+          {sublines?.map((line) => (
+            <span key={line} className="seal-stamp__subline">
+              {line}
+            </span>
+          ))}
         </p>
       </div>
     </div>
