@@ -58,6 +58,17 @@
   display: block;
   width: 100%;
   height: auto;
+  /* Headroom for the halo: the filter below only paints inside the img's
+     border box, so the 50px blur was slicing off in a straight line at
+     the image edges. Transparent padding grows that paint area by 80px
+     on every side (3×the blur's std-dev, enough for a full fade-out) and
+     the matching negative margin hands the space back to layout, so the
+     wax itself doesn't move or resize. content-box is load-bearing: with
+     the site's border-box reset the padding would shrink the image
+     instead. */
+  box-sizing: content-box;
+  padding: 80px;
+  margin: -80px;
   /* drop-shadow (unlike box-shadow) traces the PNG's alpha channel, so
      both layers follow the wax blob's actual outline — every bump and
      drip — not the image's rectangular box. First a zero-offset halo
