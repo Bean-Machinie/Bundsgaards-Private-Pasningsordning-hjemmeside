@@ -174,7 +174,7 @@
   /* svh, not vh: keyed to the browser-chrome-visible viewport so the hero
      doesn't jump when the URL bar collapses mid-scroll. */
   .hero-carousel {
-    height: min(520px, 74svh);
+    height: min(460px, 66svh);
   }
   .hero-carousel__slide {
     align-items: flex-end;
