@@ -116,6 +116,13 @@ body {
 .band--ink h3 {
   color: var(--color-on-dark);
 }
+/* The global selection tint is a faint green — invisible on the dark bands.
+   Invert it there, same trick as the footer: cream mark, green text. */
+.band--primary ::selection,
+.band--ink ::selection {
+  background: color-mix(in srgb, var(--color-on-dark) 85%, transparent);
+  color: var(--color-primary);
+}
 
 /* — type helpers ——————————————————————————————————————————————— */
 

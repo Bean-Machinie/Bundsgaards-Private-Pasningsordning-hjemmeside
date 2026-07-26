@@ -8,17 +8,16 @@ import { headlineFacts, quickFacts } from '../content/practical';
 import { site } from '../content/site';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import { gridMin } from '../lib/css';
 import { routes } from '../routes';
 
 import './Forside.css';
 
 /** The four moments from the day teased above the fold on the front page. */
 const dayTeasers = [
-  { photo: photos.day1, time: '07.30', title: 'Morgenmad sammen' },
-  { photo: photos.day2, time: '09.00', title: 'Ud af huset' },
-  { photo: photos.day3, time: '11.00', title: 'Frokost' },
-  { photo: photos.day4, time: '11.45', title: 'Lur i haven' },
+  { photo: photos.day1, time: '07.30', title: 'Ankomst og morgenro' },
+  { photo: photos.day2, time: '09.00', title: 'Ud i haven — regntøj klar' },
+  { photo: photos.day3, time: '11.00', title: 'Frokost ved det samme bord' },
+  { photo: photos.day4, time: '11.45', title: 'Middagslur' },
 ];
 
 export default function Forside() {
@@ -83,26 +82,46 @@ export default function Forside() {
       </section>
 
       {/* — a day in pictures ——————————————————————————————————— */}
-      <section className="band band--primary">
+      <section className="band band--primary dayband">
         <div className="shell">
-          <div className="section-head">
-            <div>
-              <span className="kicker">Hverdagen</span>
-              <h2 className="title-section section-head__title">En helt almindelig tirsdag</h2>
-            </div>
-            <Link to={routes.hverdagen.path} className="btn btn--on-dark">
-              Se hele dagen
-            </Link>
+          <div className="dayband__head">
+            <p className="dayband__script">en helt almindelig tirsdag</p>
+            <h2 className="title-section dayband__title">Sådan ser dagen ud</h2>
           </div>
 
-          <div className="grid" style={gridMin('200px')}>
+          <div className="dayband__row">
+            {/* The dotted thread: one long sine meander through all four
+                medallions — each circle centre sits on a zero-crossing, so the
+                line flows diagonally through the photos and arcs gracefully
+                above, below, above in the three gaps. */}
+            <svg
+              className="dayband__thread"
+              viewBox="0 0 1000 244"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M 125 122 C 215 42 285 42 375 122 C 465 202 535 202 625 122 C 715 42 785 42 875 122"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeDasharray="0.1 11"
+              />
+            </svg>
             {dayTeasers.map((entry, index) => (
               <div key={entry.time} className={index % 2 === 1 ? 'daycard daycard--offset' : 'daycard'}>
-                <ImageSlot photo={entry.photo} ratio="3 / 4" rounding="md" />
+                <ImageSlot photo={entry.photo} ratio="1 / 1" className="daycard__circle" />
                 <div className="daycard__time">{entry.time}</div>
                 <div className="daycard__title">{entry.title}</div>
               </div>
             ))}
+          </div>
+
+          <div className="dayband__cta">
+            <Link to={routes.hverdagen.path} className="btn dayband__btn">
+              Se hele dagen
+            </Link>
           </div>
         </div>
       </section>

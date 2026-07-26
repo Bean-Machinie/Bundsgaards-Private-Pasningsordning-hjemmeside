@@ -87,16 +87,122 @@
 
 /* — the day, in four pictures ——————————————————————————————— */
 
+/* The whole band runs tighter than a default .band — it is a teaser, not a
+   destination page. */
+.dayband {
+  padding-block: clamp(36px, 4.5vw, 64px);
+}
+/* A centred address like the welcome section, but on the dark band: the
+   handwritten line in warm amber above the big serif title. */
+.dayband__head {
+  margin-bottom: clamp(24px, 3.5vw, 44px);
+  text-align: center;
+}
+.dayband__script {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.25;
+  color: var(--color-highlight);
+}
+.dayband__title {
+  margin-bottom: 0;
+}
+
+/* The timeline: four circular photos on one row, every second one dropped a
+   step, joined by a dotted thread that runs behind them. */
+.dayband__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(20px, 4vw, 56px);
+  justify-items: center;
+}
+/* The thread stretches across the circle area only (diameter + offset), so
+   the wave's crests and dips land around the medallion centres. */
+.dayband__thread {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(min(20vw, 200px) + clamp(20px, 3vw, 44px));
+  color: var(--color-on-dark-3);
+  /* Decoration only — without this the overlay swallows every mouse press,
+     so nothing under it can be selected. */
+  pointer-events: none;
+}
+/* The medallions behave like fixtures, not saveable assets: no ghost-image
+   drag when a press starts on a photo. */
+.daycard .image-slot img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.daycard {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+}
 .daycard--offset {
-  padding-top: clamp(0px, 4vw, 44px);
+  padding-top: clamp(20px, 3vw, 44px);
+}
+/* The photo becomes a medallion: fully round, with a faint ring floating a
+   few pixels outside it. */
+.daycard .daycard__circle {
+  border-radius: var(--radius-full);
+  outline: 1px solid var(--color-on-dark-3);
+  outline-offset: 5px;
 }
 .daycard__time {
-  margin: var(--space-4) 0 var(--space-1);
-  font-size: 12px;
-  letter-spacing: var(--label-tracking);
-  color: var(--color-on-dark-2);
+  margin: var(--space-3) 0 var(--space-1);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(19px, 1.8vw, 24px);
+  color: var(--color-highlight);
 }
 .daycard__title {
-  font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 14px;
+  color: var(--color-on-dark-2);
+}
+
+.dayband__cta {
+  margin-top: clamp(24px, 3.5vw, 44px);
+  text-align: center;
+}
+/* Cream pill on the dark band, with the same symmetric grow-on-hover as the
+   header wordmark. Doubled class so it outranks the .btn base no matter how
+   the stylesheets end up ordered in the bundle. */
+.btn.dayband__btn {
+  background: var(--color-on-dark);
+  color: var(--color-primary);
+  font-size: clamp(15px, 1.5vw, 18px);
+  padding: 14px var(--space-8);
+  transform: scale(1);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.btn.dayband__btn:hover {
+  background: var(--color-on-dark);
+  color: var(--color-primary);
+  transform: scale(1.06);
+}
+
+/* Narrow screens: two columns, no thread to follow. */
+@media (max-width: 720px) {
+  .dayband__row {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: var(--space-8);
+  }
+  .dayband__thread {
+    display: none;
+  }
+  .daycard--offset {
+    padding-top: 0;
+  }
 }

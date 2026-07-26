@@ -285,10 +285,21 @@
   padding: 10px var(--space-5);
   background: var(--color-accent);
   color: var(--color-on-dark);
+  /* Same symmetric grow as the wordmark: resting composited scale(1) so the
+     return never snaps. */
+  transform: scale(1);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 .site-nav .site-nav__cta:hover {
   background: color-mix(in srgb, var(--color-accent) 88%, var(--color-ink));
   color: var(--color-on-dark);
+  transform: scale(1.06);
 }
 
 /* — hamburger / close toggle —————————————————————————————————— */
