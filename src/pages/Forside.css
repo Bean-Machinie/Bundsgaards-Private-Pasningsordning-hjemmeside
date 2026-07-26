@@ -17,18 +17,14 @@
 /* Once the side lane is gone the wax seal pins to the right edge and
    hangs over the text column's zone — the heading starts beneath it.
    Padding tracks the seal's own size (--seal-w is published on :root by
-   SealStamp.css, breakpoints paired with its size steps): half the seal
-   hangs into this section, plus a breathing gap. Two steps so the duck
-   arrives gently — a tight gap first, the roomier one only on small
-   screens where the seal also grows. */
-@media (max-width: 870px) {
+   SealStamp.css): half the seal hangs into this section, plus a breathing
+   gap. 990px is where the pinned seal at its 200px floor would touch the
+   protected text zone (viewport/2 + 284px + the seal + 12px edge margin),
+   so the duck begins exactly when clearance runs out — one rule, and the
+   padding stays constant below it because the seal's size is too. */
+@media (max-width: 990px) {
   .section.welcome {
     padding-top: calc(var(--seal-w, 200px) / 2 + 16px);
-  }
-}
-@media (max-width: 760px) {
-  .section.welcome {
-    padding-top: calc(var(--seal-w, 220px) / 2 + 10px);
   }
 }
 /* The script line is a warm aside, not a heading in the type scale — Caveat
