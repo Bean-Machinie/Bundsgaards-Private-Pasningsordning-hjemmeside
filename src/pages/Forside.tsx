@@ -40,15 +40,7 @@ export default function Forside() {
         <div className="welcome__facts">
           {headlineFacts.map((fact, index) => (
             <Fragment key={fact.label}>
-              {index > 0 && (
-                <svg className="welcome__dot" aria-hidden="true" viewBox="0 0 24 24">
-                  {/* Four-point twinkle: concave curves between the tips. */}
-                  <path
-                    d="M12 0c1.1 7.6 4.4 10.9 12 12-7.6 1.1-10.9 4.4-12 12-1.1-7.6-4.4-10.9-12-12C7.6 10.9 10.9 7.6 12 0Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              )}
+              {index > 0 && <span className="welcome__dot" aria-hidden="true" />}
               <div className="welcome__fact">
                 <div className="welcome__fact-value">{fact.value}</div>
                 <div className="welcome__fact-label">{fact.label}</div>
@@ -56,8 +48,6 @@ export default function Forside() {
             </Fragment>
           ))}
         </div>
-
-        <p className="welcome__note">— og vi har én ledig plads til august</p>
       </section>
 
       {/* — values teaser ——————————————————————————————————————— */}

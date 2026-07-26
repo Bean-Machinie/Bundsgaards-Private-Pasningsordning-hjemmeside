@@ -4,16 +4,17 @@
    would sit, a single paragraph, then the dot-separated fact strip — no big
    title, no columns. Sits closer to the hero than a standard section. */
 .welcome {
-  padding-top: clamp(24px, 3vw, 44px);
+  padding-top: clamp(18px, 2.2vw, 32px);
+  padding-bottom: clamp(36px, 4.5vw, 64px);
   text-align: center;
 }
 /* The script line is a warm aside, not a heading in the type scale — Caveat
    runs visually small for its em size, so it gets a larger clamp than body
    text while still reading as modest. */
 .welcome__script {
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-3);
   font-family: var(--font-script);
-  font-weight: 500;
+  font-weight: 700;
   font-size: clamp(21px, 2.2vw, 27px);
   line-height: 1.25;
   color: var(--color-accent);
@@ -35,7 +36,7 @@
   align-items: center;
   justify-content: center;
   gap: clamp(24px, 5vw, 72px);
-  margin-top: clamp(36px, 5vw, 60px);
+  margin-top: clamp(24px, 3.5vw, 44px);
 }
 .welcome__fact-value {
   margin-bottom: var(--space-1);
@@ -46,18 +47,13 @@
   font-size: 13px;
   color: var(--color-ink-3);
 }
-/* Terracotta sparkles between the cells — a four-point twinkle drawn as an
-   inline SVG (currentColor), tilted a touch, with every second one leaning
-   the other way and a little smaller so the row feels hand-placed. */
+/* Terracotta dots between the cells. */
 .welcome__dot {
-  width: 15px;
-  height: 15px;
+  width: 6px;
+  height: 6px;
   flex: none;
-  color: var(--color-accent);
-  transform: rotate(9deg);
-}
-.welcome__dot:nth-of-type(2n) {
-  transform: rotate(-14deg) scale(0.82);
+  border-radius: 50%;
+  background: var(--color-accent);
 }
 
 /* The handwritten afterthought under the strip — same voice as the opening
