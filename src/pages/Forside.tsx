@@ -131,7 +131,7 @@ export default function Forside() {
               </p>
             </div>
             <Link to={routes.vaerdier.path} className="btn values-btn link-more">
-              Læs om pædagogikken
+              Læs mere
             </Link>
           </div>
 

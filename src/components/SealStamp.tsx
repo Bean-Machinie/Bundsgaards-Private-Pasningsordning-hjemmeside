@@ -1,4 +1,7 @@
-import stamp from '../assets/images/stamp.png';
+// Generated from stamp.png with sharp (resize 600 + luminance-preserving
+// tint to the theme's terracotta #8f4018 / --color-accent), so the seal
+// wears the same colour as the Kontakt button and the script headings.
+import stamp from '../assets/images/stamp-terracotta.png';
 
 import './SealStamp.css';
 

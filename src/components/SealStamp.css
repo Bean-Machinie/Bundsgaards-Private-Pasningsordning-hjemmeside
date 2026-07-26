@@ -8,20 +8,65 @@
   z-index: 30;
 }
 
-/* Centred on the boundary line (half over each neighbouring section),
-   three quarters of the way across — halfway from centre to the right
-   edge — with a small clockwise lean, like it was pressed on by hand. */
+/* Centred on the boundary line (half over each neighbouring section) and
+   leaning slightly clockwise, like it was pressed on by hand.
+
+   Horizontal placement is text-aware rather than a fixed percentage:
+   --seal-clear is half the centred welcome column (~520px) plus a gap,
+   and the first min() term parks the seal's left edge exactly on that
+   protected zone — as close to the text as it can be without touching.
+   When the viewport narrows and that spot would run off screen, the
+   second term wins and pins the seal just inside the right edge instead;
+   below 900px the welcome text ducks beneath it (Forside.css), so the
+   two never collide at any width. */
+/* The size lives on :root so the page can react to it — Forside.css pads
+   the welcome text down by half the seal's height in the pinned regimes,
+   keeping gap and seal in lockstep at every width.
+
+   Three steps, stepping down with the viewport (breakpoints pair with the
+   welcome-padding steps in Forside.css):
+   - >870px: the seal rides the side lane, hugging the text column; at the
+     lane's narrowest the pinned seal (~165px) still clears the column.
+   - 761-870px: no lane left — a fixed modest 200px overlapping the text
+     zone, ducked under with a tight gap.
+   - ≤760px: small screens, where the seal no longer competes with anything
+     for width — let it grow into a proper standout. */
+:root {
+  --seal-w: clamp(160px, 19vw, 260px);
+}
+@media (max-width: 870px) {
+  :root {
+    --seal-w: 200px;
+  }
+}
+@media (max-width: 760px) {
+  :root {
+    --seal-w: clamp(210px, 32vw, 245px);
+  }
+}
+
 .seal-stamp__img {
+  --seal-clear: 284px;
   position: absolute;
   top: 0;
-  left: 75%;
-  width: clamp(96px, 12vw, 170px);
+  left: min(
+    calc(50% + var(--seal-clear) + var(--seal-w) / 2),
+    calc(100% - var(--seal-w) / 2 - 12px)
+  );
+  width: var(--seal-w);
   height: auto;
   transform: translate(-50%, -50%) rotate(8deg);
-  /* A soft seat under the wax so it reads as resting on the page. */
-  filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--color-ink) 28%, transparent));
+  /* drop-shadow (unlike box-shadow) traces the PNG's alpha channel, so
+     both layers follow the wax blob's actual outline — every bump and
+     drip — not the image's rectangular box. First a zero-offset halo
+     hugging the silhouette all the way round, then a faint downward seat
+     so it still reads as resting on the page. Neutral black, not the
+     theme ink — ink is forest-tinted and reads green around the wax. */
+  filter: drop-shadow(0 0 50px rgb(0 0 0 / 0.3))
+    drop-shadow(0 4px 12px rgb(0 0 0 / 0.3));
   /* Decoration only: no clicks swallowed, no drag-to-save ghost. */
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
 }
+

@@ -3,7 +3,7 @@
    so they stay put while the track moves beneath them. */
 .hero-carousel {
   position: relative;
-  height: clamp(540px, 80svh, 840px);
+  height: clamp(490px, 72svh, 760px);
   overflow: hidden;
   background: var(--color-ink);
 }

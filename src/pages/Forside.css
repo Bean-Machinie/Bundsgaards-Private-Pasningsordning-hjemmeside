@@ -3,10 +3,33 @@
 /* A centred address to the visitor: one handwritten line where a kicker
    would sit, a single paragraph, then the dot-separated fact strip — no big
    title, no columns. Sits closer to the hero than a standard section. */
-.welcome {
-  padding-top: clamp(18px, 2.2vw, 32px);
+/* Doubled selector is load-bearing: page CSS lands before global.css in
+   the bundle, so plain .welcome would lose its padding to .section's
+   padding-block despite being the more specific intent. */
+.section.welcome {
+  /* The roomier gap the page shipped with (it was .section's padding
+     winning the cascade, but it looked right): the seal rides the side
+     lane on desktop, so this is purely breathing room under the hero. */
+  padding-top: clamp(48px, 6vw, 88px);
   padding-bottom: clamp(36px, 4.5vw, 64px);
   text-align: center;
+}
+/* Once the side lane is gone the wax seal pins to the right edge and
+   hangs over the text column's zone — the heading starts beneath it.
+   Padding tracks the seal's own size (--seal-w is published on :root by
+   SealStamp.css, breakpoints paired with its size steps): half the seal
+   hangs into this section, plus a breathing gap. Two steps so the duck
+   arrives gently — a tight gap first, the roomier one only on small
+   screens where the seal also grows. */
+@media (max-width: 870px) {
+  .section.welcome {
+    padding-top: calc(var(--seal-w, 200px) / 2 + 16px);
+  }
+}
+@media (max-width: 760px) {
+  .section.welcome {
+    padding-top: calc(var(--seal-w, 220px) / 2 + 10px);
+  }
 }
 /* The script line is a warm aside, not a heading in the type scale — Caveat
    runs visually small for its em size, so it gets a larger clamp than body
