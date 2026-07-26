@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
+import SealStamp from '../components/SealStamp';
 import { photos } from '../content/photos';
 import { headlineFacts, quickFacts } from '../content/practical';
 import { valueTeasers } from '../content/values';
@@ -26,6 +27,9 @@ export default function Forside() {
     <div className="enter">
       {/* — hero carousel ——————————————————————————————————————— */}
       <HeroCarousel />
+
+      {/* The wax seal straddles the hero/welcome boundary. */}
+      <SealStamp />
 
       {/* — welcome intro ——————————————————————————————————————— */}
       <section className="shell section welcome">

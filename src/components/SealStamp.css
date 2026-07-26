@@ -1,0 +1,27 @@
+/* Zero-height anchor: rendered between two sections it occupies no space,
+   so neither neighbour moves — the seal hangs off this line. z-index sits
+   above every band, panel and medallion on the page (none climb past the
+   twenties) but below the sticky header's 40 and the mobile menu's 39. */
+.seal-stamp {
+  position: relative;
+  height: 0;
+  z-index: 30;
+}
+
+/* Centred on the boundary line (half over each neighbouring section),
+   three quarters of the way across — halfway from centre to the right
+   edge — with a small clockwise lean, like it was pressed on by hand. */
+.seal-stamp__img {
+  position: absolute;
+  top: 0;
+  left: 75%;
+  width: clamp(96px, 12vw, 170px);
+  height: auto;
+  transform: translate(-50%, -50%) rotate(8deg);
+  /* A soft seat under the wax so it reads as resting on the page. */
+  filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--color-ink) 28%, transparent));
+  /* Decoration only: no clicks swallowed, no drag-to-save ghost. */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}

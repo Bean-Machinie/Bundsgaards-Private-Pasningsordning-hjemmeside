@@ -1,19 +1,17 @@
+/* Fully opaque — nothing may ghost through from the page beneath. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: color-mix(in srgb, var(--color-bg) 90%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
   /* Border-driven at rest — the hairline does the structural work and the
      shadow is only a whisper; it gathers weight once the page scrolls under
      it. Negative spread keeps the edge tight rather than a soft cloud. */
   box-shadow: 0 8px 24px -18px color-mix(in srgb, var(--color-ink) 24%, transparent);
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 .site-header.is-scrolled {
-  background: color-mix(in srgb, var(--color-bg) 97%, transparent);
   box-shadow: 0 12px 30px -16px color-mix(in srgb, var(--color-ink) 30%, transparent);
 }
 
