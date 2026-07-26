@@ -17,7 +17,7 @@
    protected zone — as close to the text as it can be without touching.
    When the viewport narrows and that spot would run off screen, the
    second term wins and pins the seal just inside the right edge instead;
-   below 990px the welcome text ducks beneath it (Forside.css), so the
+   below 1050px the welcome text ducks beneath it (Forside.css), so the
    two never collide at any width. */
 /* The size lives on :root so the page can react to it — Forside.css pads
    the welcome text down by half the seal's height once the text ducks
@@ -27,13 +27,13 @@
    lane physically allows: the middle term is the widest seal that still
    clears the protected text zone when pinned to the right edge (from the
    left-placement calc below: viewport - w - 12 ≥ 50% + 284 solves to
-   w = 50vw - 296px). So the seal keeps its full 260px down to 1112px,
+   w = 50vw - 296px). So the seal keeps its full 300px down to 1192px,
    then sheds width exactly as fast as the lane vanishes, landing on the
-   200px floor at ~992px — which is why Forside.css starts ducking the
-   text under it at 990px — and holds that floor to the smallest phones.
+   230px floor at ~1052px — which is why Forside.css starts ducking the
+   text under it at 1050px — and holds that floor to the smallest phones.
    Never grows back as the window narrows. */
 :root {
-  --seal-w: clamp(200px, 50vw - 296px, 260px);
+  --seal-w: clamp(230px, 50vw - 296px, 300px);
 }
 
 /* Placement lives on this wrapper (not the img) so the imprinted text is
@@ -88,17 +88,20 @@
   text-align: center;
   white-space: nowrap;
   font-family: var(--font-display);
-  font-weight: 600;
+  /* Top of Fraunces' variable range — the imprint needs more meat than the
+     page's display type so it survives the wax texture behind it. */
+  font-weight: 700;
   text-transform: uppercase;
   /* Debossed, lit from above like the rest of the page: glyphs darker than
-     the wax face, a warm sheen catching the lower lip of the carve and a
-     deep shadow tucked under the upper lip. Colours are hand-picked
+     the wax face, a warm sheen glinting off the lower lip of the carve
+     (kept near-crisp — it's what lifts the text off the mottled wax) and
+     a deep shadow tucked under the upper lip. Colours are hand-picked
      dark/light neighbours of the stamp's terracotta tint (#8f4018), not
      theme tokens — they must track the wax, not the page. */
-  color: rgb(74 26 6 / 0.9);
+  color: rgb(48 14 2);
   text-shadow:
-    0 1px 1px rgb(255 196 158 / 0.4),
-    0 -1px 1px rgb(46 12 0 / 0.5);
+    0 2px 1px rgb(255 208 170 / 0.55),
+    0 -1px 1px rgb(28 7 0 / 0.55);
 }
 
 .seal-stamp__line {
