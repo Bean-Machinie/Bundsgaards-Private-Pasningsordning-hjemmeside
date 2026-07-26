@@ -4,7 +4,6 @@ import { routes, type RouteKey } from '../routes';
 export interface HeroSlide {
   image: string;
   alt: string;
-  kicker: string;
   /** Rendered before the highlight; keep the trailing space so they read as
    *  one sentence when they wrap. */
   headline: string;
@@ -23,7 +22,6 @@ export const heroSlides: HeroSlide[] = [
   {
     image: stock.goldenRun,
     alt: 'To børn løber gennem en solbeskinnet skov',
-    kicker: 'Privatpasning i Stenløse · 0-3 år',
     headline: 'Et lille sted at være ',
     highlight: 'lille',
     subtext:
@@ -34,7 +32,6 @@ export const heroSlides: HeroSlide[] = [
   {
     image: stock.explorers,
     alt: 'To børn på opdagelse med kikkert ved et træ',
-    kicker: 'Ude hver dag',
     headline: 'Naturen er vores ',
     highlight: 'stue nummer to',
     subtext:
@@ -45,7 +42,6 @@ export const heroSlides: HeroSlide[] = [
   {
     image: stock.pinecones,
     alt: 'Lille barn, der samler grankogler i skovbunden',
-    kicker: 'Nærvær',
     headline: 'Tid til at kigge på ',
     highlight: 'en snegl',
     subtext:
@@ -56,7 +52,6 @@ export const heroSlides: HeroSlide[] = [
   {
     image: stock.sticks,
     alt: 'To børn undersøger grene på en skovsti',
-    kicker: 'Tryghed',
     headline: 'Den samme voksne, ',
     highlight: 'hver morgen',
     subtext:

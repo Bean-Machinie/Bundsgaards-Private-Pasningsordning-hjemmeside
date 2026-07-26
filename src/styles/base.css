@@ -15,6 +15,18 @@
   box-sizing: border-box;
 }
 
+/* Decorative pieces that hang off the page edge (the wax seal and its
+   shadow headroom) must never widen the layout viewport — that lets
+   phones pan/zoom out to a cream void beside the site. clip, not hidden:
+   hidden would turn the element into a scroll container and can break
+   position: sticky; clip only discards the overflow. The hidden line
+   stays as a fallback for browsers without clip support (pre-2022). */
+html,
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   background: var(--color-bg);

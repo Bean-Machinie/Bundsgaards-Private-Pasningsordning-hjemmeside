@@ -71,15 +71,6 @@
   color: var(--color-on-dark);
 }
 
-.hero-carousel__kicker {
-  margin-bottom: var(--space-4);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-highlight) 88%, white);
-}
-
 .hero-carousel__headline {
   margin: 0 0 var(--space-5);
   max-width: 16ch;
@@ -180,8 +171,10 @@
    content bottom-anchored, the crop biased right, and a heavy gradient foot
    exactly where the text now sits (which replaces the block text-shadow). */
 @media (max-width: 720px) {
+  /* svh, not vh: keyed to the browser-chrome-visible viewport so the hero
+     doesn't jump when the URL bar collapses mid-scroll. */
   .hero-carousel {
-    height: min(620px, 88vh);
+    height: min(520px, 74svh);
   }
   .hero-carousel__slide {
     align-items: flex-end;
@@ -189,24 +182,34 @@
   .hero-carousel__img {
     object-position: 63% center;
   }
+  /* Bottom-anchored, but pushed up by this padding to sit just shy of
+     vertical centre in the frame. max-width resets to the full frame —
+     the desktop formula is built around the 1340px shell and collapses
+     to a uselessly skinny column on phones. */
   .hero-carousel__content {
-    padding-bottom: clamp(72px, 14vh, 120px);
+    max-width: 100%;
+    padding-bottom: clamp(88px, 17svh, 132px);
     text-shadow: none;
   }
   .hero-carousel__headline {
     font-size: clamp(2rem, 8vw, 2.6rem);
   }
-  /* Darker foot so bottom-aligned text stays readable over any photo. */
+  /* Darker foot so the text stays readable over any photo — the mid stop
+     rides higher than the text does, so the near-centred block still sits
+     on solid wash. */
   .hero-carousel__overlay {
     background:
       linear-gradient(
         to top,
         color-mix(in srgb, var(--color-ink) 82%, transparent) 0%,
-        color-mix(in srgb, var(--color-ink) 45%, transparent) 42%,
+        color-mix(in srgb, var(--color-ink) 50%, transparent) 52%,
         color-mix(in srgb, var(--color-ink) 22%, transparent) 100%
       );
   }
-  .hero-carousel__arrow {
+  /* No tap targets this small on touch — swiping is the way to change
+     slides, so both arrows and dots retire on mobile. */
+  .hero-carousel__arrow,
+  .hero-carousel__dots {
     display: none;
   }
 }

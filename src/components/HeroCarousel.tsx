@@ -121,7 +121,6 @@ export default function HeroCarousel() {
             />
             <div className="hero-carousel__overlay" aria-hidden="true" />
             <div className="hero-carousel__content">
-              <span className="hero-carousel__kicker">{slide.kicker}</span>
               <h1 className="hero-carousel__headline">
                 {slide.headline}
                 <span className="hero-carousel__highlight">{slide.highlight}</span>
