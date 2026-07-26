@@ -64,17 +64,38 @@ export default function Forside() {
             {/* The dotted thread: one long sine meander through all four
                 medallions — each circle centre sits on a zero-crossing, so the
                 line flows diagonally through the photos and arcs gracefully
-                above, below, above in the three gaps. */}
+                above, below, above in the three gaps. A half-wave is added
+                before the first circle and after the last (the viewBox clips
+                them mid-arc), and the gradient stroke fades those run-outs to
+                nothing so the thread reads as passing through, not ending. */}
             <svg
               className="dayband__thread"
               viewBox="0 0 1000 244"
               preserveAspectRatio="none"
               aria-hidden="true"
             >
+              <defs>
+                <linearGradient
+                  id="dayband-thread-fade"
+                  gradientUnits="userSpaceOnUse"
+                  x1="0"
+                  y1="0"
+                  x2="1000"
+                  y2="0"
+                >
+                  {/* The run-outs live in the outer 12.5%; fading across all
+                      of that would hide them entirely, so only the outer
+                      stretch dissolves and the rest stays visible. */}
+                  <stop offset="0" stopColor="currentColor" stopOpacity="0" />
+                  <stop offset="0.09" stopColor="currentColor" stopOpacity="1" />
+                  <stop offset="0.91" stopColor="currentColor" stopOpacity="1" />
+                  <stop offset="1" stopColor="currentColor" stopOpacity="0" />
+                </linearGradient>
+              </defs>
               <path
-                d="M 125 122 C 215 42 285 42 375 122 C 465 202 535 202 625 122 C 715 42 785 42 875 122"
+                d="M -125 122 C -35 202 35 202 125 122 C 215 42 285 42 375 122 C 465 202 535 202 625 122 C 715 42 785 42 875 122 C 965 202 1035 202 1125 122"
                 fill="none"
-                stroke="currentColor"
+                stroke="url(#dayband-thread-fade)"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeDasharray="0.1 11"
@@ -99,26 +120,24 @@ export default function Forside() {
 
       {/* — values teaser ——————————————————————————————————————— */}
       <section className="shell section--loose">
-        <div className="grid grid--split-top">
+        <div className="values-split">
           <div className="stack">
             <div>
-              <span className="kicker">Værdier</span>
-              <h2 className="title-section">Det jeg lægger vægt på</h2>
-              <p className="prose measure--tight">
+              <h2 className="title-section">Vores Værdier</h2>
+              <p className="values-body measure--tight">
                 Jeg lægger vægt på trygge relationer, genkendelige rutiner og plads til det
-                enkelte barn. Det lyder enkelt — og det er det også. Men det kræver, at der
+                enkelte barn. Det lyder enkelt og det er det også. Men det kræver, at der
                 ikke er for mange om buddet.
               </p>
             </div>
-            <Link to={routes.vaerdier.path} className="btn btn-ghost link-more">
-              Læs om pædagogikken →
+            <Link to={routes.vaerdier.path} className="btn values-btn link-more">
+              Læs om pædagogikken
             </Link>
           </div>
 
-          <div className="fact-list">
+          <div className="values-grid">
             {valueTeasers.map((value) => (
               <div key={value.number} className="fact">
-                <span className="fact__n">{value.number}</span>
                 <div>
                   <h3 className="fact__title">{value.title}</h3>
                   <p className="fact__body">{value.body}</p>

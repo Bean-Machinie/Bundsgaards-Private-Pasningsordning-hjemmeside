@@ -95,21 +95,21 @@
    the bundle, and .band--primary's `background` shorthand would otherwise
    reset background-image to none. */
 .dayband {
-  padding-block: clamp(36px, 4.5vw, 64px);
+  padding-block: clamp(26px, 3.2vw, 46px);
 }
 .dayband.band--primary {
   background-image: repeating-linear-gradient(
     135deg,
     transparent,
     transparent 12px,
-    color-mix(in srgb, var(--color-on-dark) 4%, transparent) 12px,
-    color-mix(in srgb, var(--color-on-dark) 4%, transparent) 24px
+    color-mix(in srgb, var(--color-on-dark) 2.5%, transparent) 12px,
+    color-mix(in srgb, var(--color-on-dark) 2.5%, transparent) 24px
   );
 }
 /* A centred address like the welcome section, but on the dark band: the
    handwritten line in warm amber above the big serif title. */
 .dayband__head {
-  margin-bottom: clamp(24px, 3.5vw, 44px);
+  margin-bottom: clamp(16px, 2.4vw, 30px);
   text-align: center;
 }
 .dayband__script {
@@ -163,11 +163,36 @@
 }
 /* The photo becomes a medallion: fully round, sitting on a solid cream disc
    that reaches the same radius the old hairline ring did. Positioned so the
-   disc is guaranteed to paint over the dotted thread. */
+   disc is guaranteed to paint over the dotted thread.
+
+   Hover is one springy gesture on the whole medallion — disc included,
+   since the disc is this element's box-shadow: the medallion lifts and
+   tilts a touch, the cream ring swells a step, and the photo eases in
+   closer. The overshoot easing is what makes it whimsical; the resting
+   scale(1) keeps it on a composited layer so the return never snaps. */
 .daycard .daycard__circle {
   position: relative;
   border-radius: var(--radius-full);
   box-shadow: 0 0 0 6px var(--color-on-dark);
+  transform: translateY(0) scale(1) rotate(0deg);
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.daycard:hover .daycard__circle {
+  transform: translateY(-6px) scale(1.05) rotate(-3deg);
+  box-shadow: 0 0 0 9px var(--color-on-dark);
+}
+/* The photo drifts in a touch closer than the medallion itself, so the
+   zoom reads as depth rather than the circle simply growing. */
+.daycard .daycard__circle img {
+  transform: scale(1);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.daycard:hover .daycard__circle img {
+  transform: scale(1.08);
 }
 .daycard__time {
   margin: var(--space-3) 0 var(--space-1);
@@ -182,7 +207,7 @@
 }
 
 .dayband__cta {
-  margin-top: clamp(24px, 3.5vw, 44px);
+  margin-top: clamp(18px, 2.4vw, 32px);
   text-align: center;
 }
 /* Cream pill on the dark band, with the same symmetric grow-on-hover as the
@@ -219,5 +244,89 @@
   }
   .daycard--offset {
     padding-top: 0;
+  }
+}
+
+/* — values teaser ————————————————————————————————————————————— */
+
+/* Intro column beside a 2×2 grid of the four values: the intro takes the
+   narrower share (≈40/60) and centres vertically on the grid's height. */
+.values-split {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+.values-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 3.5vw, 48px) clamp(28px, 4vw, 56px);
+}
+/* The shared .fact rows carry hairline dividers for stacked lists; here the
+   grid gaps do the separating. The :last-child selector is load-bearing —
+   global.css lands after this file in the bundle, so the plain descendant
+   selector alone would lose to .fact:last-child's border-bottom. */
+.values-grid .fact,
+.values-grid .fact:last-child {
+  padding: 0;
+  border: 0;
+}
+
+/* Value titles speak in the handwritten voice — the welcome section's
+   script line verbatim: same font, weight, size and colour. */
+.values-grid .fact__title {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(21px, 2.2vw, 27px);
+  line-height: 1.25;
+  color: var(--color-accent);
+}
+/* Body copy in the section — intro and value texts alike — matches the
+   welcome paragraph's size, so the two sections read in one voice. */
+.values-body,
+.values-grid .fact__body {
+  margin: 0;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.75;
+  color: var(--color-ink-2);
+}
+
+/* The section's call to action: the Kontakt button's grammar in the acting
+   green, sized like the day band's "Se hele dagen" pill so the two section
+   CTAs match. Doubled class so it outranks the .btn base no matter how the
+   stylesheets end up ordered in the bundle. */
+.btn.values-btn {
+  padding: 14px var(--space-8);
+  font-size: clamp(15px, 1.5vw, 18px);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  transform: scale(1);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.btn.values-btn:hover {
+  background: color-mix(in srgb, var(--color-primary) 88%, var(--color-ink));
+  color: var(--color-on-primary);
+  transform: scale(1.06);
+}
+
+/* The split stacks first (the grid keeps two columns on tablets), then the
+   grid itself goes single-column on phones. */
+@media (max-width: 900px) {
+  .values-split {
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 6vw, 48px);
+  }
+}
+@media (max-width: 560px) {
+  .values-grid {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-6);
   }
 }
