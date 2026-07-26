@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
 import { photos } from '../content/photos';
-import { headlineFacts, quickFacts } from '../content/practical';
+import { quickFacts } from '../content/practical';
 import { site } from '../content/site';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -28,15 +28,13 @@ export default function Forside() {
       {/* — hero carousel ——————————————————————————————————————— */}
       <HeroCarousel />
 
-      {/* — headline facts ————————————————————————————————————— */}
+      {/* — welcome intro ——————————————————————————————————————— */}
       <section className="shell section">
-        <div className="factstrip">
-          {headlineFacts.map((fact) => (
-            <div key={fact.label} className="factstrip__cell">
-              <div className="factstrip__value">{fact.value}</div>
-              <div className="factstrip__label">{fact.label}</div>
-            </div>
-          ))}
+        <div className="welcome">
+          <h2 className="welcome__script">Privat Pasningsordning tæt på Ganløse</h2>
+          <p className="welcome__body">
+            Bundsgård er en hyggelig gård med stråtag, stor have og egne høns. Vi er ude hver dag og går ofte ture ned til hestene og fårene i området.
+          </p>
         </div>
       </section>
 

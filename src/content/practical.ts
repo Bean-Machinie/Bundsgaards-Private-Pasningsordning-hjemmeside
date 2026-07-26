@@ -69,18 +69,10 @@ export const practicalNotes: PracticalNote[] = [
   },
 ];
 
-/** The four-up strip of headline facts on the front page. */
 export interface Fact {
   value: string;
   label: string;
 }
-
-export const headlineFacts: Fact[] = [
-  { value: '4 børn', label: 'Fast lille gruppe' },
-  { value: '0–3 år', label: 'Til start i børnehave' },
-  { value: '6.00–15.30', label: 'Mandag til fredag' },
-  { value: 'Udenfor', label: 'Hver dag, året rundt' },
-];
 
 export const quickFacts: Fact[] = [
   { value: 'Man–fre 6.00–15.30', label: 'Åbningstider' },
