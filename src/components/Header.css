@@ -194,7 +194,10 @@
 
 /* The panel proper: cream, hairline-bordered, floating — one of the few
    things in this design that genuinely earns a shadow. Radius follows the
-   concentricity rule: entries are --radius-md under --space-1 padding. */
+   concentricity rule: entries are --radius-md under --space-1 padding.
+   Opacity and scaleY are driven by motion variants in the component; the
+   origin sits at the pointer tab, so the unfurl reads as the panel bursting
+   out of the bar rather than growing from its own middle. */
 .site-nav__menu-panel {
   position: relative;
   min-width: 180px;
@@ -203,10 +206,7 @@
   border: 1px solid var(--color-border-strong);
   border-radius: calc(var(--radius-md) + var(--space-1));
   box-shadow: var(--shadow-lg);
-  /* The origin sits at the pointer tab, so the pop reads as the panel
-     bursting out of the bar rather than growing from its own middle. */
   transform-origin: 50% -10px;
-  animation: menu-pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 /* A 10×10 square rotated 45° with only its top and left borders drawn: the
    two visible edges continue the panel's outline into a speech-bubble tail. */
@@ -222,16 +222,6 @@
   border-top: 1px solid var(--color-border-strong);
   border-left: 1px solid var(--color-border-strong);
   transform: rotate(45deg);
-}
-@keyframes menu-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 .site-nav__menu-link {
@@ -323,16 +313,19 @@
   background: color-mix(in srgb, var(--color-ink) 7%, transparent);
 }
 
-/* — mobile overlay drawer ————————————————————————————————————
-   Kept mounted and animated with visibility so it fades both ways; it is
-   fixed below the header, overlaying the page rather than pushing it. */
+/* — mobile menu card ——————————————————————————————————————————
+   The desktop dropdown's grammar at phone width: a floating, hairline-
+   bordered card hanging from the burger button, not a full-width sheet.
+   Kept mounted and animated with visibility so it fades both ways; the
+   close delay must outlast the motion choreography (links retreat, then
+   the panel folds) so nothing is cut off mid-animation. */
 .site-menu {
   position: fixed;
   inset: var(--header-height) 0 0 0;
   z-index: 39;
   visibility: hidden;
   pointer-events: none;
-  transition: visibility 0s linear 0.32s;
+  transition: visibility 0s linear 0.6s;
 }
 .site-menu.is-open {
   visibility: visible;
@@ -340,80 +333,81 @@
   transition-delay: 0s;
 }
 
+/* Invisible click-catcher: pressing anywhere off the card closes the menu,
+   mirroring the dropdown's outside-press dismissal — no dark overlay, the
+   page stays present (and scrollable) behind the card. */
 .site-menu__backdrop {
   position: absolute;
   inset: 0;
   padding: 0;
   border: 0;
-  background: color-mix(in srgb, var(--color-ink) 45%, transparent);
-  opacity: 0;
+  background: transparent;
   cursor: default;
-  transition: opacity 0.32s ease;
-}
-.site-menu.is-open .site-menu__backdrop {
-  opacity: 1;
 }
 
+/* The card itself matches .site-nav__menu-panel: cream, hairline border,
+   concentric radius, the one earned shadow — but no speech-bubble tail.
+   Opacity, scaleY and the per-link cascade are driven by motion variants
+   in the component; the origin keeps the unfurl anchored up by the burger
+   button's midpoint. */
 .site-menu__panel {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: var(--space-2);
+  right: var(--shell-gutter);
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-6) var(--shell-gutter) var(--space-8);
+  gap: 2px;
+  width: min(300px, calc(100vw - 2 * var(--shell-gutter)));
+  padding: var(--space-2);
   background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
+  border-radius: calc(var(--radius-md) + var(--space-2));
   box-shadow: var(--shadow-lg);
-  transform: translateY(-14px);
-  opacity: 0;
-  transition:
-    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.28s ease;
-}
-.site-menu.is-open .site-menu__panel {
-  transform: none;
-  opacity: 1;
+  transform-origin: calc(100% - 14px) 0;
 }
 
+/* Rows carry the same green wash as the dropdown entries and the nav
+   highlight — hover washes, and the current page rests on a persistent
+   wash, the drawer's stand-in for the sliding highlight. */
 .site-menu__link {
-  font-family: var(--font-display);
-  font-size: 22px;
-  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 11px var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-ink-2);
   text-decoration: none;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-.site-menu.is-open .site-menu__link {
-  opacity: 1;
-  transform: none;
+.site-menu__link:hover {
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-ink);
 }
 .site-menu__link.active {
-  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary);
 }
 
-/* A menu group in the drawer: a non-clickable label in the site's small
+/* A menu group in the card: a non-clickable label in the site's small
    uppercase style, with its pages indented beneath it. */
 .site-menu__group {
-  margin-bottom: calc(-1 * var(--space-3));
+  margin-top: var(--space-2);
+  padding: 0 var(--space-3);
+}
+/* The separating margin is for groups mid-list; the card's own padding
+   already breathes above the first one. */
+.site-menu__group:first-child {
+  margin-top: 0;
   font-size: var(--label-size);
   font-weight: 600;
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--color-ink-3);
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.site-menu.is-open .site-menu__group {
-  opacity: 1;
-  transform: none;
 }
 .site-menu__link--sub {
-  padding-left: var(--space-5);
-  font-size: 19px;
+  padding-left: var(--space-4);
 }
 
 /* The desktop nav needs room for the links; below that the drawer takes over. */
@@ -431,17 +425,17 @@
   }
 }
 
+/* The motion-driven pieces (dropdown panel, drawer cascade) handle reduced
+   motion themselves via MotionConfig in the component; this covers the
+   remaining CSS transitions. */
 @media (prefers-reduced-motion: reduce) {
   .site-nav__highlight,
   .site-nav__highlight[data-settling='true'],
   .brand__logo,
-  .site-nav__chevron,
-  .site-menu__panel,
-  .site-menu__link,
-  .site-menu__group {
+  .site-nav__chevron {
     transition-duration: 0.01ms !important;
   }
-  .site-nav__menu-panel {
-    animation-duration: 0.01ms !important;
+  .site-menu {
+    transition-delay: 0.01ms !important;
   }
 }

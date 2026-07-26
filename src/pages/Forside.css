@@ -88,9 +88,23 @@
 /* — the day, in four pictures ——————————————————————————————— */
 
 /* The whole band runs tighter than a default .band — it is a teaser, not a
-   destination page. */
+   destination page. The diagonal stripes are pure CSS texture keeping the
+   large flat green from feeling dead: 12px of plain band, then 12px lifted
+   a step lighter with the warm cream — quiet, but readable as a weave.
+   The double selector is load-bearing: page CSS lands before global.css in
+   the bundle, and .band--primary's `background` shorthand would otherwise
+   reset background-image to none. */
 .dayband {
   padding-block: clamp(36px, 4.5vw, 64px);
+}
+.dayband.band--primary {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 12px,
+    color-mix(in srgb, var(--color-on-dark) 4%, transparent) 12px,
+    color-mix(in srgb, var(--color-on-dark) 4%, transparent) 24px
+  );
 }
 /* A centred address like the welcome section, but on the dark band: the
    handwritten line in warm amber above the big serif title. */

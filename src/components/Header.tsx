@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { MotionConfig, motion, type Variants } from 'motion/react';
 
 import { site } from '../content/site';
 import { scrollToContact } from '../lib/scrollToContact';
-import { mobileNav, primaryNav, routes } from '../routes';
+import { mobileNav, primaryNav, routes, type NavMenuEntry } from '../routes';
 import { CloseIcon, MenuIcon } from './Icons';
 import titleImage from '../assets/images/title-images/title-image-lockup-green.png';
 
@@ -16,6 +17,99 @@ interface HighlightState {
 }
 
 const HIDDEN_HIGHLIGHT: HighlightState = { x: 0, width: 0, visible: false };
+
+/** NavLink promoted to a motion component so it can join variant staggers. */
+const MotionNavLink = motion.create(NavLink);
+
+/* — dropdown choreography ————————————————————————————————————————
+   The panel unfurls (scaleY from the tail) before its entries cascade in;
+   closing reverses the order — entries retreat first, then the panel folds.
+   `when` + `staggerChildren` on the parent orchestrate the whole tree, so
+   the entries and icons only declare their own two poses. */
+
+const menuPanelVariants: Variants = {
+  open: {
+    scaleY: 1,
+    opacity: 1,
+    transition: {
+      duration: 0.26,
+      ease: [0.34, 1.56, 0.64, 1],
+      when: 'beforeChildren',
+      staggerChildren: 0.06,
+    },
+  },
+  closed: {
+    scaleY: 0,
+    opacity: 0,
+    transition: {
+      duration: 0.2,
+      ease: [0.4, 0, 1, 1],
+      when: 'afterChildren',
+      staggerChildren: 0.04,
+    },
+  },
+};
+
+/* Entries drop a few pixels into place. The offset stays smaller than the
+   panel's top inset so half-faded text never pokes past the border. */
+const menuItemVariants: Variants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1], when: 'beforeChildren' },
+  },
+  closed: {
+    opacity: 0,
+    y: -8,
+    transition: { duration: 0.14, when: 'afterChildren' },
+  },
+};
+
+const menuIconVariants: Variants = {
+  open: { scale: 1, y: 0 },
+  closed: { scale: 0, y: -5 },
+};
+
+/* — drawer choreography ——————————————————————————————————————————
+   Same grammar as the dropdown, tuned for a full-width sheet: the panel
+   unrolls from under the bar, then the links cascade. Stagger is tighter
+   than the dropdown's because the drawer lists every page. */
+
+const drawerPanelVariants: Variants = {
+  open: {
+    scaleY: 1,
+    opacity: 1,
+    transition: {
+      duration: 0.3,
+      ease: [0.22, 1, 0.36, 1],
+      when: 'beforeChildren',
+      staggerChildren: 0.045,
+    },
+  },
+  closed: {
+    scaleY: 0,
+    opacity: 0,
+    transition: {
+      duration: 0.24,
+      ease: [0.4, 0, 1, 1],
+      when: 'afterChildren',
+      staggerChildren: 0.03,
+    },
+  },
+};
+
+const drawerItemVariants: Variants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] },
+  },
+  closed: {
+    opacity: 0,
+    y: -12,
+    transition: { duration: 0.16 },
+  },
+};
 
 /**
  * Closing a dropdown on pointerdown means the panel is gone before the click
@@ -38,10 +132,19 @@ function swallowNextClick() {
   const timer = window.setTimeout(cleanup, 500);
 }
 
-/** The drawer flattens nav menus into a group label + indented page links. */
+/** The drawer flattens nav menus into a group label + indented page links.
+ *  Pages coming from a menu keep their dropdown icon, so the card reads as
+ *  the same component as the desktop dropdown. */
 type DrawerEntry =
   | { type: 'group'; key: string; label: string }
-  | { type: 'page'; key: string; label: string; to: string; indent: boolean };
+  | {
+      type: 'page';
+      key: string;
+      label: string;
+      to: string;
+      indent: boolean;
+      Icon?: NavMenuEntry['Icon'];
+    };
 
 const drawerEntries: DrawerEntry[] = mobileNav.flatMap<DrawerEntry>((item) =>
   item.kind === 'link'
@@ -56,17 +159,29 @@ const drawerEntries: DrawerEntry[] = mobileNav.flatMap<DrawerEntry>((item) =>
       ]
     : [
         { type: 'group', key: `menu:${item.id}`, label: item.label },
-        ...item.items.map<DrawerEntry>(({ route }) => ({
+        ...item.items.map<DrawerEntry>(({ route, Icon }) => ({
           type: 'page',
           key: route,
           label: routes[route].navLabel ?? routes[route].longLabel,
           to: routes[route].path,
           indent: true,
+          Icon,
         })),
       ],
 );
 
+/** reducedMotion="user" strips the transform choreography (but keeps fades)
+ *  for people who ask the OS for less motion — the counterpart of the CSS
+ *  prefers-reduced-motion block covering the remaining transitions. */
 export default function Header() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <HeaderInner />
+    </MotionConfig>
+  );
+}
+
+function HeaderInner() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [highlight, setHighlight] = useState<HighlightState>(HIDDEN_HIGHLIGHT);
@@ -103,7 +218,9 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Escape closes the drawer, and the body shouldn't scroll behind it.
+  // Escape closes the drawer. No body scroll lock: the menu is a floating
+  // card (like the desktop dropdown), and yanking the scrollbar away caused
+  // a visible layout jump every time it opened.
   useEffect(() => {
     if (!menuOpen) return;
 
@@ -111,12 +228,7 @@ export default function Header() {
       if (event.key === 'Escape') setMenuOpen(false);
     };
     document.addEventListener('keydown', onKeyDown);
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = '';
-    };
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, [menuOpen]);
 
   // Pressing anywhere outside the nav dismisses an open dropdown. Attached
@@ -335,42 +447,49 @@ export default function Header() {
                       aria-hidden="true"
                     />
                   </button>
-                  {/* Conditionally rendered, not hidden: the pop animation
-                      replays on every open, and a closed menu is unreachable
-                      by tab or screen reader for free. */}
-                  {openMenuId === item.id && (
-                    <div
-                      className="site-nav__menu"
-                      onKeyDown={(event) => onPanelKeyDown(event, item.id)}
+                  {/* Kept mounted so the close choreography can play; `inert`
+                      makes the folded panel unreachable by tab, pointer and
+                      screen reader, which is what conditional rendering used
+                      to provide. */}
+                  <div
+                    className="site-nav__menu"
+                    inert={openMenuId !== item.id}
+                    onKeyDown={(event) => onPanelKeyDown(event, item.id)}
+                  >
+                    <motion.div
+                      className="site-nav__menu-panel"
+                      role="menu"
+                      aria-label={item.label}
+                      initial="closed"
+                      animate={openMenuId === item.id ? 'open' : 'closed'}
+                      variants={menuPanelVariants}
+                      ref={(el) => {
+                        if (el) menuRefs.current.set(item.id, el);
+                        else menuRefs.current.delete(item.id);
+                      }}
                     >
-                      <div
-                        className="site-nav__menu-panel"
-                        role="menu"
-                        aria-label={item.label}
-                        ref={(el) => {
-                          if (el) menuRefs.current.set(item.id, el);
-                          else menuRefs.current.delete(item.id);
-                        }}
-                      >
-                        {item.items.map(({ route, Icon }) => (
-                          <NavLink
-                            key={route}
-                            to={routes[route].path}
-                            role="menuitem"
-                            className="site-nav__menu-link"
-                            onClick={() => setOpenMenuId(null)}
-                          >
-                            {Icon && (
-                              <span className="site-nav__menu-icon">
-                                <Icon size={17} />
-                              </span>
-                            )}
-                            {routes[route].navLabel}
-                          </NavLink>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                      {item.items.map(({ route, Icon }) => (
+                        <MotionNavLink
+                          key={route}
+                          to={routes[route].path}
+                          role="menuitem"
+                          className="site-nav__menu-link"
+                          variants={menuItemVariants}
+                          onClick={() => setOpenMenuId(null)}
+                        >
+                          {Icon && (
+                            <motion.span
+                              className="site-nav__menu-icon"
+                              variants={menuIconVariants}
+                            >
+                              <Icon size={17} />
+                            </motion.span>
+                          )}
+                          {routes[route].navLabel}
+                        </MotionNavLink>
+                      ))}
+                    </motion.div>
+                  </div>
                 </li>
               ),
             )}
@@ -395,8 +514,10 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Overlay drawer — kept mounted so it can animate both ways; it sits
-          above the page rather than pushing it. */}
+      {/* Mobile menu — a floating card in the desktop dropdown's grammar,
+          kept mounted so it can animate both ways. The backdrop is an
+          invisible full-screen click-catcher: pressing anywhere off the
+          card closes it, same as the dropdown's outside-press dismissal. */}
       <div className={`site-menu${menuOpen ? ' is-open' : ''}`} id={menuId}>
         <button
           type="button"
@@ -405,44 +526,54 @@ export default function Header() {
           tabIndex={-1}
           onClick={() => setMenuOpen(false)}
         />
-        <nav className="site-menu__panel" aria-label="Menu">
-          {drawerEntries.map((entry, index) =>
+        <motion.nav
+          className="site-menu__panel"
+          aria-label="Menu"
+          initial="closed"
+          animate={menuOpen ? 'open' : 'closed'}
+          variants={drawerPanelVariants}
+        >
+          {drawerEntries.map((entry) =>
             entry.type === 'group' ? (
-              <span
+              <motion.span
                 key={entry.key}
                 className="site-menu__group"
-                style={{ transitionDelay: menuOpen ? `${0.04 * index + 0.05}s` : '0s' }}
+                variants={drawerItemVariants}
               >
                 {entry.label}
-              </span>
+              </motion.span>
             ) : (
-              <NavLink
+              <MotionNavLink
                 key={entry.key}
                 to={entry.to}
                 className={`site-menu__link${entry.indent ? ' site-menu__link--sub' : ''}`}
-                style={{ transitionDelay: menuOpen ? `${0.04 * index + 0.05}s` : '0s' }}
+                variants={drawerItemVariants}
                 end
               >
+                {entry.Icon && (
+                  <motion.span
+                    className="site-nav__menu-icon"
+                    variants={menuIconVariants}
+                  >
+                    <entry.Icon size={17} />
+                  </motion.span>
+                )}
                 {entry.label}
-              </NavLink>
+              </MotionNavLink>
             ),
           )}
-          <a
+          <motion.a
             href="#kontakt"
             className="site-menu__link"
-            style={{
-              transitionDelay: menuOpen
-                ? `${0.04 * drawerEntries.length + 0.05}s`
-                : '0s',
-            }}
+            variants={drawerItemVariants}
             onClick={(event) => {
               scrollToContact(event);
               setMenuOpen(false);
             }}
           >
             Kontakt
-          </a>
-        </nav>
+          </motion.a>
+        </motion.nav>
       </div>
     </header>
   );

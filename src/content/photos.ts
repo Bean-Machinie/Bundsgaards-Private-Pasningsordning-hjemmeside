@@ -25,23 +25,23 @@ export interface Photo {
 export const photos = {
   day1: {
     placeholder: 'Morgen ved køkkenbordet',
-    src: stock.autumnGirl,
-    alt: 'Barn i efterårslys',
+    src: stock.arrivalHug,
+    alt: 'Lille barn bliver båret på armen ved ankomst',
   },
   day2: {
     placeholder: 'Tur på markvejen',
-    src: stock.meadowWalk,
-    alt: 'To børn går hånd i hånd over en eng',
+    src: stock.leafWagon,
+    alt: 'Barn samler efterårsblade i en trækvogn i haven',
   },
   day3: {
     placeholder: 'Frokost, hjemmelavet mad',
-    src: stock.pinecones,
-    alt: 'Lille barn, der samler grankogler',
+    src: stock.lunchTable,
+    alt: 'To små børn spiser frokost ved bordet',
   },
   day4: {
     placeholder: 'Barnevogne i haven',
-    src: stock.wildflowers,
-    alt: 'Barn med markblomster i den rolige skov',
+    src: stock.napping,
+    alt: 'Sovende barn under en hvid dyne',
   },
 
   // No photograph of the actual caretaker exists yet, so these stay as

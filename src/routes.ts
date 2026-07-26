@@ -89,9 +89,9 @@ export const primaryNav: NavItem[] = [
   { kind: 'link', route: 'galleri' },
 ];
 
-/** Everything in the mobile drawer, front page included. Menus render as a
- *  group label with their pages indented beneath it. */
-export const mobileNav: NavItem[] = [{ kind: 'link', route: 'forside' }, ...primaryNav];
+/** The mobile menu card. No Forside entry — the logo already links home.
+ *  Menus render as a group label with their pages indented beneath it. */
+export const mobileNav: NavItem[] = primaryNav;
 
 /** The flat list repeated in the footer. */
 export const footerNav: RouteKey[] = [

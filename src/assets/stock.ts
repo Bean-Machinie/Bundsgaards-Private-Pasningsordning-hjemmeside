@@ -14,13 +14,17 @@ import meadowWalk from './images/stock/pexels-blaj-gabriel-80193688-10933642.jpg
 import explorers from './images/stock/pexels-cottonbro-9292786.jpg';
 import wildflowers from './images/stock/pexels-itfeelslikefilm-2858263.jpg';
 import autumnGirl from './images/stock/pexels-jennifer-moore-352885-974353.jpg';
+import lunchTable from './images/stock/pexels-jep-gambardella-6212570.jpg';
 import twoBoys from './images/stock/pexels-katia-damyan-205356439-19092054.jpg';
 import leaf from './images/stock/pexels-maria-verkhoturtseva-21177529-10401974.jpg';
 import pointingSky from './images/stock/pexels-michael-obstoj-1772571864-33515757.jpg';
+import arrivalHug from './images/stock/pexels-olly-3822696.jpg';
+import leafWagon from './images/stock/pexels-polesietoys-31196660.jpg';
 import tallGrass from './images/stock/pexels-polina-smelova-80605762-10215423.jpg';
 import handsBw from './images/stock/pexels-raffoux-12235410.jpg';
 import sticks from './images/stock/pexels-stephentcandrews-9305063.jpg';
 import goldenRun from './images/stock/pexels-tam-d-ng-182134290-11217096.jpg';
+import napping from './images/stock/pexels-tatianasyrikova-3933069.jpg';
 
 export const stock = {
   /** Toddler in a white dress holding pinecones, bright dappled light. */
@@ -33,6 +37,14 @@ export const stock = {
   wildflowers,
   /** Girl in pink looking down, warm autumn leaves behind. */
   autumnGirl,
+  /** Toddler carried on an adult's shoulder, looking back — calm indoor light. */
+  arrivalHug,
+  /** Girl in a cap collecting autumn leaves in a toy wagon under golden trees. */
+  leafWagon,
+  /** Two toddlers eating lunch together at a kitchen table. */
+  lunchTable,
+  /** Small child sleeping snugly under a white duvet. */
+  napping,
   /** Two toddler boys in an autumn wood, one laughing (portrait). */
   twoBoys,
   /** Child smelling a leaf, soft green bokeh (close-up). */

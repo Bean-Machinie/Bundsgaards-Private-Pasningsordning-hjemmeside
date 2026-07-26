@@ -5,7 +5,6 @@ import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
 import { photos } from '../content/photos';
 import { headlineFacts, quickFacts } from '../content/practical';
-import { site } from '../content/site';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { routes } from '../routes';
@@ -14,8 +13,8 @@ import './Forside.css';
 
 /** The four moments from the day teased above the fold on the front page. */
 const dayTeasers = [
-  { photo: photos.day1, time: '07.30', title: 'Ankomst og morgenro' },
-  { photo: photos.day2, time: '09.00', title: 'Ud i haven — regntøj klar' },
+  { photo: photos.day1, time: '07.30', title: 'Ankomst' },
+  { photo: photos.day2, time: '09.00', title: 'Ude og lege i naturen' },
   { photo: photos.day3, time: '11.00', title: 'Frokost ved det samme bord' },
   { photo: photos.day4, time: '11.45', title: 'Middagslur' },
 ];
@@ -49,43 +48,11 @@ export default function Forside() {
         </div>
       </section>
 
-      {/* — values teaser ——————————————————————————————————————— */}
-      <section className="shell section--loose">
-        <div className="grid grid--split-top">
-          <div className="stack">
-            <div>
-              <span className="kicker">Værdier</span>
-              <h2 className="title-section">Det jeg lægger vægt på</h2>
-              <p className="prose measure--tight">
-                Jeg lægger vægt på trygge relationer, genkendelige rutiner og plads til det
-                enkelte barn. Det lyder enkelt — og det er det også. Men det kræver, at der
-                ikke er for mange om buddet.
-              </p>
-            </div>
-            <Link to={routes.vaerdier.path} className="btn btn-ghost link-more">
-              Læs om pædagogikken →
-            </Link>
-          </div>
-
-          <div className="fact-list">
-            {valueTeasers.map((value) => (
-              <div key={value.number} className="fact">
-                <span className="fact__n">{value.number}</span>
-                <div>
-                  <h3 className="fact__title">{value.title}</h3>
-                  <p className="fact__body">{value.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* — a day in pictures ——————————————————————————————————— */}
       <section className="band band--primary dayband">
         <div className="shell">
           <div className="dayband__head">
-            <p className="dayband__script">en helt almindelig tirsdag</p>
+            <p className="dayband__script">En helt almindelig tirsdag</p>
             <h2 className="title-section dayband__title">Sådan ser dagen ud</h2>
           </div>
 
@@ -126,28 +93,34 @@ export default function Forside() {
         </div>
       </section>
 
-      {/* — about Dorte ————————————————————————————————————————— */}
+      {/* — values teaser ——————————————————————————————————————— */}
       <section className="shell section--loose">
-        <div className="grid grid--split">
-          <ImageSlot photo={photos.dorte} ratio="1 / 1" rounding="xl" className="elev-sm" />
+        <div className="grid grid--split-top">
           <div className="stack">
             <div>
-              <span className="kicker">Om mig</span>
-              <h2 className="title-section">Jeg hedder Dorte</h2>
-              <p className="prose prose--large measure">
-                Jeg har arbejdet med små børn i mange år, og jeg valgte at åbne{' '}
-                {site.name}, fordi jeg savnede tiden med det enkelte barn. Her kan jeg nå
-                at sidde ned med den, der har brug for det, og stadig få hverdagen til at
-                hænge sammen.
-              </p>
-              <p className="prose prose--large measure">
-                Jeg bor på Bundsvej sammen med min mand. Vi har have, høns og god plads til
-                gummistøvler i entréen.
+              <span className="kicker">Værdier</span>
+              <h2 className="title-section">Det jeg lægger vægt på</h2>
+              <p className="prose measure--tight">
+                Jeg lægger vægt på trygge relationer, genkendelige rutiner og plads til det
+                enkelte barn. Det lyder enkelt — og det er det også. Men det kræver, at der
+                ikke er for mange om buddet.
               </p>
             </div>
-            <Link to={routes.ommig.path} className="btn btn-ghost link-more">
-              Mere om mig →
+            <Link to={routes.vaerdier.path} className="btn btn-ghost link-more">
+              Læs om pædagogikken →
             </Link>
+          </div>
+
+          <div className="fact-list">
+            {valueTeasers.map((value) => (
+              <div key={value.number} className="fact">
+                <span className="fact__n">{value.number}</span>
+                <div>
+                  <h3 className="fact__title">{value.title}</h3>
+                  <p className="fact__body">{value.body}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
