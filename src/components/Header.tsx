@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import { site } from '../content/site';
 import { scrollToContact } from '../lib/scrollToContact';
-import { mobileNav, primaryNav, routes, type NavMenuEntry } from '../routes';
+import { mobileNav, primaryNav, routes } from '../routes';
 import { CloseIcon, MenuIcon } from './Icons';
 import titleImage from '../assets/images/title-images/title-image-lockup-green.png';
 
@@ -151,12 +151,6 @@ export default function Header() {
     setOpenMenuId((current) => (current === id ? null : id));
   }, []);
 
-  /** The dropdown trigger reads as active when any of its pages is current. */
-  const isMenuActive = useCallback(
-    (items: NavMenuEntry[]) => items.some(({ route }) => pathname === routes[route].path),
-    [pathname],
-  );
-
   // The sliding highlight is one element measured against the live DOM, so it
   // needs no knowledge of the items' labels, widths or count — add a nav item
   // and it just works. `scrollLeft` keeps it aligned if the list ever scrolls.
@@ -177,12 +171,21 @@ export default function Header() {
 
   // The highlight's home is the active route's item: it rests there, follows
   // the pointer to whatever item is hovered, and springs back here when the
-  // pointer leaves. On a page with no nav item active (the front page) it just
-  // fades away. The dropdown trigger carries `.active` for its child routes,
-  // so the wash rests on it too.
+  // pointer leaves. On a page with no nav item active — the front page, or a
+  // dropdown child page like /vaerdier — it just fades away.
   const settleToActive = useCallback(() => {
     const list = listRef.current;
     if (!list) return;
+    // An open dropdown pins the wash on its trigger — the pointer wandering
+    // off (into the panel or elsewhere) shouldn't drop the highlight while
+    // the menu it belongs to is still showing.
+    if (openMenuId) {
+      const trigger = triggerRefs.current.get(openMenuId);
+      if (trigger) {
+        positionAt(trigger, true);
+        return;
+      }
+    }
     const active = list.querySelector<HTMLElement>('.site-nav__link.active');
     if (active) {
       positionAt(active, true);
@@ -190,7 +193,7 @@ export default function Header() {
       setSettling(false);
       setHighlight((h) => ({ ...h, visible: false }));
     }
-  }, [positionAt]);
+  }, [openMenuId, positionAt]);
 
   // Place the highlight on the active item before the browser paints, so it is
   // simply *there* on load and on navigation — no intro animation — then keep
@@ -311,9 +314,7 @@ export default function Header() {
                       if (el) triggerRefs.current.set(item.id, el);
                       else triggerRefs.current.delete(item.id);
                     }}
-                    className={`site-nav__link site-nav__trigger${
-                      isMenuActive(item.items) ? ' active' : ''
-                    }`}
+                    className="site-nav__link site-nav__trigger"
                     aria-haspopup="menu"
                     aria-expanded={openMenuId === item.id}
                     onClick={(event) => {

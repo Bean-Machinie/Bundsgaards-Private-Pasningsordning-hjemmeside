@@ -168,7 +168,9 @@
   font-size: calc(1em * var(--ratio-golden));
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
-  color: var(--color-on-dark-3);
+  /* Full-strength cream — the same tone as the wordmark above, so the column
+     titles read as part of the mark rather than faded metadata. */
+  color: var(--color-on-dark);
 }
 
 .site-footer__strong {
