@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
+import HandTrail from '../components/HandTrail';
 import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
 import SealStamp from '../components/SealStamp';
@@ -33,6 +34,7 @@ export default function Forside() {
 
       {/* — welcome intro ——————————————————————————————————————— */}
       <section className="shell section welcome">
+        <HandTrail trail="welcome" />
         <h2 className="welcome__script">Privat Pasningsordning tæt på Ganløse</h2>
         <p className="welcome__body">
           Bundsgård er en hyggelig gård med stråtag, stor have og egne høns. Vi er
@@ -120,6 +122,7 @@ export default function Forside() {
 
       {/* — values teaser ——————————————————————————————————————— */}
       <section className="shell section--loose values-section">
+        <HandTrail trail="values" />
         <div className="values-split">
           <div className="stack">
             <div>

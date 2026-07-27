@@ -1,0 +1,71 @@
+/* — handprints in the background ——————————————————————————————————
+   A decorative layer behind its host section. z-index: -1 puts it behind the
+   section's own content while staying above the page's cream ground, so the
+   prints read as part of the paper rather than as something laid on top of it —
+   they can never cover a word. The host section carries `isolation: isolate`
+   (Forside.css) so that -1 is measured inside the section and not against the
+   whole page.
+
+   The trail deliberately breaks the shell. Its hosts are centred, gutter-padded
+   columns, but this belongs to the paper the page is printed on, not to the
+   text column — so it takes the full viewport width and ignores the layout's
+   margins entirely. (100vw is safe against a stray horizontal scrollbar because
+   base.css clips overflow-x on html and body.)
+
+   Vertically it stays inside its section, and the clip is doing real work
+   there: a print that runs past the top or bottom is cut off at the cream's own
+   edge, which reads as the trail passing *behind* the hero photograph and the
+   day band rather than stopping short of them. */
+.hand-trail {
+  --hand-size: clamp(96px, 13vw, 210px);
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  overflow: clip;
+  pointer-events: none;
+}
+
+/* The image is a mask, not a picture: the PNGs are white with the paint's own
+   density written into their alpha (scripts/make-hand-prints.mjs), so the
+   colour comes from here. One step darker than the cream ground — enough to
+   catch the eye on a slow scroll, not enough to read as a graphic. Each print
+   then thins itself further with its own opacity.
+
+   Sizing: only the width is set inline, per print; aspect-ratio supplies the
+   height, since a masked box has no picture to take its proportions from.
+   -webkit- twins for Safari before 15.4, which shipped mask-image unprefixed. */
+.hand-print {
+  position: absolute;
+  display: block;
+  background-color: var(--color-muted);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+.hand-print--1 {
+  aspect-ratio: 846 / 1038;
+  -webkit-mask-image: url('../assets/images/hand-1-print.png');
+  mask-image: url('../assets/images/hand-1-print.png');
+}
+.hand-print--2 {
+  aspect-ratio: 1 / 1;
+  -webkit-mask-image: url('../assets/images/hand-2-print.png');
+  mask-image: url('../assets/images/hand-2-print.png');
+}
+
+/* On a phone the text runs the full width, so the prints have nowhere to hide
+   in the margins — they come down in size and lighten a step, which keeps them
+   behind the reading rather than under it. */
+@media (max-width: 640px) {
+  .hand-trail {
+    --hand-size: clamp(84px, 22vw, 130px);
+
+    opacity: 0.75;
+  }
+}
