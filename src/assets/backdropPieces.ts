@@ -7,18 +7,21 @@
 import piece0 from './images/backdrop/hand-1.png';
 import piece1 from './images/backdrop/hand-2.png';
 import piece2 from './images/backdrop/stick.png';
-import piece3 from './images/backdrop/needle-01.png';
-import piece4 from './images/backdrop/needle-02.png';
-import piece5 from './images/backdrop/needle-03.png';
-import piece6 from './images/backdrop/needle-04.png';
-import piece7 from './images/backdrop/needle-05.png';
-import piece8 from './images/backdrop/needle-06.png';
-import piece9 from './images/backdrop/needle-07.png';
-import piece10 from './images/backdrop/needle-08.png';
-import piece11 from './images/backdrop/needle-09.png';
-import piece12 from './images/backdrop/needle-10.png';
-import piece13 from './images/backdrop/needle-11.png';
-import piece14 from './images/backdrop/needle-12.png';
+import piece3 from './images/backdrop/dirt.png';
+import piece4 from './images/backdrop/gran-1.png';
+import piece5 from './images/backdrop/gran-2.png';
+import piece6 from './images/backdrop/needle-01.png';
+import piece7 from './images/backdrop/needle-02.png';
+import piece8 from './images/backdrop/needle-03.png';
+import piece9 from './images/backdrop/needle-04.png';
+import piece10 from './images/backdrop/needle-05.png';
+import piece11 from './images/backdrop/needle-06.png';
+import piece12 from './images/backdrop/needle-07.png';
+import piece13 from './images/backdrop/needle-08.png';
+import piece14 from './images/backdrop/needle-09.png';
+import piece15 from './images/backdrop/needle-10.png';
+import piece16 from './images/backdrop/needle-11.png';
+import piece17 from './images/backdrop/needle-12.png';
 
 export interface BackdropPiece {
   /** Fingerprinted URL of the mask. */
@@ -30,19 +33,22 @@ export interface BackdropPiece {
 export const backdropPieces = {
   'hand-1': { src: piece0, ratio: 0.8150 },
   'hand-2': { src: piece1, ratio: 1.0000 },
-  'stick': { src: piece2, ratio: 7.9162 },
-  'needle-01': { src: piece3, ratio: 0.6885 },
-  'needle-02': { src: piece4, ratio: 0.3321 },
-  'needle-03': { src: piece5, ratio: 0.6364 },
-  'needle-04': { src: piece6, ratio: 0.6557 },
-  'needle-05': { src: piece7, ratio: 3.1000 },
-  'needle-06': { src: piece8, ratio: 0.9528 },
-  'needle-07': { src: piece9, ratio: 2.2889 },
-  'needle-08': { src: piece10, ratio: 0.6538 },
-  'needle-09': { src: piece11, ratio: 3.0444 },
-  'needle-10': { src: piece12, ratio: 5.0385 },
-  'needle-11': { src: piece13, ratio: 5.0345 },
-  'needle-12': { src: piece14, ratio: 7.5882 },
+  'stick': { src: piece2, ratio: 7.9607 },
+  'dirt': { src: piece3, ratio: 1.0220 },
+  'gran-1': { src: piece4, ratio: 0.9448 },
+  'gran-2': { src: piece5, ratio: 0.4367 },
+  'needle-01': { src: piece6, ratio: 0.6885 },
+  'needle-02': { src: piece7, ratio: 0.3321 },
+  'needle-03': { src: piece8, ratio: 0.6364 },
+  'needle-04': { src: piece9, ratio: 0.6557 },
+  'needle-05': { src: piece10, ratio: 3.1000 },
+  'needle-06': { src: piece11, ratio: 0.9528 },
+  'needle-07': { src: piece12, ratio: 2.2889 },
+  'needle-08': { src: piece13, ratio: 0.6538 },
+  'needle-09': { src: piece14, ratio: 3.0444 },
+  'needle-10': { src: piece15, ratio: 5.0385 },
+  'needle-11': { src: piece16, ratio: 5.0345 },
+  'needle-12': { src: piece17, ratio: 7.5882 },
 } satisfies Record<string, BackdropPiece>;
 
 export type PieceName = keyof typeof backdropPieces;

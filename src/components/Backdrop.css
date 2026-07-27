@@ -1,0 +1,160 @@
+/* — the printed paper ——————————————————————————————————————————————
+   The spread is composed to reach both edges of the page at once, so it is cut
+   in two down its empty middle (scripts/make-backdrop-pieces.mjs) and each half
+   is hung on the edge it belongs to.
+
+   Halving is what makes it show. Drawn whole, the picture is 16:9 standing in a
+   section a fifth as tall: sized to the viewport's width it was almost entirely
+   overflow nobody ever saw, and sized to fit the section it would have been a
+   thin strip. Each half is nearly square, so a single sensible size shows most
+   of the arrangement and still spills past the section top and bottom.
+
+   Two rules are load-bearing:
+
+   z-index: -1, with nothing isolating it. The layer paints in the page's own
+   stacking context, behind every in-flow thing on it — the hero, the day band,
+   and all the text. It cannot cover a word, and the spill disappears behind the
+   photograph rather than sitting on top of it. (Giving a host section
+   `isolation: isolate` would trap the layer inside that section and it would
+   paint *over* the hero instead.)
+
+   The spill runs upward only, and that is deliberate. Every cream section on
+   this page has an opaque neighbour directly above it — the hero photograph
+   above the welcome, the day band above the values teaser — so an upward spill
+   always disappears under something. Downward it would have to clear a whole
+   band to be safe, and at these sizes it does not: it would surface again in
+   the *next* cream section and show the picture's cut edge in the middle of the
+   page. So the bottom is clipped at the section's own boundary, which is
+   exactly where the next opaque section begins — invisible, and not dependent
+   on paint order. (At the end of the page that boundary is the footer, which is
+   what keeps handprints off the green.)
+
+   The negative top inset in the clip expands the region upward rather than
+   trimming it, so only the bottom is affected.
+
+   The layer also breaks the shell — its hosts are centred, gutter-padded
+   columns, but the paper is not the text column, so this spans the viewport and
+   the halves sit on its true edges. (100vw is safe against a stray horizontal
+   scrollbar because base.css clips overflow-x on html and body.) */
+.backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+  clip-path: inset(-100% 0 0 0);
+}
+
+/* Height sets the scale; the mask keeps its own proportions at `auto 100%` and
+   the element's width is only a window onto it. Splitting the two like this is
+   what makes every viewport safe:
+
+   HEIGHT — `max()` of two measures, and each covers a case the other cannot.
+   The viewport measure is the one that normally wins, and it is what holds the
+   page together: the sections are different heights, so a pure percentage would
+   print the same handprint larger in one than the other and scrolling between
+   them would look like the paper changed scale. But on a phone or tablet the
+   text stacks and a section grows taller than that measure — and then a picture
+   sized to the viewport would end *inside* the cream, showing the frame's own
+   cut edge across the page. So the percentage floor takes over there and the
+   picture is always taller than its section, whatever the text does. It is
+   flush with the sections above and below by construction, never by luck.
+
+   WIDTH — just a window, so it can be clamped for narrow screens without
+   touching the picture's proportions. Anything past it is simply not painted,
+   and since each half is anchored to the edge it was cut for, what falls
+   outside is always the empty middle of the spread, never its subject.
+
+   Colour lives here, a step darker than the cream ground. The images are masks
+   (flat white, subject in the alpha), so nothing in them can fight the palette
+   and no white can survive into the page.
+
+   Depth is two knobs, and they are set together: this colour and each run's
+   opacity below. Opacity alone can only ever reach --color-muted, which is the
+   darkest ground the palette has, so going deeper than it means stirring a
+   little ink into the colour rather than pushing the opacity up. 4% here is
+   half a perceptible step — deliberately between the plain muted ground and the
+   8% that read as too heavy.
+   -webkit- twins for Safari before 15.4, which shipped mask-image unprefixed. */
+.backdrop__side {
+  position: absolute;
+  top: 50%;
+  height: max(106%, min(56vw, 1060px));
+  width: min(40vw, 620px);
+  transform: translateY(-50%);
+  background-color: color-mix(in srgb, var(--color-muted) 96%, var(--color-ink));
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: auto 100%;
+  mask-size: auto 100%;
+}
+.backdrop__side--left {
+  left: 0;
+}
+.backdrop__side--right {
+  right: 0;
+}
+
+/* The welcome section takes the halves as they were photographed, each anchored
+   to the edge it was cut for. */
+.backdrop--welcome {
+  opacity: 0.64;
+}
+.backdrop--welcome .backdrop__side--left {
+  -webkit-mask-image: url('../assets/images/backdrop/backdrop-left.png');
+  mask-image: url('../assets/images/backdrop/backdrop-left.png');
+  -webkit-mask-position: left center;
+  mask-position: left center;
+}
+.backdrop--welcome .backdrop__side--right {
+  -webkit-mask-image: url('../assets/images/backdrop/backdrop-right.png');
+  mask-image: url('../assets/images/backdrop/backdrop-right.png');
+  -webkit-mask-position: right center;
+  mask-position: right center;
+}
+
+/* — variation ————————————————————————————————————————————————————
+   Further down the page the halves swap sides and are mirrored. Mirroring is
+   what makes the swap work: each half is dense along the edge it was cut for,
+   so flipping puts that density back on the outside — hung on the opposite edge
+   it still hugs the page rather than pointing into it. The mask then anchors to
+   the *opposite* side from the one it will end up on, because the flip mirrors
+   the painted result.
+
+   A step fainter, too — it sits behind denser text than the welcome does. */
+.backdrop--values {
+  opacity: 0.54;
+}
+.backdrop--values .backdrop__side--left {
+  transform: translateY(-50%) scaleX(-1);
+  -webkit-mask-image: url('../assets/images/backdrop/backdrop-right.png');
+  mask-image: url('../assets/images/backdrop/backdrop-right.png');
+  -webkit-mask-position: right center;
+  mask-position: right center;
+}
+.backdrop--values .backdrop__side--right {
+  transform: translateY(-50%) scaleX(-1);
+  -webkit-mask-image: url('../assets/images/backdrop/backdrop-left.png');
+  mask-image: url('../assets/images/backdrop/backdrop-left.png');
+  -webkit-mask-position: left center;
+  mask-position: left center;
+}
+
+/* On a phone the text runs the full width, so the windows narrow to a margin's
+   worth and both runs lighten a long way — a texture at the edge of the paper,
+   never competing with the reading. The height rule above already guarantees
+   the picture outgrows the section here, so nothing needs saying about it. */
+@media (max-width: 640px) {
+  .backdrop__side {
+    width: 34vw;
+  }
+  .backdrop--welcome {
+    opacity: 0.37;
+  }
+  .backdrop--values {
+    opacity: 0.33;
+  }
+}
