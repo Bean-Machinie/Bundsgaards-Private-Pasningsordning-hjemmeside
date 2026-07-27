@@ -172,7 +172,9 @@
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   transform: rotate(45deg);
-  transition: transform 0.25s ease, margin-top 0.25s ease;
+  /* Tracks the panel's own unfurl — the arrow must not still be turning after
+     the menu it belongs to has finished opening. */
+  transition: transform 0.15s ease, margin-top 0.15s ease;
 }
 .site-nav__chevron--open {
   transform: rotate(225deg);
@@ -316,14 +318,15 @@
    bordered card hanging from the burger button, not a full-width sheet.
    Kept mounted and animated with visibility so it fades both ways; the
    close delay must outlast the motion choreography (links retreat, then
-   the panel folds) so nothing is cut off mid-animation. */
+   the panel folds) so nothing is cut off mid-animation — so it is pinned
+   just past that sequence's total, and moves whenever those timings do. */
 .site-menu {
   position: fixed;
   inset: var(--header-height) 0 0 0;
   z-index: 39;
   visibility: hidden;
   pointer-events: none;
-  transition: visibility 0s linear 0.6s;
+  transition: visibility 0s linear 0.3s;
 }
 .site-menu.is-open {
   visibility: visible;

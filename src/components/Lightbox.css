@@ -1,0 +1,171 @@
+/* — the photo viewer —————————————————————————————————————————————
+   Full-bleed ink wash rather than a floating panel: the photograph is the
+   subject, so everything around it recedes to the same dark the hero and the
+   day band already use. Controls borrow the hero arrows' grammar exactly —
+   circular, hairline cream border, blurred ink fill — so the viewer reads as
+   part of the site and not as a bolted-on plugin. */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--color-ink) 94%, transparent);
+  /* The dark ground inverts the type, same rule as the dark bands. */
+  color: var(--color-on-dark);
+  animation: lightbox-in 0.22s ease both;
+}
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* — the track ——————————————————————————————————————————————————
+   keen-slider lays the slides side by side and owns the transform; the slide
+   is only a centring frame with room for the chrome at the edges. */
+.lightbox__track {
+  width: 100%;
+  height: 100%;
+}
+.lightbox__slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Top gap clears the counter/close bar, bottom gap the caption. The sides
+     leave the arrows their own lane so a wide photo never sits under them. */
+  padding: clamp(64px, 9vh, 96px) clamp(56px, 9vw, 112px) clamp(72px, 11vh, 104px);
+}
+
+/* Two rows — photo, then caption — and a definite height, which is what lets
+   the photo below cap itself with a percentage instead of guessing at the
+   caption's height. The photo row takes everything left over; minmax(0, 1fr)
+   rather than 1fr so it may shrink below the image's intrinsic height. */
+.lightbox__figure {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
+  gap: var(--space-4);
+  height: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+/* `contain`, not `cover`: the mosaic crops, the viewer shows the whole frame.
+   Both caps at 100% with auto dimensions means the box always ends up exactly
+   the picture — no letterboxed bars for the radius to cut across. Radius stays
+   at the large token; this is a hero-sized block. */
+.lightbox__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-xl);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+/* Photos that haven't been shot yet still get a frame, as on the pages. */
+.lightbox__placeholder {
+  display: grid;
+  place-items: center;
+  width: min(70vw, 520px);
+  aspect-ratio: 4 / 3;
+  padding: var(--space-6);
+  text-align: center;
+  border: 1px dashed var(--color-on-dark-3);
+  border-radius: var(--radius-xl);
+  font-size: 11px;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  line-height: 1.7;
+  color: var(--color-on-dark-2);
+}
+
+/* margin: 0 because the element default gives every figcaption a top margin,
+   and here the figure's own grid gap does that spacing. */
+.lightbox__caption {
+  margin: 0;
+  max-width: 62ch;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-on-dark-2);
+}
+
+/* — chrome ——————————————————————————————————————————————————————— */
+
+.lightbox__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(12px, 2vw, 22px) clamp(12px, 2vw, 22px);
+}
+/* The signature small uppercase label, in the faded cream the dark bands use. */
+.lightbox__counter {
+  padding-inline: var(--space-3);
+  font-size: var(--label-size);
+  font-weight: 600;
+  letter-spacing: var(--label-tracking);
+  color: var(--color-on-dark-3);
+}
+
+.lightbox__btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-on-dark) 35%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-ink) 32%, transparent);
+  color: var(--color-on-dark);
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.lightbox__btn:hover {
+  background: color-mix(in srgb, var(--color-ink) 62%, transparent);
+  border-color: var(--color-on-dark);
+}
+.lightbox__btn--prev,
+.lightbox__btn--next {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+}
+.lightbox__btn--prev {
+  left: clamp(8px, 2vw, 28px);
+}
+.lightbox__btn--next {
+  right: clamp(8px, 2vw, 28px);
+}
+
+/* Announced, never seen: the visible caption belongs to one slide of many, so
+   the current one is mirrored here for screen readers. */
+.lightbox__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* On a phone the arrows are redundant — the track is dragged — and they steal
+   width from the photo, so they step aside and swiping takes over. */
+@media (max-width: 620px) {
+  .lightbox__btn--prev,
+  .lightbox__btn--next {
+    display: none;
+  }
+  .lightbox__slide {
+    padding: clamp(56px, 8vh, 72px) var(--space-4) clamp(64px, 10vh, 88px);
+  }
+}

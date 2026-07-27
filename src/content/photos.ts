@@ -100,46 +100,114 @@ export const photos = {
 } satisfies Record<string, Photo>;
 
 export interface GalleryItem extends Photo {
+  /** Sits on the photo itself, bottom left, and names the tile's open button. */
   caption: string;
-  /** CSS aspect-ratio for the frame. */
-  ratio: string;
 }
 
+/**
+ * The gallery, in mosaic order.
+ *
+ * The Galleri page lays these out in seven-tile blocks that alternate between
+ * two mirrored arrangements (see `TILE_PATTERN` in pages/Galleri.tsx). A photo's
+ * position therefore decides both its shape and how it gets cropped, so the
+ * order below is chosen to match each picture: the portrait photographs sit in
+ * the upright slots, the widest landscapes in the wide ones, and the photos that
+ * can carry a long caption sit in the big squares.
+ *
+ * The slots, in order — block A: big square, upright, small, small, wide, small,
+ * small. Block B: small, upright, big square, small, small, small, wide.
+ *
+ * Keep the length a multiple of seven so every block comes out whole (fourteen
+ * to end on a complete pair), and when reordering, move photos between slots of
+ * the same shape.
+ */
 export const gallery: GalleryItem[] = [
+  // ── Block one ────────────────────────────────────────────────────────────
   {
-    placeholder: 'Bredt billede: morgen i haven',
+    placeholder: 'Morgen i haven',
     src: stock.goldenRun,
     alt: 'To børn løber gennem en solbeskinnet skov',
     caption:
       'Mandag morgen. Det tager tyve minutter at komme ud af døren, og det er helt fint.',
-    ratio: '16 / 8',
   },
   {
-    placeholder: 'Hænder i sandkassen',
+    placeholder: 'Leg i skovkanten',
     src: stock.twoBoys,
     alt: 'To små drenge i efterårsskoven',
     caption: 'Haven er vores første rum.',
-    ratio: '4 / 5',
   },
   {
-    placeholder: 'Frokostbordet oppefra',
+    placeholder: 'Fund på skovstien',
     src: stock.sticks,
     alt: 'To børn undersøger grene på en skovsti',
     caption: 'Vi undersøger det, vi finder.',
-    ratio: '1 / 1',
   },
   {
-    placeholder: 'Barnevogne under træet',
-    src: stock.handsBw,
-    alt: 'To små børn går hånd i hånd (sort-hvid)',
-    caption: 'Hånd i hånd, hele vejen.',
-    ratio: '4 / 5',
+    placeholder: 'Frokostbordet',
+    src: stock.lunchTable,
+    alt: 'To små børn spiser frokost ved bordet',
+    caption: 'Frokost ved det samme bord som altid.',
   },
   {
     placeholder: 'På tur ad markvejen',
     src: stock.meadowWalk,
     alt: 'To børn går hånd i hånd over en eng',
     caption: 'Onsdagsturen. Vi når sjældent så langt, som vi havde tænkt.',
-    ratio: '3 / 2',
+  },
+  {
+    placeholder: 'Blade i trækvognen',
+    src: stock.leafWagon,
+    alt: 'Barn samler efterårsblade i en trækvogn i haven',
+    caption: 'Blade nok til hele trækvognen.',
+  },
+  {
+    placeholder: 'Nærbillede af et blad',
+    src: stock.leaf,
+    alt: 'Barn, der dufter til et blad',
+    caption: 'Alting skal lugtes til først.',
+  },
+
+  // ── Block two — mirrored, so the small tile comes first ───────────────────
+  {
+    placeholder: 'Middagslur',
+    src: stock.napping,
+    alt: 'Sovende barn under en hvid dyne',
+    caption: 'Der bliver sovet.',
+  },
+  {
+    placeholder: 'Hånd i hånd',
+    src: stock.handsBw,
+    alt: 'To små børn går hånd i hånd (sort-hvid)',
+    caption: 'Hånd i hånd, hele vejen.',
+  },
+  {
+    placeholder: 'På opdagelse ved træet',
+    src: stock.explorers,
+    alt: 'To børn på opdagelse med kikkert ved et træ',
+    caption: 'Ekspedition til hækken. Kikkerten er det vigtigste udstyr.',
+  },
+  {
+    placeholder: 'Eftermiddag i efterårslys',
+    src: stock.autumnGirl,
+    alt: 'Barn i efterårslys',
+    caption: 'Eftermiddagslys.',
+  },
+  {
+    placeholder: 'Buket fra vejkanten',
+    src: stock.wildflowers,
+    alt: 'Barn med en buket markblomster',
+    caption: 'Buketter til køkkenbordet.',
+  },
+  {
+    placeholder: 'Grankogler i lommen',
+    src: stock.pinecones,
+    alt: 'Lille barn med grankogler i hænderne',
+    caption: 'Grankogler kommer med hjem i lommen.',
+  },
+  {
+    placeholder: 'Ned mod skovkanten',
+    src: stock.tallGrass,
+    alt: 'Barn på vej mod skovkanten gennem højt græs',
+    caption: 'Ned ad markvejen — i regntøj, hvis det skal være.',
   },
 ];

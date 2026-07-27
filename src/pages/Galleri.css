@@ -1,31 +1,184 @@
-.galleri {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(20px, 3vw, 36px);
+/* — the header ————————————————————————————————————————————————————
+   On this page the photographs are the content and the title is a label on
+   them, not a spread of its own — so it sits close under the site header, and
+   the first row of tiles follows close under it. Both are a good deal tighter
+   than the shared .section--loose rhythm the other pages open with.
+
+   Doubled selectors are load-bearing: page CSS lands before global.css in the
+   bundle, so a single class would lose the specificity tie to .section--loose's
+   own padding-block. */
+.section--loose.galleri__head {
+  padding-block: clamp(28px, 3.4vw, 52px) clamp(20px, 2.6vw, 34px);
+}
+/* The title's own bottom margin would stack on top of that padding; the gap to
+   the photos is set in one place instead. */
+.galleri__head .title-page {
+  margin-bottom: 0;
+}
+.section--loose.galleri__body {
+  padding-top: 0;
 }
 
-.galleri__row {
+/* — the mosaic ————————————————————————————————————————————————————
+   One extent, four columns, cut into a repeating seven-tile block: a big
+   square, an upright, two small, a wide one, two small (the block is drawn in
+   TILE_PATTERN in Galleri.tsx). Twelve cells per block, filled exactly, so the
+   blocks stack without holes and the rhythm repeats down the page. Widest tile
+   is two of four columns — nothing runs from edge to edge.
+
+   Row heights come from the single-cell tiles: they carry aspect-ratio 1, so
+   every row is exactly one column tall, and the spanning tiles simply stretch
+   across the rows they cover. That is why each row of the block holds at least
+   one small tile — without one, the row would have nothing to size against.
+   `dense` is what tucks the second small tile into the hole under the first. */
+.galleri__mosaic {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
-  gap: clamp(16px, 2.5vw, 28px);
-  align-items: start;
-}
-/* Drops the middle frame so the row reads as a hand-laid spread rather than a
-   grid. Collapses to zero when the row wraps. */
-.galleri__item--offset {
-  padding-top: clamp(0px, 4vw, 48px);
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: row dense;
+  gap: clamp(8px, 1.1vw, 16px);
 }
 
-.galleri__closer {
-  max-width: 70%;
+.gtile--small {
+  aspect-ratio: 1;
 }
-@media (max-width: 640px) {
-  .galleri__closer {
-    max-width: 100%;
+.gtile--feature {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.gtile--tall {
+  grid-row: span 2;
+}
+.gtile--wide {
+  grid-column: span 2;
+}
+
+/* — a tile ————————————————————————————————————————————————————————
+   The tile is the button, so the whole frame is one target and picks up the
+   global focus ring for free. */
+.gtile {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--color-muted);
+  /* Named, not inherited: a <button> takes the UA's own font otherwise, which
+     is what .btn does about it too. */
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+/* Taken out of flow, which is load-bearing rather than cosmetic: in flow, a
+   photo's own proportions leak into the layout. `height: 100%` against a tile
+   of indefinite height falls back to auto, the image then takes its natural
+   ratio, and a landscape photo in a two-column tile demands more height than
+   the row has — it stretches that row and leaves a hole beside the tiles that
+   didn't grow with it. Absolute means the tile's shape comes only from its
+   cell span, and the photo covers whatever it is given.
+   The photo is flush with the frame, so it shares the radius exactly. */
+.gtile .image-slot {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+/* Hover is one quiet move, not a bounce: the photograph eases in a step while
+   the scrim under the caption deepens. The frame itself never moves — a grid
+   this tight reads as broken if tiles lift out of line. */
+.gtile img {
+  transform: scale(1);
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.gtile:hover img,
+.gtile:focus-visible img {
+  transform: scale(1.055);
+}
+
+/* The scrim only covers the caption's end of the frame — a wash over the whole
+   photo would dull it. Sits above the photo, below the caption. */
+.gtile::after {
+  content: '';
+  position: absolute;
+  inset: 40% 0 0;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--color-ink) 62%, transparent)
+  );
+  opacity: 0.85;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.gtile:hover::after,
+.gtile:focus-visible::after {
+  opacity: 1;
+}
+
+/* Laid on the photo, bottom left. Cream on the scrim, same inversion the dark
+   bands use, and left-aligned however wide the tile is. */
+.gtile__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: var(--space-4) var(--space-5);
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+  text-wrap: pretty;
+  color: var(--color-on-dark);
+  text-shadow: 0 1px 12px color-mix(in srgb, var(--color-ink) 55%, transparent);
+  transform: translateY(0);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.gtile:hover .gtile__caption,
+.gtile:focus-visible .gtile__caption {
+  transform: translateY(-3px);
+}
+/* The small tiles are a quarter of the width — the long captions belong to the
+   big shapes, and at this size the type steps down with the frame. */
+.gtile--small .gtile__caption {
+  padding: var(--space-3) var(--space-4);
+  font-size: 12px;
+}
+
+/* Two columns from the tablet width down. Nothing may span both of them — that
+   would put a photo edge to edge — so only the upright tile keeps its span and
+   the two wide shapes become squares. The block becomes 2 × 4 cells, still
+   filled exactly:
+
+     ┌───┬───┐   f  the big square, now small
+     │ f │   │   T  the upright, still two rows
+     ├───┤ T │   s  small
+     │ s │   │
+     ├───┼───┤
+     │ s │ w │
+     ├───┼───┤
+     │ s │ s │
+     └───┴───┘
+
+   Every row keeps a single-cell tile to size it, which is the one rule this
+   layout cannot break. */
+@media (max-width: 860px) {
+  .galleri__mosaic {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gtile--feature,
+  .gtile--wide {
+    grid-column: span 1;
+    grid-row: span 1;
+    aspect-ratio: 1;
   }
 }
 
-.galleri__caption {
-  margin-top: var(--space-3);
-  font-size: 12px;
+/* On a phone a tile is a third of its desktop width, and a caption laid over
+   one covers the photograph it is describing — so the photo goes bare and the
+   scrim that carried the text goes with it. The words aren't lost: they are in
+   the viewer, one tap away, and each photo's alt text still names its tile for
+   a screen reader. */
+@media (max-width: 620px) {
+  .gtile__caption,
+  .gtile::after {
+    display: none;
+  }
 }

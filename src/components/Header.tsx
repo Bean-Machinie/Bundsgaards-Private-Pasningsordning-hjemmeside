@@ -24,28 +24,37 @@ const MotionNavLink = motion.create(NavLink);
 /* — dropdown choreography ————————————————————————————————————————
    The panel unfurls (scaleY from the tail) before its entries cascade in;
    closing reverses the order — entries retreat first, then the panel folds.
-   `when` + `staggerChildren` on the parent orchestrate the whole tree, so
-   the entries and icons only declare their own two poses. */
+   `staggerChildren` on the panel orchestrates the entries, and each entry is
+   the smallest animated unit there is: its icon is plain DOM inside it, so the
+   mark and its label fade and settle as one thing, on one timing. (The icons
+   used to be variant children of their own, which made them a third phase —
+   they waited for the row, then scaled up after it.)
+
+   Because the phases run in sequence, the felt duration is the sum of them:
+   panel, then one stagger step per entry, then the last entry's own move. The
+   numbers are therefore small — a menu has to answer the click, so the whole
+   sequence lands in about 0.3s opening and 0.2s closing, and the ordering
+   reads as crispness rather than as steps. */
 
 const menuPanelVariants: Variants = {
   open: {
     scaleY: 1,
     opacity: 1,
     transition: {
-      duration: 0.26,
+      duration: 0.13,
       ease: [0.34, 1.56, 0.64, 1],
       when: 'beforeChildren',
-      staggerChildren: 0.06,
+      staggerChildren: 0.028,
     },
   },
   closed: {
     scaleY: 0,
     opacity: 0,
     transition: {
-      duration: 0.2,
+      duration: 0.1,
       ease: [0.4, 0, 1, 1],
       when: 'afterChildren',
-      staggerChildren: 0.04,
+      staggerChildren: 0.018,
     },
   },
 };
@@ -56,44 +65,47 @@ const menuItemVariants: Variants = {
   open: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.24, ease: [0.22, 1, 0.36, 1], when: 'beforeChildren' },
+    transition: { duration: 0.11, ease: [0.22, 1, 0.36, 1] },
   },
   closed: {
     opacity: 0,
     y: -8,
-    transition: { duration: 0.14, when: 'afterChildren' },
+    transition: { duration: 0.07 },
   },
-};
-
-const menuIconVariants: Variants = {
-  open: { scale: 1, y: 0 },
-  closed: { scale: 0, y: -5 },
 };
 
 /* — drawer choreography ——————————————————————————————————————————
    Same grammar as the dropdown, tuned for a full-width sheet: the panel
    unrolls from under the bar, then the links cascade. Stagger is tighter
-   than the dropdown's because the drawer lists every page. */
+   than the dropdown's because the drawer lists every page.
+
+   Eight rows is what makes the sum dangerous here — every stagger step is paid
+   eight times over, which is why this used to take the best part of a second to
+   open. So the opening cascade doesn't wait for the panel at all: `delayChildren`
+   starts the links just behind the unrolling edge instead of after it, which
+   keeps the panel-then-links reading while overlapping the two phases. Closing
+   keeps the strict reverse order, but at a step size small enough that eight of
+   them still cost less than a tenth of a second. */
 
 const drawerPanelVariants: Variants = {
   open: {
     scaleY: 1,
     opacity: 1,
     transition: {
-      duration: 0.3,
+      duration: 0.16,
       ease: [0.22, 1, 0.36, 1],
-      when: 'beforeChildren',
-      staggerChildren: 0.045,
+      delayChildren: 0.05,
+      staggerChildren: 0.018,
     },
   },
   closed: {
     scaleY: 0,
     opacity: 0,
     transition: {
-      duration: 0.24,
+      duration: 0.11,
       ease: [0.4, 0, 1, 1],
       when: 'afterChildren',
-      staggerChildren: 0.03,
+      staggerChildren: 0.012,
     },
   },
 };
@@ -102,12 +114,12 @@ const drawerItemVariants: Variants = {
   open: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.13, ease: [0.22, 1, 0.36, 1] },
   },
   closed: {
     opacity: 0,
     y: -12,
-    transition: { duration: 0.16 },
+    transition: { duration: 0.07 },
   },
 };
 
@@ -478,12 +490,9 @@ function HeaderInner() {
                           onClick={() => setOpenMenuId(null)}
                         >
                           {Icon && (
-                            <motion.span
-                              className="site-nav__menu-icon"
-                              variants={menuIconVariants}
-                            >
+                            <span className="site-nav__menu-icon">
                               <Icon size={17} />
-                            </motion.span>
+                            </span>
                           )}
                           {routes[route].navLabel}
                         </MotionNavLink>
@@ -551,12 +560,9 @@ function HeaderInner() {
                 end
               >
                 {entry.Icon && (
-                  <motion.span
-                    className="site-nav__menu-icon"
-                    variants={menuIconVariants}
-                  >
+                  <span className="site-nav__menu-icon">
                     <entry.Icon size={17} />
-                  </motion.span>
+                  </span>
                 )}
                 {entry.label}
               </MotionNavLink>
