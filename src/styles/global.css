@@ -177,6 +177,33 @@ body {
   line-height: 1.1;
   margin: var(--space-3) 0 var(--space-5);
 }
+/* Page titles open their section — nothing sits above them any more, so the
+   leading margin (which used to space them off a kicker) collapses. */
+.title-page:first-child {
+  margin-top: 0;
+}
+
+/* The emphasised tail of a title: the front page's handwritten terracotta
+   voice, mid-sentence. The pattern is the hero's — plain display type, then
+   the words that carry the meaning in a different hand.
+   Inline (not inline-block) so those words wrap as part of the same sentence,
+   and font-style is reset because the browser italicises <em> by default and
+   Caveat is already a slanted hand. Caveat runs visually small for its em
+   size, hence the step up — it matches the serif's apparent size. */
+.title-em {
+  display: inline;
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.14em;
+  color: var(--color-accent);
+}
+/* Terracotta goes muddy on the forest bands — the amber that the hero and the
+   day band already use for the same job takes over there. */
+.band--primary .title-em,
+.band--ink .title-em {
+  color: var(--color-highlight);
+}
 .title-section {
   font-size: clamp(1.9rem, 3.4vw, 2.6rem);
   line-height: 1.14;

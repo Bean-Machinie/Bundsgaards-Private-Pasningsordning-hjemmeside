@@ -17,8 +17,9 @@ export default function Galleri() {
   return (
     <div className="enter">
       <section className="shell section--loose section--flush-bottom">
-        <span className="kicker">Galleri</span>
-        <h1 className="title-page galleri__title">Billeder fra en uge</h1>
+        <h1 className="title-page">
+          Billeder fra <em className="title-em">en uge</em>
+        </h1>
         <p className="lead lead--page">
           Ingen opstillede billeder. Det her er, hvordan der ser ud, når vi er midt i det.
         </p>

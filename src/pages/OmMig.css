@@ -8,8 +8,11 @@
   }
 }
 
-.ommig__name {
-  margin: var(--space-3) 0 var(--space-5);
+/* A step down from .title-page: this heading shares its row with the portrait,
+   so it lives in a column, not across the full shell. Opens the section, so no
+   leading margin. */
+.ommig__title {
+  margin: 0 0 var(--space-5);
   font-size: clamp(2rem, 4.2vw, 3rem);
 }
 

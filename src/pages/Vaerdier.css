@@ -1,7 +1,3 @@
-.vaerdi__title {
-  max-width: 16ch;
-}
-
 .vaerdi {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));

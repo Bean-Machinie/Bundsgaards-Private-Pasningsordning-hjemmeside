@@ -10,8 +10,9 @@ export default function Vaerdier() {
   return (
     <div className="enter">
       <section className="shell section--loose section--flush-bottom">
-        <span className="kicker">Værdier og pædagogik</span>
-        <h1 className="title-page vaerdi__title">Sådan tænker jeg om børn</h1>
+        <h1 className="title-page">
+          Værdier og <em className="title-em">pædagogik</em>
+        </h1>
         <p className="lead lead--page">
           Jeg skriver det som jeg ville sige det til jer i køkkenet — ikke som en politik,
           I skal skrive under på.

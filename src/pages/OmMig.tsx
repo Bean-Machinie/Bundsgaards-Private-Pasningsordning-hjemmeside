@@ -19,12 +19,13 @@ export default function OmMig() {
         </div>
 
         <div>
-          <span className="kicker">Om mig</span>
-          <h1 className="ommig__name">{site.owner}</h1>
+          <h1 className="ommig__title">
+            Om <em className="title-em">mig</em>
+          </h1>
           <p className="prose prose--large ommig__para">
-            Jeg er uddannet pædagog og har arbejdet med de yngste børn i mange år, både i
-            vuggestue og i dagpleje. For nogle år siden valgte jeg at gøre det på min egen
-            måde, hjemme på Bundsvej.
+            Jeg hedder {site.owner}. Jeg er uddannet pædagog og har arbejdet med de yngste
+            børn i mange år, både i vuggestue og i dagpleje. For nogle år siden valgte jeg
+            at gøre det på min egen måde, hjemme på Bundsvej.
           </p>
           <p className="prose prose--large ommig__para">
             Jeg er rolig af natur, jeg taler med børn som med mennesker, og jeg synes, at

@@ -1,7 +1,3 @@
-.galleri__title {
-  max-width: 16ch;
-}
-
 .galleri {
   display: flex;
   flex-direction: column;

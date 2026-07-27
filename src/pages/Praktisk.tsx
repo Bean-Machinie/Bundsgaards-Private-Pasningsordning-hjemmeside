@@ -19,8 +19,9 @@ export default function Praktisk() {
   return (
     <div className="enter">
       <section className="shell section--loose section--flush-bottom">
-        <span className="kicker">Praktisk information</span>
-        <h1 className="title-page praktisk__title">Det I skal vide, før I siger ja</h1>
+        <h1 className="title-page">
+          Praktisk <em className="title-em">information</em>
+        </h1>
         <p className="lead lead--page">
           Er der noget, der ikke står her, så spørg endelig. Jeg svarer hellere en gang for
           meget.

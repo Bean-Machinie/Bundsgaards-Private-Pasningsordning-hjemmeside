@@ -15,8 +15,9 @@ export default function OmBundsgaard() {
   return (
     <div className="enter">
       <section className="shell section--loose section--flush-bottom">
-        <span className="kicker">Om {site.name}</span>
-        <h1 className="title-page om__title">Huset, haven og det der ligger udenfor</h1>
+        <h1 className="title-page">
+          Om <em className="title-em">{site.name}</em>
+        </h1>
         <p className="lead lead--page">
           {site.name} er ikke en institution, der ligner et hjem. Det er et hjem, hvor der
           også bliver passet børn — og det kan man mærke fra man træder ind i entréen.

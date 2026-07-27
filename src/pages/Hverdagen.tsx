@@ -13,8 +13,9 @@ export default function Hverdagen() {
   return (
     <div className="enter">
       <section className="shell section--loose section--flush-bottom">
-        <span className="kicker">Hverdagen</span>
-        <h1 className="title-page hverdag__title">Dagen har en rytme — ikke et skema</h1>
+        <h1 className="title-page">
+          Dagens <em className="title-em">rytme</em>
+        </h1>
         <p className="lead lead--page">
           Tiderne herunder er dem, vi som regel følger. Er der et barn, der sover længe,
           eller en leg der er blevet god, så flytter vi os efter det.
