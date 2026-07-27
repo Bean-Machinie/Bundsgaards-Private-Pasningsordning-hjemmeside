@@ -78,6 +78,6 @@ export const valueTeasers: ValueTeaser[] = [
   {
     number: '04',
     title: 'Tæt kontakt med jer',
-    body: 'I får at vide, hvordan dagen gik — ikke som en rapport, men som en snak i døren. Og et billede engang imellem.',
+    body: 'I får at vide, hvordan dagen gik - ikke som en rapport, men som en snak i døren. Og et billede engang imellem.',
   },
 ];

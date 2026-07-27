@@ -7,11 +7,11 @@
    the bundle, so plain .welcome would lose its padding to .section's
    padding-block despite being the more specific intent. */
 .section.welcome {
-  /* The roomier gap the page shipped with (it was .section's padding
-     winning the cascade, but it looked right): the seal rides the side
-     lane on desktop, so this is purely breathing room under the hero. */
-  padding-top: clamp(48px, 6vw, 88px);
-  padding-bottom: clamp(36px, 4.5vw, 64px);
+  /* Roomier than a standard .section: the seal rides the side lane on
+     desktop, so this is purely breathing room around a short block of
+     centred text — it needs the air to not read as cramped. */
+  padding-top: clamp(64px, 7.5vw, 116px);
+  padding-bottom: clamp(56px, 6.5vw, 96px);
   text-align: center;
 }
 /* Once the side lane is gone the wax seal pins to the right edge and
@@ -24,7 +24,7 @@
    padding stays constant below it because the seal's size is too. */
 @media (max-width: 1050px) {
   .section.welcome {
-    padding-top: calc(var(--seal-w, 230px) / 2 + 10px);
+    padding-top: calc(var(--seal-w, 230px) / 2 + 28px);
   }
 }
 /* The script line is a warm aside, not a heading in the type scale — Caveat
@@ -119,15 +119,17 @@
 /* — the day, in four pictures ——————————————————————————————— */
 
 /* The whole band runs tighter than a default .band — it is a teaser, not a
-   destination page. The diagonal stripes are pure CSS texture keeping the
-   large flat green from feeling dead: 12px of plain band, then 12px lifted
-   a step lighter with the warm cream — quiet, but readable as a weave.
-   The double selector is load-bearing: page CSS lands before global.css in
-   the bundle, and .band--primary's `background` shorthand would otherwise
-   reset background-image to none. */
-.dayband {
-  padding-block: clamp(26px, 3.2vw, 46px);
+   destination page, so the script line sits close under the top edge and the
+   pill close above the bottom one. Doubled selector is load-bearing: page CSS
+   lands before global.css in the bundle, so plain .dayband would lose the
+   specificity tie to .band's own padding-block. */
+.band.dayband {
+  padding-block: clamp(22px, 2.6vw, 38px);
 }
+/* The diagonal stripes are pure CSS texture keeping the large flat green from
+   feeling dead: 12px of plain band, then 12px lifted a step lighter with the
+   warm cream — quiet, but readable as a weave. Doubled here too, or
+   .band--primary's `background` shorthand resets background-image to none. */
 .dayband.band--primary {
   background-image: repeating-linear-gradient(
     135deg,
@@ -279,6 +281,15 @@
 }
 
 /* — values teaser ————————————————————————————————————————————— */
+
+/* The front page's closing section, so it gets more air than the shared
+   .section--loose gives the inner pages — it sits between the day band and
+   the footer with nothing after it. Doubled selector is load-bearing: page
+   CSS lands before global.css in the bundle, so a single class would lose
+   to .section--loose's padding-block. */
+.section--loose.values-section {
+  padding-block: clamp(80px, 9vw, 136px);
+}
 
 /* Intro column beside a 2×2 grid of the four values: the intro takes the
    narrower share (≈40/60) and centres vertically on the grid's height. */

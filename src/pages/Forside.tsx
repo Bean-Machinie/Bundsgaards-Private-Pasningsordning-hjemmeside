@@ -5,7 +5,7 @@ import HeroCarousel from '../components/HeroCarousel';
 import ImageSlot from '../components/ImageSlot';
 import SealStamp from '../components/SealStamp';
 import { photos } from '../content/photos';
-import { headlineFacts, quickFacts } from '../content/practical';
+import { headlineFacts } from '../content/practical';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { routes } from '../routes';
@@ -119,7 +119,7 @@ export default function Forside() {
       </section>
 
       {/* — values teaser ——————————————————————————————————————— */}
-      <section className="shell section--loose">
+      <section className="shell section--loose values-section">
         <div className="values-split">
           <div className="stack">
             <div>
@@ -142,26 +142,6 @@ export default function Forside() {
                   <h3 className="fact__title">{value.title}</h3>
                   <p className="fact__body">{value.body}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* — practical, short version ————————————————————————————— */}
-      <section className="shell section section--flush-top">
-        <div className="panel panel--roomy">
-          <div className="section-head section-head--baseline">
-            <h2 className="title-sub section-head__title">Det praktiske, kort fortalt</h2>
-            <Link to={routes.praktisk.path} className="btn btn-ghost">
-              Al praktisk information →
-            </Link>
-          </div>
-          <div className="deflist">
-            {quickFacts.map((fact) => (
-              <div key={fact.label}>
-                <div className="deflist__label">{fact.label}</div>
-                <div className="deflist__value">{fact.value}</div>
               </div>
             ))}
           </div>
