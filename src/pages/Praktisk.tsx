@@ -1,10 +1,10 @@
 import { useId, useState } from 'react';
 
+import Backdrop from '../components/Backdrop';
 import { faqs } from '../content/faqs';
 import { practicalNotes, practicalPanels } from '../content/practical';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { gridMin } from '../lib/css';
-import { scrollToContact } from '../lib/scrollToContact';
 import { routes } from '../routes';
 
 import './Praktisk.css';
@@ -18,44 +18,52 @@ export default function Praktisk() {
 
   return (
     <div className="enter">
-      <section className="shell section--loose section--page-top section--flush-bottom">
-        <h1 className="title-page">
-          Praktisk <em className="title-em">information</em>
-        </h1>
-        <p className="lead lead--page">
-          Er der noget, der ikke står her, så spørg endelig. Jeg svarer hellere en gang for
-          meget.
-        </p>
-      </section>
+      {/* Everything on cream is one host for the printed backdrop — it has to
+          reach from under the site header down to the opaque FAQ band, exactly
+          as the Hverdagen page's single section does. See .backdrop-host in
+          Backdrop.css for why this page's layer needs that treatment. */}
+      <div className="backdrop-host">
+        <Backdrop variant="welcome" />
 
-      <section className="shell section">
-        <div className="grid" style={gridMin('250px')}>
-          {practicalPanels.map((panel) => (
-            <div key={panel.title} className="panel">
-              <h2 className="praktisk__panel-title">{panel.title}</h2>
-              {panel.intro && <p className="praktisk__panel-intro">{panel.intro}</p>}
-              {panel.rows.map((row) => (
-                <div key={row.label} className="spec-row">
-                  <span>{row.label}</span>
-                  <span className={row.muted ? 'muted' : undefined}>{row.value}</span>
-                </div>
-              ))}
-              {panel.footnote && <p className="praktisk__footnote">{panel.footnote}</p>}
-            </div>
-          ))}
-        </div>
-      </section>
+        <section className="shell section--loose section--page-top section--flush-bottom">
+          <h1 className="title-page">
+            Praktisk <em className="title-em">information</em>
+          </h1>
+          <p className="lead lead--page">
+            Er der noget, der ikke står her, så spørg endelig. Jeg svarer hellere en gang
+            for meget.
+          </p>
+        </section>
 
-      <section className="shell section section--flush-top">
-        <div className="grid" style={gridMin('240px')}>
-          {practicalNotes.map((note) => (
-            <div key={note.title}>
-              <h2 className="praktisk__note-title">{note.title}</h2>
-              <p className="praktisk__note-body">{note.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+        <section className="shell section">
+          <div className="grid" style={gridMin('250px')}>
+            {practicalPanels.map((panel) => (
+              <div key={panel.title} className="panel">
+                <h2 className="praktisk__panel-title">{panel.title}</h2>
+                {panel.intro && <p className="praktisk__panel-intro">{panel.intro}</p>}
+                {panel.rows.map((row) => (
+                  <div key={row.label} className="spec-row">
+                    <span>{row.label}</span>
+                    <span className={row.muted ? 'muted' : undefined}>{row.value}</span>
+                  </div>
+                ))}
+                {panel.footnote && <p className="praktisk__footnote">{panel.footnote}</p>}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="shell section section--flush-top">
+          <div className="grid" style={gridMin('240px')}>
+            {practicalNotes.map((note) => (
+              <div key={note.title}>
+                <h2 className="praktisk__note-title">{note.title}</h2>
+                <p className="praktisk__note-body">{note.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
 
       <section className="band band--surface">
         <div className="shell shell--narrow">
@@ -89,12 +97,6 @@ export default function Praktisk() {
               </div>
             );
           })}
-
-          <div className="faq__outro">
-            <a href="#kontakt" className="btn btn-primary" onClick={scrollToContact}>
-              Spørg om noget andet
-            </a>
-          </div>
         </div>
       </section>
     </div>

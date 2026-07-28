@@ -85,8 +85,8 @@
   color: var(--color-ink-2);
 }
 
-.faq__outro {
-  margin-top: 2px;
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--color-border);
+/* The list's closing rule — it used to belong to the block that held the CTA
+   button, so the last question keeps an edge under it. */
+.faq:last-of-type {
+  border-bottom: 1px solid var(--color-border);
 }

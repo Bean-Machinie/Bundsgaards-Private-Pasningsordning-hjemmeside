@@ -13,13 +13,12 @@ export default function Hverdagen() {
   return (
     <div className="enter">
       {/* Title and spread share one section, and that is load-bearing: the
-          printed backdrop hangs on it, and the picture stands taller than its
-          host. Split in two, the top edge surfaced in the cream between the
-          title and the photographs; reaching to just under the site header, the
-          spill goes behind the header instead, and the opaque band below hides
-          the bottom. Pictures down the left, the day's hours down the right —
-          on a phone the spread folds and the photographs come first. */}
-      <section className="shell section--loose section--page-top hverdag__body">
+          printed backdrop hangs on it (see .backdrop-host in Backdrop.css), and
+          the picture stands taller than its host. Split in two, the top edge
+          surfaced in the cream between the title and the photographs. Pictures
+          down the left, the day's hours down the right — on a phone the spread
+          folds and the photographs come first. */}
+      <section className="shell section--loose section--page-top backdrop-host">
         <Backdrop variant="welcome" />
 
         <h1 className="title-page hverdag__title">

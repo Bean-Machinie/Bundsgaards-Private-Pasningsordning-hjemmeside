@@ -158,6 +158,50 @@
   mask-position: left center;
 }
 
+/* — tall hosts ————————————————————————————————————————————————————
+   `.backdrop-host` is for the inner pages, where the layer hangs on a host far
+   taller than the front page's sections. Two things go wrong at that height,
+   and both are the same cause — the picture is sized from its height, so a tall
+   host makes it big in *both* directions:
+
+   WIDTH. Each half comes out wider than the 40vw window it is shown through,
+   and the window's inner edge then cuts straight down the middle of the page.
+   The windows take their width from the pictures' own proportions instead (the
+   masks are 406×720 and 456×720), so each half is shown whole. The halves reach
+   further inward and may overlap across the middle; that middle is the seam the
+   spread was composed around, so what overlaps is the sparse tail of each.
+
+   HEIGHT. The front page can spill upward behind its hero and downward into an
+   opaque band. An inner page has cream above and often only a faintly darker
+   band below, so both ends of the picture land where they can be seen. The
+   layer is dissolved at its two ends rather than clipped, and the percentages
+   are of the host's height. mask-repeat is load-bearing: left to tile, the half
+   that overflows above the host reappears further up as the next tile. */
+.backdrop-host {
+  position: relative;
+}
+.backdrop-host .backdrop {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 9%,
+    #000 74%,
+    transparent 97%
+  );
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 9%, #000 74%, transparent 97%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.backdrop-host .backdrop__side {
+  width: auto;
+}
+.backdrop-host .backdrop__side--left {
+  aspect-ratio: 406 / 720;
+}
+.backdrop-host .backdrop__side--right {
+  aspect-ratio: 456 / 720;
+}
+
 /* — one half at a time ———————————————————————————————————————————
    Below the page's stacking breakpoint each section keeps a single half, run
    full width: the left one at the welcome, the right one at the values.
