@@ -158,18 +158,44 @@
   mask-position: left center;
 }
 
-/* On a phone the text runs the full width, so the windows narrow to a margin's
-   worth and both runs lighten a long way — a texture at the edge of the paper,
-   never competing with the reading. The height rule above already guarantees
-   the picture outgrows the section here, so nothing needs saying about it. */
-@media (max-width: 640px) {
-  .backdrop__side {
-    width: 34vw;
+/* — one half at a time ———————————————————————————————————————————
+   Below the page's stacking breakpoint each section keeps a single half, run
+   full width: the left one at the welcome, the right one at the values.
+
+   Two halves stop fitting long before the phone. The height rule is what sizes
+   the picture and the window is only a view onto it, so as the section grows
+   taller than the viewport measure the picture grows with it while the window
+   stays a fraction of a narrowing screen. Past the crossing the window is the
+   smaller of the two and the view cuts the half down its middle, straight
+   through the arrangement, which is the hard vertical edge that appears around
+   the fold. Widening both windows cannot fix it — two of these at their full
+   width is more than a phone screen holds.
+
+   So one goes and the other gets the whole width. What still falls outside is
+   the half's inner tail, the end that ran to the spread's empty seam: nine
+   tenths of its ink sits in the outer three quarters, so the view now ends
+   somewhere past the last thing worth seeing rather than through the middle of
+   it.
+
+   Which half stays is what keeps the two sections from looking like the same
+   picture twice — the page's weight crosses from one edge to the other on the
+   way down, as it does on a wide screen when the halves swap sides.
+
+   Both runs lighten, because a full-width half puts far more on the page than a
+   margin's strip did and all of it is behind the reading now. */
+@media (max-width: 720px) {
+  .backdrop--welcome .backdrop__side--right,
+  .backdrop--values .backdrop__side--left {
+    display: none;
+  }
+  .backdrop--welcome .backdrop__side--left,
+  .backdrop--values .backdrop__side--right {
+    width: 100%;
   }
   .backdrop--welcome {
-    opacity: 0.37;
+    opacity: 0.32;
   }
   .backdrop--values {
-    opacity: 0.33;
+    opacity: 0.28;
   }
 }

@@ -80,9 +80,6 @@ export default function Footer() {
           <span>
             © {year} {site.name} Privatpasningsordning
           </span>
-          <span className="site-footer__legal-by">
-            {site.owner} · {site.city}
-          </span>
         </div>
       </div>
     </footer>
