@@ -1,15 +1,57 @@
-/* — the title ————————————————————————————————————————————————————
-   The title is a label on the spread below it, not a section of its own, so it
-   sits close above the photographs — the gallery page's treatment. Doubled
-   selector is load-bearing: page CSS lands before global.css in the bundle, so
-   a single class would lose the specificity tie to .section--loose. */
-.section--loose.hverdag__head {
-  padding-bottom: clamp(14px, 1.8vw, 24px);
+/* Host for the printed backdrop — positioned, but never isolated, so the layer
+   stays in the page's own stacking context. Its bottom is clipped at this
+   section's edge, which is exactly where the opaque band begins. */
+.hverdag__body {
+  position: relative;
 }
-/* The title's own bottom margin would stack on top of that padding; the gap is
-   set in one place instead. */
-.hverdag__head .title-page {
-  margin-bottom: 0;
+/* The picture is taller than the section it hangs on, and unlike the front page
+   this one has no photograph above and only a faintly darker band below — so
+   both of its edges would fall on cream and read as a cut straight across the
+   page. The size stays exactly as it is; the layer is dissolved at its two ends
+   instead, so it fades out where it used to be clipped. Percentages are of the
+   section's height, and the mask multiplies with each half's own picture mask
+   because it sits on their parent rather than on them. */
+.hverdag__body .backdrop {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 9%,
+    #000 74%,
+    transparent 97%
+  );
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 9%, #000 74%, transparent 97%);
+  /* Without this the gradient tiles, and the half that overflows above the
+     section would come back into view further up as the next tile. */
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+/* Each half is drawn from its height (mask-size: auto 100%) and this section is
+   a tall one, so the picture comes out far wider than the 40vw window it shows
+   through — and the window's inner edge is the hard vertical cut running down
+   the page. The windows take their width from the pictures' own proportions
+   instead (the masks are 406×720 and 456×720), so each half is shown whole at
+   exactly the size it has now, and there is no edge left to see. */
+.hverdag__body .backdrop__side {
+  width: auto;
+}
+.hverdag__body .backdrop__side--left {
+  aspect-ratio: 406 / 720;
+}
+.hverdag__body .backdrop__side--right {
+  aspect-ratio: 456 / 720;
+}
+
+/* The title is a label on the spread below it, not a section of its own, so it
+   sits close above the photographs — the gallery page's treatment. The leading
+   margin goes because the <Backdrop> before it means :first-child no longer
+   matches. */
+.hverdag__title {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+}
+/* The line under the title carries the gap to the photographs instead. */
+.hverdag__lead {
+  margin: 0 0 clamp(14px, 1.8vw, 24px);
 }
 
 /* — the spread ————————————————————————————————————————————————————
@@ -106,38 +148,63 @@
   content: '';
   position: absolute;
   left: calc(-1 * var(--tl-lane) - 3.5px);
-  top: 0.55em;
+  top: 0.85em;
   width: 8px;
   height: 8px;
   border-radius: var(--radius-full);
   background: var(--color-accent);
   box-shadow: 0 0 0 4px var(--color-bg);
 }
-.timeline__time {
-  margin-bottom: var(--space-1);
-  font-family: var(--font-display);
-  font-size: clamp(17px, 1.7vw, 20px);
-  line-height: 1.3;
-  color: var(--color-accent);
-}
+/* The handwritten terracotta voice the front page opens with — the welcome
+   section's script line verbatim: same font, weight, size and colour. Title and
+   hour share the line, so the hour needs no styling of its own. */
 .timeline__title {
   margin: 0 0 var(--space-2);
-  font-family: var(--font-display);
-  font-size: clamp(19px, 1.9vw, 23px);
-  line-height: 1.2;
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(21px, 2.2vw, 27px);
+  line-height: 1.25;
+  color: var(--color-accent);
 }
+/* Body copy at the front page's size, so the two read in one voice. */
 .timeline__body {
   margin: 0;
-  font-size: clamp(15px, 1.4vw, 16px);
-  line-height: 1.8;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.75;
   color: var(--color-ink-2);
 }
 
-/* — the weekly cards ————————————————————————————————————————— */
-
-.hverdag__week-title {
-  margin-bottom: var(--space-6);
+/* — the things that recur ————————————————————————————————————————
+   The values page's grammar on a light band: handwritten terracotta titles
+   above their own text, separated by the grid's gaps rather than by card
+   borders — and no weekday kickers, because none of it is pinned to a day. */
+.hverdag__extras-title {
+  margin-top: 0;
+  margin-bottom: clamp(28px, 3.4vw, 44px);
 }
-.hverdag__card-title {
-  font-size: 18px;
+.hverdag__extras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 4vw, 52px) clamp(28px, 4vw, 56px);
+}
+/* The front page's value titles verbatim — same font, weight, size, colour. */
+.hverdag__extra-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-script);
+  font-weight: 700;
+  font-size: clamp(21px, 2.2vw, 27px);
+  line-height: 1.25;
+  color: var(--color-accent);
+}
+.hverdag__extra-body {
+  margin: 0;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.75;
+  color: var(--color-ink-2);
+}
+@media (max-width: 560px) {
+  .hverdag__extras {
+    grid-template-columns: 1fr;
+    row-gap: clamp(28px, 7vw, 40px);
+  }
 }

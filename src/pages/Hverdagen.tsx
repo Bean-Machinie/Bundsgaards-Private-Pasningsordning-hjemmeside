@@ -1,8 +1,8 @@
+import Backdrop from '../components/Backdrop';
 import ImageSlot from '../components/ImageSlot';
 import { photos } from '../content/photos';
-import { schedule, weeklyHighlights } from '../content/schedule';
+import { highlights, schedule } from '../content/schedule';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import { gridMin } from '../lib/css';
 import { routes } from '../routes';
 
 import './Hverdagen.css';
@@ -12,15 +12,23 @@ export default function Hverdagen() {
 
   return (
     <div className="enter">
-      <section className="shell section--loose section--page-top hverdag__head">
-        <h1 className="title-page">
+      {/* Title and spread share one section, and that is load-bearing: the
+          printed backdrop hangs on it, and the picture stands taller than its
+          host. Split in two, the top edge surfaced in the cream between the
+          title and the photographs; reaching to just under the site header, the
+          spill goes behind the header instead, and the opaque band below hides
+          the bottom. Pictures down the left, the day's hours down the right —
+          on a phone the spread folds and the photographs come first. */}
+      <section className="shell section--loose section--page-top hverdag__body">
+        <Backdrop variant="welcome" />
+
+        <h1 className="title-page hverdag__title">
           Dagens <em className="title-em">rytme</em>
         </h1>
-      </section>
+        <p className="lead lead--page hverdag__lead">
+          Sådan plejer en helt almindelig dag at se ud hos os.
+        </p>
 
-      {/* Pictures down the left, the day's hours down the right. On a phone the
-          spread folds and the photographs come first. */}
-      <section className="shell section--loose section--flush-top">
         <div className="hverdag__spread">
           {/* The column is cut from one block, like the Om-page mosaic: the
               rows are fr of its height, so every frame's shape comes from its
@@ -36,8 +44,11 @@ export default function Hverdagen() {
           <ol className="timeline">
             {schedule.map((entry) => (
               <li key={entry.time} className="timeline__item">
-                <div className="timeline__time">{entry.time}</div>
-                <h2 className="timeline__title">{entry.title}</h2>
+                {/* Title and hour on one line, in the front page's handwritten
+                    voice — the welcome section's script line verbatim. */}
+                <h2 className="timeline__title">
+                  {entry.title} - {entry.time}
+                </h2>
                 <p className="timeline__body">{entry.description}</p>
               </li>
             ))}
@@ -45,15 +56,16 @@ export default function Hverdagen() {
         </div>
       </section>
 
+      {/* The recurring things, in the values page's grammar: handwritten
+          terracotta titles above their own text, no cards and no weekdays. */}
       <section className="band band--surface">
         <div className="shell">
-          <h2 className="title-sub hverdag__week-title">Det der går igen om ugen</h2>
-          <div className="grid" style={gridMin('220px')}>
-            {weeklyHighlights.map((item) => (
-              <article key={item.day} className="card panel--bg hverdag__card">
-                <div className="card-kicker">{item.day}</div>
-                <h3 className="card-title hverdag__card-title">{item.title}</h3>
-                <p className="card-body hverdag__card-body">{item.description}</p>
+          <h2 className="title-section hverdag__extras-title">Det der går igen</h2>
+          <div className="hverdag__extras">
+            {highlights.map((item) => (
+              <article key={item.title}>
+                <h3 className="hverdag__extra-title">{item.title}</h3>
+                <p className="hverdag__extra-body">{item.description}</p>
               </article>
             ))}
           </div>

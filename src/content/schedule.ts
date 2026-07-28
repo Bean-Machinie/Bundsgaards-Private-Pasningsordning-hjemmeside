@@ -40,7 +40,7 @@ export const schedule: ScheduleEntry[] = [
     time: '14.00',
     title: 'Eftermiddagsmad',
     description:
-      'Frugt og brød. Bagefter er der leg — ofte i haven, indtil de første bliver hentet.',
+      'Frugt og brød. Bagefter er der leg, ofte i haven, indtil de første bliver hentet.',
   },
   {
     time: '15.00 – 15.30',
@@ -50,34 +50,32 @@ export const schedule: ScheduleEntry[] = [
   },
 ];
 
-export interface WeeklyHighlight {
-  day: string;
+export interface Highlight {
   title: string;
   description: string;
 }
 
-/** The things that recur every week, shown as cards under the timeline. */
-export const weeklyHighlights: WeeklyHighlight[] = [
+/**
+ * The things that recur, shown under the timeline. Deliberately not pinned to
+ * named weekdays — they happen when the weather, the mood and the day suit them.
+ */
+export const highlights: Highlight[] = [
   {
-    day: 'Mandag',
     title: 'Bagedag',
     description:
-      'Vi rører boller. De mindste får en dej at ælte, og køkkenet dufter resten af dagen.',
+      'Vi rører en dej, når der er tid til det. De mindste får en klump at ælte, og køkkenet dufter resten af dagen.',
   },
   {
-    day: 'Onsdag',
     title: 'Den lange tur',
     description:
-      'Vi tager madpakker med og går til skoven eller til hestene. Hjem til lur som altid.',
+      'Madpakker med og af sted til skoven eller hestene. Vi tager den, når vejret og humøret er til det — hjem til lur som altid.',
   },
   {
-    day: 'Torsdag',
     title: 'Vand og farver',
     description:
-      'Maling, dej, sæbevand — noget der må spildes. Vi gør det udenfor, når det er muligt.',
+      'Maling, dej, sæbevand — noget der må spildes. Vi gør det udenfor, når det kan lade sig gøre.',
   },
   {
-    day: 'Fredag',
     title: 'Hønsene og haven',
     description:
       'Æg skal samles og bedet vandes. Det er et lille job, og børnene tager det alvorligt.',
