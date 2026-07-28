@@ -99,11 +99,26 @@
 }
 
 /* The welcome section takes the halves as they were photographed, each anchored
-   to the edge it was cut for. */
+   to the edge it was cut for.
+
+   The two halves hang differently here. The right keeps the centring every other
+   run uses. The left is hung from the bottom instead: the foot of the picture
+   sits on the section's own bottom edge, so its whole lower half is on the cream
+   and all the overflow goes upward, behind the hero. Neither size changed — only
+   the left half's anchor.
+
+   That anchor also makes the left's bottom flush by construction rather than by
+   measurement. Centred, a half clears the bottom edge only by half its overflow
+   and the clip does the rest; hung this way there is nothing below the edge to
+   clip, at any height, on any screen, and the whole overflow spends itself
+   upward where the page has something opaque to hide it. */
 .backdrop--welcome {
   opacity: 0.64;
 }
 .backdrop--welcome .backdrop__side--left {
+  top: auto;
+  bottom: 0;
+  transform: none;
   -webkit-mask-image: url('../assets/images/backdrop/backdrop-left.png');
   mask-image: url('../assets/images/backdrop/backdrop-left.png');
   -webkit-mask-position: left center;
