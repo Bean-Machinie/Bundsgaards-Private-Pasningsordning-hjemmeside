@@ -12,18 +12,27 @@ export default function Hverdagen() {
 
   return (
     <div className="enter">
-      <section className="shell section--loose section--page-top section--flush-bottom">
+      <section className="shell section--loose section--page-top hverdag__head">
         <h1 className="title-page">
           Dagens <em className="title-em">rytme</em>
         </h1>
-        <p className="lead lead--page">
-          Tiderne herunder er dem, vi som regel følger. Er der et barn, der sover længe,
-          eller en leg der er blevet god, så flytter vi os efter det.
-        </p>
       </section>
 
-      <section className="shell section--loose">
-        <div className="grid grid--split-top" style={gridMin('300px')}>
+      {/* Pictures down the left, the day's hours down the right. On a phone the
+          spread folds and the photographs come first. */}
+      <section className="shell section--loose section--flush-top">
+        <div className="hverdag__spread">
+          {/* The column is cut from one block, like the Om-page mosaic: the
+              rows are fr of its height, so every frame's shape comes from its
+              cell (ratio="auto") and the block ends exactly where the hours do. */}
+          <div className="hverdag__media">
+            <ImageSlot photo={photos.hverdag1} ratio="auto" rounding="lg" />
+            <div className="hverdag__pair">
+              <ImageSlot photo={photos.hverdag2} ratio="auto" rounding="md" />
+              <ImageSlot photo={photos.hverdag3} ratio="auto" rounding="md" />
+            </div>
+          </div>
+
           <ol className="timeline">
             {schedule.map((entry) => (
               <li key={entry.time} className="timeline__item">
@@ -33,14 +42,6 @@ export default function Hverdagen() {
               </li>
             ))}
           </ol>
-
-          <div className="hverdag__media">
-            <ImageSlot photo={photos.hverdag1} ratio="4 / 5" rounding="lg" />
-            <div className="hverdag__pair">
-              <ImageSlot photo={photos.hverdag2} ratio="1 / 1" rounding="md" />
-              <ImageSlot photo={photos.hverdag3} ratio="1 / 1" rounding="md" />
-            </div>
-          </div>
         </div>
       </section>
 

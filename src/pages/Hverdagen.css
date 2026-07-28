@@ -1,66 +1,136 @@
-/* — the day as a vertical timeline ——————————————————————————— */
+/* — the title ————————————————————————————————————————————————————
+   The title is a label on the spread below it, not a section of its own, so it
+   sits close above the photographs — the gallery page's treatment. Doubled
+   selector is load-bearing: page CSS lands before global.css in the bundle, so
+   a single class would lose the specificity tie to .section--loose. */
+.section--loose.hverdag__head {
+  padding-bottom: clamp(14px, 1.8vw, 24px);
+}
+/* The title's own bottom margin would stack on top of that padding; the gap is
+   set in one place instead. */
+.hverdag__head .title-page {
+  margin-bottom: 0;
+}
 
-.timeline {
-  list-style: none;
-  margin: 0;
-  padding: 0 0 0 var(--space-6);
-  border-left: 1px solid var(--color-border-strong);
+/* — the spread ————————————————————————————————————————————————————
+   Photographs down the left, the hours down the right. The picture column takes
+   the narrower share, the way the front page's values section gives its grid
+   the larger one.
+
+   Both columns stretch to the taller of the two, which is what lets the hours'
+   rule run the full height of the photographs beside it. */
+.hverdag__spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: stretch;
 }
-.timeline__item {
-  position: relative;
-  padding-bottom: var(--space-8);
-}
-/* The bead sitting on the rule. Offset = padding-left + half the border. */
-.timeline__item::before {
-  content: '';
-  position: absolute;
-  left: -29px;
-  top: 6px;
-  width: 11px;
-  height: 11px;
-  border-radius: var(--radius-full);
-  background: var(--color-bg);
-  border: 2px solid var(--color-primary);
-}
-.timeline__time {
-  margin-bottom: var(--space-2);
-  font-size: var(--label-size);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-.timeline__title {
-  margin: 0 0 var(--space-2);
-  font-family: var(--font-display);
-  font-size: 22px;
-}
-.timeline__body {
-  margin: 0;
-  max-width: 40ch;
-  font-size: 15px;
-  line-height: 1.75;
-  color: var(--color-ink-2);
+@media (max-width: 860px) {
+  .hverdag__spread {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(32px, 5vw, 48px);
+  }
 }
 
 /* — the photo column ————————————————————————————————————————— */
 
+/* One block, two rows: the lead photograph over the pair. The rows are fr of
+   the block's own height and the block is the full height of the grid row, so
+   the pictures end exactly level with the last hour beside them — whichever
+   column is the taller one. */
 .hverdag__media {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1.85fr 1fr;
   gap: var(--space-4);
-  position: sticky;
-  top: calc(var(--header-height) + var(--space-6));
+  height: 100%;
 }
 .hverdag__pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-4);
 }
-/* Sticky only helps when the column is shorter than the timeline beside it. */
-@media (max-width: 780px) {
+/* Each frame fills its cell and the photograph covers it — the shape comes from
+   the grid, not from the picture (hence ratio="auto" in Hverdagen.tsx). */
+.hverdag__media .image-slot {
+  height: 100%;
+}
+/* Stacked, the column has no partner to take its height from, so it is given
+   one — otherwise the fr rows would have nothing to divide. */
+@media (max-width: 860px) {
   .hverdag__media {
-    position: static;
+    height: min(118vw, 620px);
   }
+}
+
+/* — the day as a vertical timeline ———————————————————————————————
+   The front page's day band, stood on its end: the hour in display serif —
+   terracotta here, where the band uses amber on the dark green — then the title
+   in the same serif and the description in the site's body voice. The green
+   ringed beads are gone; the marks are the plain terracotta dots the welcome
+   strip and the values page use. */
+.timeline {
+  --tl-lane: clamp(24px, 2.6vw, 34px);
+  position: relative;
+  list-style: none;
+  margin: 0;
+  /* The block padding is the thread's run-in and run-out: the rule is drawn on
+     the padding box, so it starts well above the first dot and carries on well
+     below the last one, instead of beginning and ending on them. */
+  padding: clamp(28px, 3.2vw, 44px) 0 clamp(28px, 3.2vw, 44px) var(--tl-lane);
+  /* The column is stretched by the grid, so the hours spread themselves over
+     the photographs' full height rather than bunching at the top. The gap is
+     the floor: when the text is the taller of the two, it simply grows. */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(24px, 3vw, 40px);
+}
+/* The rule is drawn rather than borrowed from the border, so it can run the
+   whole height of the column — past the first hour at the top and past the last
+   at the bottom, level with the top and bottom edges of the photographs. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-border);
+}
+.timeline__item {
+  position: relative;
+}
+/* The dot sits on the rule, level with the hour's cap height. The cream ring is
+   what lets the rule pass behind it without touching. */
+.timeline__item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--tl-lane) - 3.5px);
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px var(--color-bg);
+}
+.timeline__time {
+  margin-bottom: var(--space-1);
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.7vw, 20px);
+  line-height: 1.3;
+  color: var(--color-accent);
+}
+.timeline__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(19px, 1.9vw, 23px);
+  line-height: 1.2;
+}
+.timeline__body {
+  margin: 0;
+  font-size: clamp(15px, 1.4vw, 16px);
+  line-height: 1.8;
+  color: var(--color-ink-2);
 }
 
 /* — the weekly cards ————————————————————————————————————————— */
