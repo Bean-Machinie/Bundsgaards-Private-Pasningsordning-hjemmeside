@@ -1,3 +1,4 @@
+import Backdrop from '../components/Backdrop';
 import { values } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { routes } from '../routes';
@@ -9,7 +10,12 @@ export default function Vaerdier() {
 
   return (
     <div className="enter">
-      <section className="shell section--loose section--flush-bottom">
+      {/* Title, lead and the whole grid live in one section, the way the Om
+          page does it — that section is what the printed backdrop hangs on, and
+          it has to reach the footer for the picture's bottom to be hidden. */}
+      <section className="shell section vaerdier">
+        <Backdrop variant="welcome" />
+
         <h1 className="title-page">
           Værdier og <em className="title-em">pædagogik</em>
         </h1>
@@ -17,23 +23,19 @@ export default function Vaerdier() {
           Jeg skriver det som jeg ville sige det til jer i køkkenet — ikke som en politik,
           I skal skrive under på.
         </p>
-      </section>
 
-      <section className="shell section--loose section--flush-top">
-        {values.map((value) => (
-          <article key={value.number} className="vaerdi">
-            <div className="vaerdi__head">
-              <span className="vaerdi__badge" aria-hidden="true">
-                {value.number}
-              </span>
+        {/* The front page's values grid, carried straight over: the same
+            handwritten terracotta title standing above its own text, the same
+            body voice, two to a row — six values here instead of four. */}
+        <div className="vaerdi-grid">
+          {values.map((value) => (
+            <article key={value.title} className="vaerdi">
               <h2 className="vaerdi__heading">{value.title}</h2>
-            </div>
-            <div>
-              <p className="prose vaerdi__body">{value.body}</p>
+              <p className="vaerdi__body">{value.body}</p>
               <p className="vaerdi__example">{value.example}</p>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </section>
     </div>
   );

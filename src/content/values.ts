@@ -1,6 +1,4 @@
 export interface Value {
-  /** Two-digit ordinal, rendered in the circular badge. */
-  number: string;
   title: string;
   body: string;
   /** The "I praksis:" line — how the principle looks on an ordinary day. */
@@ -10,41 +8,35 @@ export interface Value {
 /** The full pedagogy, shown on /vaerdier. */
 export const values: Value[] = [
   {
-    number: '01',
     title: 'Tryghed er forudsætningen',
     body: 'Et lille barn kan først lære noget, når det føler sig trygt. Derfor bruger jeg lang tid på indkøringen og på at kende jeres barns signaler.',
     example:
       'I praksis: den samme voksne tager imod hver morgen, og vi siger ordentligt farvel — aldrig i smug.',
   },
   {
-    number: '02',
     title: 'Genkendelige rutiner',
     body: 'Dagen ligner sig selv. Når måltider, lur og ture ligger fast, kan barnet bruge sin energi på at lege i stedet for at gætte, hvad der sker nu.',
     example:
       'I praksis: samme rækkefølge hver dag, og vi fortæller altid, hvad der kommer bagefter.',
   },
   {
-    number: '03',
     title: 'Plads til det enkelte barn',
     body: 'Fire børn betyder, at jeg kan følge fire forskellige tempi. Den, der lige er begyndt at gå, får noget andet end den, der snart skal i børnehave.',
     example:
       'I praksis: vi venter på den langsomme sko, og vi springer turen over, hvis nogen har brug for en rolig dag.',
   },
   {
-    number: '04',
     title: 'Naturen hver dag',
     body: 'Vi er ude i al slags vejr. Ude er der plads til høje stemmer og store bevægelser, og børnene sover bedre bagefter.',
     example:
       'I praksis: gummistøvler og regntøj i entréen året rundt — og lur i barnevogn udenfor.',
   },
   {
-    number: '05',
     title: 'Leg er arbejde',
     body: 'Jeg blander mig ikke i alt. Børn lærer at vente, dele og forhandle, når de får lov at være i legen selv — men jeg er tæt på og hjælper, hvor det er nødvendigt.',
     example: 'I praksis: få aktiviteter på skemaet og lang tid til hver enkelt.',
   },
   {
-    number: '06',
     title: 'Et tæt samarbejde med jer',
     body: 'I kender jeres barn bedst. Jeg vil hellere spørge en gang for meget, end antage noget forkert.',
     example:
