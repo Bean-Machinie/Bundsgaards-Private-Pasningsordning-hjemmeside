@@ -113,7 +113,7 @@
    clip, at any height, on any screen, and the whole overflow spends itself
    upward where the page has something opaque to hide it. */
 .backdrop--welcome {
-  opacity: 0.64;
+  opacity: 0.49;
 }
 .backdrop--welcome .backdrop__side--left {
   top: auto;
@@ -141,7 +141,7 @@
 
    A step fainter, too — it sits behind denser text than the welcome does. */
 .backdrop--values {
-  opacity: 0.54;
+  opacity: 0.40;
 }
 .backdrop--values .backdrop__side--left {
   transform: translateY(-50%) scaleX(-1);

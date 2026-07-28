@@ -8,6 +8,10 @@
    bundle, so a single class would lose the specificity tie to .section's own
    padding-block. */
 .section.om__spread {
+  /* Positioning context for the decorative <Backdrop>, which hangs behind the
+     spread at z-index -1 — the same host setup .section.welcome uses. No
+     `isolation`, so the layer stays in the page's own stacking context. */
+  position: relative;
   /* The title sits close under the site header, the same tightening the
      gallery page uses. */
   padding-top: clamp(28px, 3.4vw, 52px);
@@ -74,19 +78,6 @@
    own proportions into the grid. */
 .om__tile {
   height: 100%;
-  /* Like the gallery's tile: a positioned frame, so its rounded overflow
-     clips the photo cleanly while the photo scales on its own layer. */
-  position: relative;
-}
-/* Same quiet hover the gallery uses: the photograph eases up a step inside its
-   frame (which clips the overflow), while the frame itself never moves. */
-.om__tile img {
-  transform: scale(1);
-  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.om__tile:hover img,
-.om__tile:focus-within img {
-  transform: scale(1.055);
 }
 .om__tile--square {
   grid-column: 1;

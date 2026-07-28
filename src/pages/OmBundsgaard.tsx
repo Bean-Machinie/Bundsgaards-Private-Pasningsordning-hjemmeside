@@ -1,3 +1,4 @@
+import Backdrop from '../components/Backdrop';
 import ImageSlot from '../components/ImageSlot';
 import { photos } from '../content/photos';
 import { site } from '../content/site';
@@ -17,40 +18,41 @@ export default function OmBundsgaard() {
           folds to one column and the mosaic is ordered up to sit just after the
           opening paragraph, ahead of the two texts. */}
       <section className="shell section om__spread">
+        <Backdrop variant="welcome" />
+
         <div className="om__intro">
           <h1 className="title-page">
             Om <em className="title-em">{site.name}</em>
           </h1>
           <p className="lead lead--page">
-            {site.name} er ikke en institution, der ligner et hjem. Det er et hjem, hvor
-            der også bliver passet børn — og det kan man mærke fra man træder ind i
-            entréen.
+            {site.name} er en gammel gård med stråtag, høje træer og en stor have, hvor
+            der er plads til at gå på opdagelse. Her bor jeg, og her passer jeg børn — så
+            hverdagen foregår i et rigtigt hjem, ikke i en institution.
           </p>
         </div>
 
         <div className="om__text">
           <div>
-            <h2 className="title-sub">Rammerne</h2>
+            <h2 className="title-sub">Hverdagen</h2>
             <p className="prose">
-              Børnene har deres eget rum ud til haven, hvor legetøjet står i lav højde, så
-              de selv kan finde det frem. Vi spiser ved det samme bord som resten af
-              familien, og der bliver sovet i barnevogn under træerne — også om vinteren.
+              Det meste af dagen er vi udenfor. Vi fodrer hønsene og samler æg i
+              hønsegården, graver i sandkassen og finder smådyr under stenene. Der er
+              buske at gemme sig bag, græs at trille på og altid et hjørne, hvor man må
+              grave.
             </p>
             <p className="prose">
-              Haven er ikke en legeplads. Der er en græsplæne, et bed vi passer sammen, en
-              sandkasse og et hjørne, hvor man må grave.
+              Indenfor har børnene deres eget rum ud til haven, hvor legetøjet står i lav
+              højde, så de selv kan nå det. Vi spiser sammen ved det store bord, og
+              middagsluren foregår i barnevogn under træerne — også om vinteren, godt
+              pakket ind.
             </p>
           </div>
           <div>
             <h2 className="title-sub">Omgivelserne</h2>
             <p className="prose">
-              Fra Bundsvej går vi ad markvejen og er ved skovkanten på et kvarter — også
-              med de mindste i barnevogn. Vi kigger på traktorer, samler kastanjer og
-              hilser på hestene på vejen hjem.
-            </p>
-            <p className="prose">
-              En gang om ugen tager vi længere afsted, hvis vejret er til det: til
-              stranden, til biblioteket eller til legepladsen i byen.
+              Lige omkring gården er der marker, stier og natur til alle sider. Skoven
+              ligger tæt på, og på turene møder vi heste og får bag hegnene, kigger på
+              traktorer i marken og samler kastanjer og blade med hjem.
             </p>
           </div>
         </div>
