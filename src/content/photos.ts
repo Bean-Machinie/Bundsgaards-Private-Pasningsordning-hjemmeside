@@ -56,30 +56,23 @@ export const photos = {
     src: null,
   },
 
-  omHero: {
+  // The three tiles of the mosaic on the Om-page, in layout order: the square,
+  // the upright beside it, the wide one underneath. Each is cropped hard by its
+  // tile, so the subject sits near the middle of every frame.
+  omSquare: {
     placeholder: 'Huset set fra haven',
-    src: stock.tallGrass,
-    alt: 'Barn på vej mod skovkanten gennem højt græs',
+    src: stock.gaardHouse,
+    alt: 'Det stråtækte hus set langs facaden med græsplænen og de gamle træer',
   },
-  om1: {
-    placeholder: 'Entré med gummistøvler',
-    src: stock.leaf,
-    alt: 'Barn, der undersøger et blad',
+  omTall: {
+    placeholder: 'Bøgetræet i haven',
+    src: stock.gaardBeech,
+    alt: 'Stort bøgetræ i efterårsfarver med hunden stående nedenunder',
   },
-  om2: {
-    placeholder: 'Legerummet',
-    src: stock.explorers,
-    alt: 'To børn på opdagelse med kikkert ved et træ',
-  },
-  om3: {
-    placeholder: 'Hønsegården',
-    src: stock.pointingSky,
-    alt: 'Barn, der peger op mod himlen i haven',
-  },
-  om4: {
-    placeholder: 'Markvejen',
-    src: stock.goldenRun,
-    alt: 'To børn løber gennem en solbeskinnet skov',
+  omWide: {
+    placeholder: 'Morgen ud over marken',
+    src: stock.gaardMorning,
+    alt: 'Frostklar morgen med solen gennem træerne og en kop kaffe i hånden',
   },
 
   hverdag1: {

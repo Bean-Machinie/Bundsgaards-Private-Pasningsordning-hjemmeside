@@ -1,18 +1,146 @@
-.quote {
-  text-align: center;
+/* — the spread ————————————————————————————————————————————————————
+   One two-column spread. The title, lead and both prose blocks run down the
+   left in two rows (intro, then the texts); the photo mosaic occupies the
+   right and spans both rows, so it stands exactly as tall as the left column —
+   its top level with the title, its bottom level with the last paragraph.
+
+   The doubled selector is load-bearing: page CSS lands before global.css in the
+   bundle, so a single class would lose the specificity tie to .section's own
+   padding-block. */
+.section.om__spread {
+  /* The title sits close under the site header, the same tightening the
+     gallery page uses. */
+  padding-top: clamp(28px, 3.4vw, 52px);
+  display: grid;
+  /* The photo column carries the weight — it takes clearly more of the width,
+     leaving the prose a touch narrower. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  column-gap: clamp(32px, 4.5vw, 72px);
+  row-gap: clamp(40px, 5vw, 72px);
+  align-items: start;
 }
-.quote__text {
-  margin: 0 0 var(--space-5);
-  font-family: var(--font-display);
-  font-weight: var(--font-display-weight);
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
-  font-style: italic;
-  line-height: 1.4;
+
+.om__intro {
+  grid-column: 1;
+  grid-row: 1;
 }
-.quote__attribution {
-  margin: 0;
-  font-size: var(--label-size);
-  letter-spacing: var(--label-tracking);
-  text-transform: uppercase;
-  color: var(--color-ink-3);
+
+.om__text {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  gap: clamp(28px, 3.4vw, 48px);
+  /* The measure the prose is set to on the rest of the site; below it the
+     column would rather grow a line than run wide. */
+  max-width: 58ch;
+}
+/* Drop the trailing paragraph's margin so the column ends exactly at the last
+   line of text — that is the edge the mosaic's bottom lines up with. */
+.om__text > div:last-child > .prose:last-child {
+  margin-bottom: 0;
+}
+
+/* The media column spans both rows, so it is the full height of the left
+   column; the mosaic is positioned to fill it exactly, held to the column's
+   outer (right) edge and capped so it never outruns the text beside it. */
+.om__media {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: stretch;
+  position: relative;
+}
+.om__mosaic {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(100%, 820px);
+  display: grid;
+  grid-template-columns: 1.75fr 1fr;
+  grid-template-rows: 1.75fr 1fr;
+  gap: clamp(8px, 1.1vw, 16px);
+}
+
+/* — the mosaic ————————————————————————————————————————————————————
+   Three tiles cut from one block:
+
+     ┌───────────┬───┐   S  the square-ish lead tile
+     │     S     │ T │   T  the upright beside it
+     ├───────────┴───┤   W  the wide one, the full width of the block
+     │       W       │
+     └───────────────┘
+
+   The tracks are `fr` of a definite extent (the block's own height and width),
+   so every tile's shape comes from its cell; the photographs cover whatever
+   they are given (ratio="auto" in OmBundsgaard.tsx) instead of pushing their
+   own proportions into the grid. */
+.om__tile {
+  height: 100%;
+  /* Like the gallery's tile: a positioned frame, so its rounded overflow
+     clips the photo cleanly while the photo scales on its own layer. */
+  position: relative;
+}
+/* Same quiet hover the gallery uses: the photograph eases up a step inside its
+   frame (which clips the overflow), while the frame itself never moves. */
+.om__tile img {
+  transform: scale(1);
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.om__tile:hover img,
+.om__tile:focus-within img {
+  transform: scale(1.055);
+}
+.om__tile--square {
+  grid-column: 1;
+  grid-row: 1;
+}
+.om__tile--tall {
+  grid-column: 2;
+  grid-row: 1;
+}
+.om__tile--wide {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+/* One column from the tablet width down: title and lead, then the pictures,
+   then the two texts. The mosaic is ordered up so it follows the opening
+   paragraph, drops back into normal flow, keeps its square and centres. */
+@media (max-width: 900px) {
+  .section.om__spread {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(28px, 4vw, 44px);
+  }
+  .om__intro {
+    grid-column: 1;
+    grid-row: auto;
+    order: 0;
+  }
+  .om__media {
+    grid-column: 1;
+    grid-row: auto;
+    order: 1;
+    position: static;
+  }
+  .om__text {
+    grid-column: 1;
+    grid-row: auto;
+    order: 2;
+    max-width: none;
+  }
+  .om__mosaic {
+    position: static;
+    width: 100%;
+    max-width: 620px;
+    margin-inline: auto;
+    aspect-ratio: 1;
+  }
+}
+
+/* On a phone the block is a third of its desktop width, and at 1.75 : 1 the
+   upright would come out a sliver barely wide enough to read as a photograph.
+   The fractions close up — in both directions, so the block stays square. */
+@media (max-width: 620px) {
+  .om__mosaic {
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: 1.4fr 1fr;
+  }
 }

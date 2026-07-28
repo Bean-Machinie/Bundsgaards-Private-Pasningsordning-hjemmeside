@@ -2,34 +2,33 @@ import ImageSlot from '../components/ImageSlot';
 import { photos } from '../content/photos';
 import { site } from '../content/site';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
-import { gridMin } from '../lib/css';
 import { routes } from '../routes';
 
 import './OmBundsgaard.css';
-
-const detailPhotos = [photos.om1, photos.om2, photos.om3, photos.om4];
 
 export default function OmBundsgaard() {
   useDocumentTitle(routes.om.title);
 
   return (
     <div className="enter">
-      <section className="shell section--loose section--flush-bottom">
-        <h1 className="title-page">
-          Om <em className="title-em">{site.name}</em>
-        </h1>
-        <p className="lead lead--page">
-          {site.name} er ikke en institution, der ligner et hjem. Det er et hjem, hvor der
-          også bliver passet børn — og det kan man mærke fra man træder ind i entréen.
-        </p>
-      </section>
+      {/* One spread: the title, lead and both prose blocks run down the left,
+          while the photo mosaic fills the right — its top level with the title
+          and its bottom level with the last paragraph. On a phone the spread
+          folds to one column and the mosaic is ordered up to sit just after the
+          opening paragraph, ahead of the two texts. */}
+      <section className="shell section om__spread">
+        <div className="om__intro">
+          <h1 className="title-page">
+            Om <em className="title-em">{site.name}</em>
+          </h1>
+          <p className="lead lead--page">
+            {site.name} er ikke en institution, der ligner et hjem. Det er et hjem, hvor
+            der også bliver passet børn — og det kan man mærke fra man træder ind i
+            entréen.
+          </p>
+        </div>
 
-      <section className="shell section">
-        <ImageSlot photo={photos.omHero} ratio="16 / 7" rounding="xl" eager />
-      </section>
-
-      <section className="shell section section--flush-top">
-        <div className="grid" style={gridMin('280px')}>
+        <div className="om__text">
           <div>
             <h2 className="title-sub">Rammerne</h2>
             <p className="prose">
@@ -55,22 +54,32 @@ export default function OmBundsgaard() {
             </p>
           </div>
         </div>
-      </section>
 
-      <section className="band band--surface">
-        <div className="shell grid" style={gridMin('220px')}>
-          {detailPhotos.map((photo) => (
-            <ImageSlot key={photo.placeholder} photo={photo} ratio="1 / 1" rounding="md" />
-          ))}
+        {/* Three tiles cut from one block — see OmBundsgaard.css. Each frame's
+            shape comes from its cell, so the photos hand their ratio to the grid
+            (ratio="auto") and cover whatever they are given. */}
+        <div className="om__media">
+          <div className="om__mosaic">
+            <ImageSlot
+              className="om__tile om__tile--square"
+              photo={photos.omSquare}
+              ratio="auto"
+              eager
+            />
+            <ImageSlot
+              className="om__tile om__tile--tall"
+              photo={photos.omTall}
+              ratio="auto"
+              eager
+            />
+            <ImageSlot
+              className="om__tile om__tile--wide"
+              photo={photos.omWide}
+              ratio="auto"
+              eager
+            />
+          </div>
         </div>
-      </section>
-
-      <section className="shell shell--narrow section--loose quote">
-        <blockquote className="quote__text">
-          „Vi kom for at se et sted. Vi gik hjem med en fornemmelse af, at der var nogen,
-          der ville kende vores dreng.“
-        </blockquote>
-        <p className="quote__attribution">Mor til Alma, 1½ år</p>
       </section>
     </div>
   );

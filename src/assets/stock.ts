@@ -9,6 +9,10 @@
  * import at a new file.
  */
 
+// The gård's own photographs — not stock, but they resolve the same way.
+import gaardHouse from './images/gaard/bundsgaard-1.jpeg';
+import gaardMorning from './images/gaard/bundsgaard-2.jpeg';
+import gaardBeech from './images/gaard/bundsgaard-3.png';
 import pinecones from './images/stock/pexels-2151090197-31497951.jpg';
 import meadowWalk from './images/stock/pexels-blaj-gabriel-80193688-10933642.jpg';
 import explorers from './images/stock/pexels-cottonbro-9292786.jpg';
@@ -27,6 +31,12 @@ import goldenRun from './images/stock/pexels-tam-d-ng-182134290-11217096.jpg';
 import napping from './images/stock/pexels-tatianasyrikova-3933069.jpg';
 
 export const stock = {
+  /** The thatched house seen along its length, lawn and old trees beside it. */
+  gaardHouse,
+  /** Frosty morning over the field, sun through the trees, a cup in hand. */
+  gaardMorning,
+  /** The copper beech in full autumn colour, the dog underneath it. */
+  gaardBeech,
   /** Toddler in a white dress holding pinecones, bright dappled light. */
   pinecones,
   /** Two children hand in hand crossing a mountain meadow. */
