@@ -17,7 +17,7 @@ export default function OmBundsgaard() {
           and its bottom level with the last paragraph. On a phone the spread
           folds to one column and the mosaic is ordered up to sit just after the
           opening paragraph, ahead of the two texts. */}
-      <section className="shell section om__spread">
+      <section className="shell section section--page-top om__spread">
         <Backdrop variant="welcome" />
 
         <div className="om__intro">

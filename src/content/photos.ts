@@ -44,16 +44,16 @@ export const photos = {
     alt: 'Sovende barn under en hvid dyne',
   },
 
-  // No photograph of the actual caretaker exists yet, so these stay as
-  // placeholders rather than misrepresenting Dorte with a stock child.
-  // TODO: indsæt et rigtigt portrætfoto af Dorte.
+  // The caretaker herself. The small slot is still open — no second portrait
+  // exists — so it stays a placeholder rather than reusing the same face twice.
   dorte: {
     placeholder: 'Portræt af Dorte — gerne udendørs',
     src: null,
   },
   dorteFull: {
     placeholder: 'Portræt af Dorte',
-    src: null,
+    src: stock.dortePortrait,
+    alt: 'Portræt af Dorte Thygesen i lavtstående aftensol',
   },
 
   // The three tiles of the mosaic on the Om-page, in layout order: the square,

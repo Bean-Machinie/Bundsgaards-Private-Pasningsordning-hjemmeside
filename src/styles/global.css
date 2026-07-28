@@ -104,6 +104,13 @@ body {
 .section--loose {
   padding-block: clamp(56px, 7vw, 104px);
 }
+/* The gap an inner page opens with: its title sits close under the site header
+   rather than a full section away. Set here so every page keeps the same
+   distance — the Om-page's measure, which the rest now follow. Declared after
+   the rhythm classes above so it wins the specificity tie with them. */
+.section--page-top {
+  padding-top: clamp(28px, 3.4vw, 52px);
+}
 .section--flush-top {
   padding-top: 0;
 }

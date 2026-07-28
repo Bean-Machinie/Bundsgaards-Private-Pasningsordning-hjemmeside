@@ -13,7 +13,7 @@ export default function Vaerdier() {
       {/* Title, lead and the whole grid live in one section, the way the Om
           page does it — that section is what the printed backdrop hangs on, and
           it has to reach the footer for the picture's bottom to be hidden. */}
-      <section className="shell section vaerdier">
+      <section className="shell section section--page-top vaerdier">
         <Backdrop variant="welcome" />
 
         <h1 className="title-page">

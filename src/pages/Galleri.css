@@ -9,6 +9,8 @@
    own padding-block. */
 .section--loose.galleri__head {
   padding-block: clamp(28px, 3.4vw, 52px) clamp(20px, 2.6vw, 34px);
+  /* Top value is .section--page-top's, spelled out here because the shorthand
+     also sets the tighter bottom this page wants — keep the two in step. */
 }
 /* The title's own bottom margin would stack on top of that padding; the gap to
    the photos is set in one place instead. */

@@ -12,9 +12,6 @@
      spread at z-index -1 — the same host setup .section.welcome uses. No
      `isolation`, so the layer stays in the page's own stacking context. */
   position: relative;
-  /* The title sits close under the site header, the same tightening the
-     gallery page uses. */
-  padding-top: clamp(28px, 3.4vw, 52px);
   display: grid;
   /* The photo column carries the weight — it takes clearly more of the width,
      leaving the prose a touch narrower. */

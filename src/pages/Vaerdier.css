@@ -7,13 +7,11 @@
    cream. Splitting the page in two sections would clip it mid-picture, straight
    across the page, where the second section begins.
 
-   The title sits close under the header, the same tightening the Om and gallery
-   pages use. Doubled selector is load-bearing: page CSS lands before global.css
-   in the bundle, so a single class would lose the specificity tie to .section's
-   own padding-block. */
+   Doubled selector is load-bearing: page CSS lands before global.css in the
+   bundle, so a single class would lose the specificity tie to .section's own
+   padding-block. (The top gap is .section--page-top's job, in global.css.) */
 .section.vaerdier {
   position: relative;
-  padding-top: clamp(28px, 3.4vw, 52px);
   padding-bottom: clamp(56px, 7vw, 104px);
 }
 

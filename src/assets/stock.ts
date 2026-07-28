@@ -10,6 +10,7 @@
  */
 
 // The gård's own photographs — not stock, but they resolve the same way.
+import dortePortrait from './images/profile-image.jpg';
 import gaardHouse from './images/gaard/bundsgaard-1.jpeg';
 import gaardMorning from './images/gaard/bundsgaard-2.jpeg';
 import gaardBeech from './images/gaard/bundsgaard-3.png';
@@ -31,6 +32,8 @@ import goldenRun from './images/stock/pexels-tam-d-ng-182134290-11217096.jpg';
 import napping from './images/stock/pexels-tatianasyrikova-3933069.jpg';
 
 export const stock = {
+  /** Dorte's own portrait, square, in low evening sun. */
+  dortePortrait,
   /** The thatched house seen along its length, lawn and old trees beside it. */
   gaardHouse,
   /** Frosty morning over the field, sun through the trees, a cup in hand. */

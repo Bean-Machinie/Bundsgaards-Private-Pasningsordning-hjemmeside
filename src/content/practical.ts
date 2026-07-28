@@ -89,9 +89,3 @@ export const quickFacts: Fact[] = [
   { value: 'Efter tilskud — spørg mig', label: 'Pris' },
 ];
 
-/** Credentials shown on /om-mig. */
-export const credentials: Fact[] = [
-  { value: 'Uddannet pædagog', label: 'Med speciale i 0-3 år' },
-  { value: 'Godkendt af kommunen', label: 'Egedal Kommune fører tilsyn' },
-  { value: 'Førstehjælp', label: 'Opdateret kursus i børneførstehjælp' },
-];

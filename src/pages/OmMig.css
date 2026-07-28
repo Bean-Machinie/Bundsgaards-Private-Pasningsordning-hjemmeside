@@ -1,11 +1,9 @@
-.ommig__portrait {
-  position: sticky;
-  top: calc(var(--header-height) + var(--space-6));
-}
-@media (max-width: 780px) {
-  .ommig__portrait {
-    position: static;
-  }
+/* The section hosts the printed backdrop — the setup the Om and Værdier pages
+   use: positioned, but never isolated, so the layer stays in the page's own
+   stacking context, spills upward behind the site header and ends at the
+   footer. */
+.ommig {
+  position: relative;
 }
 
 /* A step down from .title-page: this heading shares its row with the portrait,
@@ -20,26 +18,19 @@
   color: var(--color-ink-2);
 }
 
-.ommig__credentials {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
-  gap: var(--space-4);
-  margin: var(--space-8) 0 0;
-  padding: 0;
-  list-style: none;
+/* — the text that is still missing ————————————————————————————————
+   Plain notes to Dorte about what belongs here, set a step quieter than the
+   page's own prose so they never read as copy about her. No frame, no cards:
+   the whole block goes when the real paragraphs land. */
+.ommig__brief {
+  margin-top: var(--space-5);
 }
-.ommig__credential {
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-}
-.ommig__credential-title {
-  margin-bottom: var(--space-1);
-  font-family: var(--font-display);
-  font-size: 19px;
-}
-.ommig__credential-note {
-  font-size: 13px;
+.ommig__brief-note {
+  margin: 0 0 var(--space-4);
+  font-size: 15px;
+  line-height: 1.8;
   color: var(--color-ink-3);
+}
+.ommig__brief-note:last-child {
+  margin-bottom: 0;
 }

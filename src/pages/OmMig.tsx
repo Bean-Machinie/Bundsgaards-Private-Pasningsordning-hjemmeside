@@ -1,6 +1,6 @@
+import Backdrop from '../components/Backdrop';
 import ImageSlot from '../components/ImageSlot';
 import { photos } from '../content/photos';
-import { credentials } from '../content/practical';
 import { site } from '../content/site';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { gridMin } from '../lib/css';
@@ -13,37 +13,32 @@ export default function OmMig() {
 
   return (
     <div className="enter">
-      <section className="shell section--loose grid grid--split-top" style={gridMin('290px')}>
-        <div className="ommig__portrait">
-          <ImageSlot photo={photos.dorteFull} ratio="4 / 5" rounding="xl" eager />
+      <section
+        className="shell section--loose section--page-top grid grid--split-top ommig"
+        style={gridMin('290px')}
+      >
+        <Backdrop variant="welcome" />
+
+        <div>
+          <ImageSlot photo={photos.dorteFull} ratio="1 / 1" rounding="xl" eager />
         </div>
 
         <div>
           <h1 className="ommig__title">
             Om <em className="title-em">mig</em>
           </h1>
-          <p className="prose prose--large ommig__para">
-            Jeg hedder {site.owner}. Jeg er uddannet pædagog og har arbejdet med de yngste
-            børn i mange år, både i vuggestue og i dagpleje. For nogle år siden valgte jeg
-            at gøre det på min egen måde, hjemme på Bundsvej.
-          </p>
-          <p className="prose prose--large ommig__para">
-            Jeg er rolig af natur, jeg taler med børn som med mennesker, og jeg synes, at
-            en dag er lykkedes, når alle fire har været trætte og glade på samme tid.
-          </p>
-          <p className="prose prose--large ommig__para">
-            Privat bor jeg her med min mand. Vi har voksne børn, en gammel hund og en have,
-            der aldrig bliver helt færdig.
-          </p>
+          {/* The opening line is the only thing here that is known. Everything
+              below it is a note to Dorte about what to write — plain text, no
+              invented copy. Delete the whole .ommig__brief block once the real
+              paragraphs are in. */}
+          <p className="prose prose--large ommig__para">Jeg hedder {site.owner} …</p>
 
-          <ul className="ommig__credentials">
-            {credentials.map((item) => (
-              <li key={item.value} className="ommig__credential">
-                <div className="ommig__credential-title">{item.value}</div>
-                <div className="ommig__credential-note">{item.label}</div>
-              </li>
-            ))}
-          </ul>
+          <div className="ommig__brief">
+            <p className="ommig__brief-note">
+              Her skriver du selv din tekst — lidt om hvem du er, og hvordan du er sammen
+              med børnene.
+            </p>
+          </div>
         </div>
       </section>
     </div>

@@ -18,7 +18,7 @@ export default function Praktisk() {
 
   return (
     <div className="enter">
-      <section className="shell section--loose section--flush-bottom">
+      <section className="shell section--loose section--page-top section--flush-bottom">
         <h1 className="title-page">
           Praktisk <em className="title-em">information</em>
         </h1>
