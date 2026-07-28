@@ -32,7 +32,6 @@ export default function Vaerdier() {
             <article key={value.title} className="vaerdi">
               <h2 className="vaerdi__heading">{value.title}</h2>
               <p className="vaerdi__body">{value.body}</p>
-              <p className="vaerdi__example">{value.example}</p>
             </article>
           ))}
         </div>

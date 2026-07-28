@@ -1,8 +1,6 @@
 export interface Value {
   title: string;
   body: string;
-  /** The "I praksis:" line — how the principle looks on an ordinary day. */
-  example: string;
 }
 
 /** The full pedagogy, shown on /vaerdier. */
@@ -10,37 +8,26 @@ export const values: Value[] = [
   {
     title: 'Tryghed er forudsætningen',
     body: 'Et lille barn kan først lære noget, når det føler sig trygt. Derfor bruger jeg lang tid på indkøringen og på at kende jeres barns signaler.',
-    example:
-      'I praksis: den samme voksne tager imod hver morgen, og vi siger ordentligt farvel — aldrig i smug.',
   },
   {
     title: 'Genkendelige rutiner',
     body: 'Dagen ligner sig selv. Når måltider, lur og ture ligger fast, kan barnet bruge sin energi på at lege i stedet for at gætte, hvad der sker nu.',
-    example:
-      'I praksis: samme rækkefølge hver dag, og vi fortæller altid, hvad der kommer bagefter.',
   },
   {
     title: 'Plads til det enkelte barn',
     body: 'Fire børn betyder, at jeg kan følge fire forskellige tempi. Den, der lige er begyndt at gå, får noget andet end den, der snart skal i børnehave.',
-    example:
-      'I praksis: vi venter på den langsomme sko, og vi springer turen over, hvis nogen har brug for en rolig dag.',
   },
   {
     title: 'Naturen hver dag',
     body: 'Vi er ude i al slags vejr. Ude er der plads til høje stemmer og store bevægelser, og børnene sover bedre bagefter.',
-    example:
-      'I praksis: gummistøvler og regntøj i entréen året rundt — og lur i barnevogn udenfor.',
   },
   {
     title: 'Leg er arbejde',
-    body: 'Jeg blander mig ikke i alt. Børn lærer at vente, dele og forhandle, når de får lov at være i legen selv — men jeg er tæt på og hjælper, hvor det er nødvendigt.',
-    example: 'I praksis: få aktiviteter på skemaet og lang tid til hver enkelt.',
+    body: 'Jeg blander mig ikke i alt. Børn lærer at vente, dele og forhandle, når de får lov at være i legen selv, men jeg er tæt på og hjælper, hvor det er nødvendigt.',
   },
   {
     title: 'Et tæt samarbejde med jer',
     body: 'I kender jeres barn bedst. Jeg vil hellere spørge en gang for meget, end antage noget forkert.',
-    example:
-      'I praksis: en snak ved aflevering og hentning, og et billede engang imellem i løbet af dagen.',
   },
 ];
 

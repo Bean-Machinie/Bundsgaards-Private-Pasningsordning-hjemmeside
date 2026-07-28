@@ -53,14 +53,6 @@
   line-height: 1.75;
   color: var(--color-ink-2);
 }
-/* The "I praksis:" line — deliberately quieter than the principle above it. */
-.vaerdi__example {
-  margin: var(--space-3) 0 0;
-  font-size: clamp(14px, 1.3vw, 15px);
-  line-height: 1.75;
-  color: var(--color-ink-3);
-}
-
 /* Two columns stop holding a readable line on a phone — same breakpoint the
    front page's values grid folds at. */
 @media (max-width: 560px) {
