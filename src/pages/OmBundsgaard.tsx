@@ -26,8 +26,7 @@ export default function OmBundsgaard() {
           </h1>
           <p className="lead lead--page">
             {site.name} er en gammel gård med stråtag, høje træer og en stor have, hvor
-            der er plads til at gå på opdagelse. Her bor jeg, og her passer jeg børn — så
-            hverdagen foregår i et rigtigt hjem, ikke i en institution.
+            der er plads til at gå på opdagelse. Her bor jeg, og her passer jeg børn.
           </p>
         </div>
 
@@ -43,7 +42,7 @@ export default function OmBundsgaard() {
             <p className="prose">
               Indenfor har børnene deres eget rum ud til haven, hvor legetøjet står i lav
               højde, så de selv kan nå det. Vi spiser sammen ved det store bord, og
-              middagsluren foregår i barnevogn under træerne — også om vinteren, godt
+              middagsluren foregår i barnevogn under træerne, også om vinteren, godt
               pakket ind.
             </p>
           </div>
@@ -51,7 +50,7 @@ export default function OmBundsgaard() {
             <h2 className="title-sub">Omgivelserne</h2>
             <p className="prose">
               Lige omkring gården er der marker, stier og natur til alle sider. Skoven
-              ligger tæt på, og på turene møder vi heste og får bag hegnene, kigger på
+              ligger tæt på, og på vores ture møder vi heste og får, kigger på
               traktorer i marken og samler kastanjer og blade med hjem.
             </p>
           </div>

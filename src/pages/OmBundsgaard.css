@@ -38,6 +38,12 @@
      column would rather grow a line than run wide. */
   max-width: 58ch;
 }
+/* Both texts are set at the lead's size, so the whole left column reads as one
+   voice rather than dropping a step below the opening paragraph. The .prose
+   line-height stays, so the longer blocks keep their own rhythm. */
+.om__text .prose {
+  font-size: 17px;
+}
 /* Drop the trailing paragraph's margin so the column ends exactly at the last
    line of text — that is the edge the mosaic's bottom lines up with. */
 .om__text > div:last-child > .prose:last-child {
@@ -82,6 +88,12 @@
 .om__tile--square {
   grid-column: 1;
   grid-row: 1;
+}
+/* The house stands at the very left edge of this photograph, so a centred crop
+   cuts through it. The frame holds its own left edge instead — the picture
+   slides right inside the tile and the gable comes back whole. */
+.om__tile--square img {
+  object-position: left center;
 }
 .om__tile--tall {
   grid-column: 2;
