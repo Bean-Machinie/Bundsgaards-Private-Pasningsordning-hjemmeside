@@ -78,7 +78,7 @@ export function headlineFacts(openingHours: OpeningRow[]): Fact[] {
 
   return [
     { value: '4 børn', label: 'fast lille gruppe' },
-    { value: '0-3 år', label: 'til start i børnehave' },
+    { value: '0 - 3 år', label: 'til start i børnehave' },
     ...hours,
     { value: 'Udenfor', label: 'hver dag, året rundt' },
   ];

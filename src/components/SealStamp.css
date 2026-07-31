@@ -52,12 +52,25 @@
   /* Decoration only: no clicks swallowed, no drag-to-save ghost. */
   pointer-events: none;
   user-select: none;
-  /* Pressed on, briefly: it settles from a touch oversized, the way a stamp
-     does when the hand lifts. It also covers the one moment this component can
-     look unstable — the seal is driven by the sheet, so a visitor arriving
-     just as the caretaker takes it down sees the compiled-in copy for a beat
-     before the fresh one lands. Arriving mid-fade, that reads as the seal
-     never quite settling rather than as the page changing its mind. */
+  /* Nothing until it is whole. The component adds .is-pressed once the wax has
+     decoded and the display face has stopped loading — see SealStamp.tsx for
+     why both matter — and only then does the seal appear. Held with opacity
+     rather than display or visibility on purpose: the imprint has to stay
+     laid out and rendered the whole time, or it could neither request the
+     webfont nor be measured against the disc. */
+  opacity: 0;
+}
+
+/* Pressed on, briefly: it settles from a touch oversized, the way a stamp does
+   when the hand lifts. Because it only starts once the geometry is final, the
+   seal is never seen moving into place — it is simply pressed, once.
+
+   It also covers the one moment this component can look unstable: the seal is
+   driven by the sheet, so a visitor arriving just as the caretaker takes it
+   down sees the compiled-in copy for a beat before the fresh one lands.
+   Arriving mid-press, that reads as the seal never quite settling rather than
+   as the page changing its mind. */
+.seal-stamp__body.is-pressed {
   animation: seal-press 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes seal-press {
@@ -70,9 +83,14 @@
     transform: translate(-50%, -50%) rotate(8deg) scale(1);
   }
 }
+/* Asked for less movement: no press, but the seal must still arrive. The
+   animation is what reveals it now, so dropping it has to hand the opacity
+   back explicitly — `animation: none` on its own would leave the seal at the
+   zero it starts from and take it off the page for good. */
 @media (prefers-reduced-motion: reduce) {
-  .seal-stamp__body {
+  .seal-stamp__body.is-pressed {
     animation: none;
+    opacity: 1;
   }
 }
 
@@ -125,19 +143,66 @@
      page's display type so it survives the wax texture behind it. */
   font-weight: 700;
   text-transform: uppercase;
-  /* Debossed, lit from above like the rest of the page: glyphs darker
-     than the wax face, and the carve rendered in two layers per lip —
-     a crisp catch of light right on the lower lip (says "pressed") over
-     a soft warm bloom spreading below it (says "polished wax"), mirrored
-     above by a tight dark tuck and a wider soft depth-shadow. Colours
-     are hand-picked dark/light neighbours of the stamp's terracotta tint
-     (#8f4018), not theme tokens — they must track the wax, not the page. */
+  /* Colours are hand-picked dark/light neighbours of the stamp's terracotta
+     tint (#8f4018), not theme tokens — they must track the wax, not the page.
+     The carve itself is on the two lines below, not here; see why there. */
   color: rgb(48 14 2);
+  /* Overwritten inline with the inverse of the fit factor. The fallback is
+     what an unscaled imprint would want, so a seal that somehow renders
+     without the component's help is still carved rather than flat. */
+  --seal-carve: 1;
+}
+
+/* Debossed, lit from above like the rest of the page: glyphs darker than the
+   wax face, and the carve rendered in two layers per lip — a crisp catch of
+   light right on the lower lip (says "pressed") over a soft warm bloom
+   spreading below it (says "polished wax"), mirrored above by a tight dark
+   tuck and a wider soft depth-shadow.
+
+   Two things about how this is written:
+
+   In `em`, so the carve is proportional to the glyphs it is cut into. The date
+   below is set half again as large as the words above it, and a fixed 1px lip
+   on both means the same light catch spread over a much bigger letter — the
+   date reads flat and faintly rubbed next to a crisply pressed "LEDIGE". At
+   these ratios the depth tracks the size, so both look struck by the same die.
+
+   And declared on the lines rather than on the block that holds them, which is
+   the only place it can go: text-shadow lengths compute to absolute pixels
+   where they are declared and inherit as those pixels, so `em` written on the
+   parent would resolve once against the parent and hand both children the same
+   fixed value — the very thing this is fixing. Ratios are off the 40px line:
+   1px → 0.025em.
+
+   And multiplied by --seal-carve, which is where the depths actually come
+   from. The numbers below are the carve as drawn: 1px against the 40px base.
+   But the imprint is never shown at 40px — the disc fit scales the whole block
+   down, by roughly half at the widest seal, and a transform scales a shadow
+   along with everything else. So the 1px lip arrives as half a pixel.
+
+   Half a pixel is the whole problem, because a text-shadow is painted *behind*
+   its glyph: only the sliver clearing the glyph's edge is ever seen. At half a
+   pixel that sliver is at the mercy of where the row's baseline happens to sit
+   between two device pixels — and with the imprint rotated eight degrees, no
+   two rows sit alike. The rasteriser rounds some rows' lips up to a visible
+   line and others down to nothing, which is why the carve reads as arriving on
+   an arbitrary subset of the rows rather than all of them.
+
+   So the component divides by the fit factor (SealStamp.tsx) and the carve
+   below cancels it out: whatever the seal's size, the lip lands at the one
+   pixel it was drawn as. The blurs are a hair wider than the offsets for the
+   same reason — a rotated edge needs something to fall off through. */
+.seal-stamp__line,
+.seal-stamp__subline {
   text-shadow:
-    0 1px 0 rgb(255 214 178 / 0.5),
-    0 2.5px 3px rgb(255 190 150 / 0.3),
-    0 -1px 1px rgb(28 7 0 / 0.6),
-    0 -2px 4px rgb(40 12 0 / 0.3);
+    0 calc(0.025em * var(--seal-carve)) calc(0.014em * var(--seal-carve))
+      rgb(255 214 178 / 0.5),
+    0 calc(0.0625em * var(--seal-carve)) calc(0.075em * var(--seal-carve))
+      rgb(255 190 150 / 0.3),
+    0 calc(-0.025em * var(--seal-carve)) calc(0.03em * var(--seal-carve))
+      rgb(28 7 0 / 0.6),
+    0 calc(-0.05em * var(--seal-carve)) calc(0.1em * var(--seal-carve))
+      rgb(40 12 0 / 0.3);
 }
 
 .seal-stamp__line {

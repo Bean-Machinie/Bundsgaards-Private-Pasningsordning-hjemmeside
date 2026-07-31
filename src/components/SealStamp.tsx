@@ -1,9 +1,10 @@
 // Generated from stamp.png with sharp (resize 600 + luminance-preserving
 // tint to the theme's terracotta #8f4018 / --color-accent), so the seal
 // wears the same colour as the Kontakt button and the script headings.
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import stamp from '../assets/images/stamp-terracotta.png';
+import type { StyleWithVars } from '../lib/css';
 
 import './SealStamp.css';
 
@@ -54,7 +55,44 @@ export default function SealStamp({
   const sublines = subline == null || Array.isArray(subline) ? subline : [subline];
   const bodyRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const [scale, setScale] = useState(1);
+
+  /* The seal is held back until it is finished, and shown in one move. Both
+     halves of it settle late in ways that would otherwise be watched happening:
+
+       · the wax is a 205 KB PNG, and until it decodes the frame around it has
+         no height to speak of;
+       · the imprint is measured to fit the disc, and it measures differently
+         in Fraunces than in the Georgia that stands in while Fraunces loads —
+         so the fit would visibly re-run under the reader.
+
+     Waiting for both means the geometry is final before anything is painted.
+     On a repeat visit the PNG is already in cache and reports complete before
+     the first paint, so this costs a frame, not a wait. */
+  const [waxReady, setWaxReady] = useState(false);
+  const [typeReady, setTypeReady] = useState(false);
+
+  useLayoutEffect(() => {
+    const img = imgRef.current;
+    if (img?.complete && img.naturalWidth > 0) setWaxReady(true);
+  }, []);
+
+  useEffect(() => {
+    // Resolves once no font loads are outstanding — including immediately, if
+    // none ever were. Older engines without the API simply don't wait.
+    if (!document.fonts) {
+      setTypeReady(true);
+      return;
+    }
+    let cancelled = false;
+    void document.fonts.ready.then(() => {
+      if (!cancelled) setTypeReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const body = bodyRef.current;
@@ -84,30 +122,74 @@ export default function SealStamp({
 
     fit();
     const observer = new ResizeObserver(fit);
-    /* body: viewport steps resize the seal. text: the Fraunces webfont
-       landing changes the measured line boxes without resizing the seal.
-       The scale itself is a transform, which never triggers the observer,
-       so this cannot loop. */
+    /* body: viewport steps resize the seal. text: a late webfont changes the
+       measured line boxes without resizing the seal. The scale itself is a
+       transform, which never triggers the observer, so this cannot loop. */
     observer.observe(body);
     observer.observe(text);
     return () => observer.disconnect();
-  }, [lines.join('\n'), sublines?.join('\n')]);
+    /* typeReady is a dependency, which is what stops the imprint being seen
+       resizing itself.
+
+       The fit is a measurement of rendered text, so it only answers for the
+       face the text is rendered in — and Fraunces and the Georgia standing in
+       for it while it loads have different metrics, so they fit at different
+       scales. Measuring once at mount therefore sizes the imprint for the
+       wrong face, and the observer above corrects it when Fraunces lands: a
+       correction that happens *after* the seal is on screen, which is the
+       resettling you can see.
+
+       Re-running here instead means the final measurement happens in a layout
+       effect of the same commit that reveals the seal — before the browser
+       paints — so the first frame anyone sees is already the right size. The
+       observer stays as the safety net for everything after that. */
+  }, [lines.join('\n'), sublines?.join('\n'), typeReady]);
 
   return (
     <div className="seal-stamp">
-      <div className="seal-stamp__body" ref={bodyRef}>
+      <div
+        className={
+          waxReady && typeReady ? 'seal-stamp__body is-pressed' : 'seal-stamp__body'
+        }
+        ref={bodyRef}
+      >
         <img
+          ref={imgRef}
           className="seal-stamp__img"
           src={stamp}
           alt=""
           aria-hidden="true"
+          /* The PNG's own dimensions, so the browser reserves a square box
+             before a byte of it arrives. Without them `height: auto` resolves
+             to zero until the image decodes — and since the seal is centred on
+             the section boundary by translate(-50%, -50%), half of zero is
+             zero: it would sit half a seal too low, then jump up the moment
+             the wax landed. */
+          width={600}
+          height={600}
           draggable={false}
+          /* No matching onError, deliberately: a seal that can't paint its wax
+             is nothing but floating words, so a failed load leaves this false
+             and the whole thing stays away. */
+          onLoad={() => setWaxReady(true)}
           onContextMenu={(event) => event.preventDefault()}
         />
         <p
           className="seal-stamp__text"
           ref={textRef}
-          style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
+          style={{
+            transform: `translate(-50%, -50%) scale(${scale})`,
+            /* The carve is drawn in SealStamp.css at the base layout size and
+               then scaled down with everything else, which takes its one-pixel
+               lip to somewhere under half a pixel — too little to clear the
+               glyph it hides behind, and rounded away on some rows and not
+               others. Handing the stylesheet the inverse cancels the scale
+               exactly, so the lip lands at the pixel it was drawn as whatever
+               size the seal ends up. Floored well above zero: `scale` is only
+               ever a fitted fraction, but nothing here should be one bad
+               measurement away from dividing by nothing. */
+            '--seal-carve': (1 / Math.max(scale, 0.05)).toFixed(4),
+          } as StyleWithVars}
         >
           {lines.map((line) => (
             <span key={line} className="seal-stamp__line">
