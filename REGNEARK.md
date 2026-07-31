@@ -6,14 +6,13 @@ regnearket, retter du på hjemmesiden — der skal ikke andet til.
 Regnearket hedder **Bundsgård Privat Pasningsordning - INFO**, og det er kun
 den ene fane, hjemmesiden læser.
 
-**Ændringer slår igennem inden for ca. 5 minutter.** Google er selv nogle
-minutter om at sende rettelsen videre — hjemmesiden henter den, så snart den er
-klar. Hent siden igen med `Ctrl + F5` (Windows) eller `Cmd + Shift + R` (Mac),
-så ser du det nyeste, der er kommet igennem.
+**Ændringer slår igennem med det samme.** Gem i regnearket, hent hjemmesiden
+igen — `Ctrl + R` (Windows) eller `Cmd + R` (Mac) — og rettelsen er der. Det er
+en rigtig genindlæsning, der skal til; klikker du bare rundt mellem siderne,
+henter den ikke noget nyt.
 
-> **Vigtigt:** Fanen er offentliggjort på nettet, så alt hvad der står i den,
-> kan læses af alle. Skriv aldrig personlige oplysninger om børn eller familier
-> i regnearket.
+> **Vigtigt:** Regnearket er delt, så alle med linket kan læse det. Skriv
+> derfor aldrig personlige oplysninger om børn eller familier i det.
 
 ---
 
@@ -194,9 +193,9 @@ bruges billedteksten.
 | --- | --- |
 | Et billede mangler og der står en stiplet firkant | Filen er ikke delt med "Alle med linket", eller linket er ikke kopieret helt |
 | Et kort har fået en stiplet ramme | Blokken har ingen linjer — det er sådan, det skal se ud |
-| Ændringen er der ikke endnu | Vent 5 minutter, og hent siden igen med `Ctrl + F5` |
+| Ændringen er der ikke endnu | Du har klikket rundt på siden i stedet for at hente den igen — tryk `Ctrl + R` |
 | En hel blok mangler på siden | `#`-linjen er blevet slettet eller stavet forkert |
-| Hjemmesiden viser gamle oplysninger | Fanen er ikke længere offentliggjort — sig til, så kigger vi på det |
+| Hjemmesiden viser gamle oplysninger | Delingen på regnearket er blevet slået fra — sig til, så kigger vi på det |
 
 Hjemmesiden går aldrig ned af noget, du skriver i arket. Kan den ikke forstå
 noget, viser den bare det, den viste før.

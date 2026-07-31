@@ -25,22 +25,77 @@ const CONFIG = fileURLToPath(new URL('../src/lib/sheet/config.ts', import.meta.u
 
 const soft = process.argv.includes('--soft');
 
-/** Read the published URL out of config.ts rather than repeating it here —
- *  two copies of that URL is one copy too many, and this script is the one
- *  place outside the browser that needs it. */
+/** Build the same URL the browser will, from the same constants — reading them
+ *  out of config.ts rather than repeating them here. Two copies of a document
+ *  id is one copy too many, and this script is the only thing outside the
+ *  browser that needs one. */
 async function sheetUrl() {
   const source = await readFile(CONFIG, 'utf8');
-  const match = /'(https:\/\/docs\.google\.com\/spreadsheets\/[^']+output=csv)'/.exec(source);
-  if (!match) throw new Error('Could not find the published CSV URL in src/lib/sheet/config.ts');
-  return match[1];
+  const docId = /SHEET_DOC_ID\s*=\s*'([^']*)'/.exec(source)?.[1] ?? '';
+  const gid = /SHEET_GID\s*=\s*'([^']*)'/.exec(source)?.[1] ?? '';
+
+  if (docId) {
+    return `https://docs.google.com/spreadsheets/d/${docId}/gviz/tq?tqx=out:csv&headers=0&gid=${gid}`;
+  }
+
+  // No document id yet, so the site is still on the published snapshot. Mirror
+  // that here rather than silently syncing from a different source than the
+  // one visitors are reading.
+  const published = /'(https:\/\/docs\.google\.com\/spreadsheets\/d\/e\/[^']+output=csv)'/.exec(
+    source,
+  );
+  if (!published) throw new Error('No SHEET_DOC_ID and no published URL in src/lib/sheet/config.ts');
+  console.warn(
+    'sync-sheet: SHEET_DOC_ID is empty, so this is reading the published snapshot — ' +
+      'which can serve a different vintage per request. Set it in src/lib/sheet/config.ts.',
+  );
+  return published[1];
+}
+
+/**
+ * The first cell of a CSV line, unquoted.
+ *
+ * Needed because the two endpoints disagree about quoting: the published
+ * export only quotes cells that need it, while gviz quotes every cell. A
+ * regex looking for a bare `#` at the start of a line finds every block in one
+ * and none in the other, which is exactly the sort of thing that turns into a
+ * validator that silently passes everything.
+ */
+function firstCell(line) {
+  if (!line.startsWith('"')) return line.split(',')[0].trim();
+
+  let out = '';
+  let i = 1;
+  while (i < line.length) {
+    if (line[i] === '"') {
+      if (line[i + 1] === '"') {
+        out += '"';
+        i += 2;
+        continue;
+      }
+      break;
+    }
+    out += line[i];
+    i += 1;
+  }
+  return out.trim();
+}
+
+/** Every block name in the file, in order. */
+function blockNames(csv) {
+  return csv
+    .split('\n')
+    .map((line) => firstCell(line))
+    .filter((cell) => cell.startsWith('#') && cell.length > 1)
+    .map((cell) => cell.slice(1).trim());
 }
 
 /** The same test the browser applies: does this look like the sheet, or like
- *  an empty tab, a sign-in page, or a document that was unpublished? */
+ *  an empty tab, a sign-in page, or a document that lost its sharing? */
 function looksLikeTheSheet(csv) {
   if (csv.trim() === '') return false;
   if (/^\s*</.test(csv)) return false;
-  return /^#\s*\S/m.test(csv.replace(/^"|"$/gm, ''));
+  return blockNames(csv).length > 0;
 }
 
 async function main() {
@@ -66,11 +121,7 @@ async function main() {
   }
 
   await writeFile(SNAPSHOT, csv, 'utf8');
-  // First cell only — the rest of a header row carries column hints for whoever
-  // is editing the sheet, which have no business in this line.
-  const blocks = (csv.match(/^#\s*\S.*$/gm) ?? []).map((line) =>
-    line.split(',')[0].replace(/^#\s*/, '').replace(/^"|"$/g, '').trim(),
-  );
+  const blocks = blockNames(csv);
   console.log(`sync-sheet: snapshot updated — ${blocks.length} blocks (${blocks.join(', ')})`);
 }
 

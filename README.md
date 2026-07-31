@@ -130,8 +130,29 @@ opening hours, the front page's wax seal, every card on the Praktisk page, the
 "Godt at vide" notes, the FAQ list, and the gallery's photos. `REGNEARK.md` is
 the caretaker's guide to it; `src/lib/sheet/parse.ts` is the grammar.
 
-The tab is published to the web and read as CSV — no API key, no OAuth, no
-backend. Which also means everything in that tab is public.
+The tab is read as CSV over Google's `gviz/tq` endpoint — no API key, no OAuth,
+no backend. It needs the document shared "Alle med linket → Læser", which also
+means everything in that tab is public.
+
+**Not the `/d/e/2PACX-…/pub?output=csv` URL**, which is the obvious choice and
+is wrong. `/pub` doesn't read the spreadsheet: it reads a snapshot Google
+generates at publish time and serves from a CDN whose edge nodes re-pull that
+snapshot independently. One node can have an edit while another doesn't, so the
+answer varies *per request* — reload, new value; reload, old value; reload, new
+value again. No cache-busting fixes that, because the caches disagreeing are
+Google's and each is serving exactly what it was told to.
+
+Measured on this document, same probe both ways:
+
+| Endpoint | Requests | Distinct bodies returned |
+| --- | --- | --- |
+| `/d/e/2PACX-…/pub?output=csv` | 12 in one second | **2** — one with the seal's month cell empty, eleven with it set |
+| `/d/<id>/gviz/tq?tqx=out:csv` | 15 | **1**, reflecting an edit made seconds earlier |
+
+`gviz/tq` queries the live document, so there is no snapshot to go stale, and
+it answers `Cache-Control: no-cache, no-store` rather than `max-age=300`.
+`SHEET_DOC_ID` in `lib/sheet/config.ts` is what selects it; leave it empty and
+the site falls back to the published URL and says so in the console.
 
 **Three layers, best last** (`lib/sheet/provider.tsx`):
 
@@ -143,13 +164,17 @@ backend. Which also means everything in that tab is public.
    differ from what's already on screen (compared by hash; the export carries
    no usable ETag). An unchanged sheet causes no state update and no re-render.
 
-**Every page load fetches**, unthrottled. Loading a page is someone asking for
-the current state, and answering that out of a copy stored minutes ago makes
-the site look broken to the one person most likely to be watching — whoever
-just edited the sheet and reloaded to check. The five-minute throttle applies
-only to the in-session re-check when a backgrounded tab is brought forward.
-What remains is Google's own publishing lag, which is a few minutes and is not
-ours to shorten.
+**Every page load fetches**, unthrottled, with `cache: 'no-store'` and a
+cache-busting parameter so nothing between here and Google can answer from a
+copy. Loading a page is someone asking for the current state, and answering
+that out of something stored minutes ago makes the site look broken to the one
+person most likely to be watching — whoever just edited the sheet and reloaded
+to check. The five-minute throttle applies only to the in-session re-check when
+a backgrounded tab is brought forward.
+
+Client-side navigation is not a page load, so clicking between routes will not
+pick up an edit. That is deliberate — one fetch serves the footer on every
+page — and a real reload is the way to see a change.
 
 **The safety property is in the parser.** A block the sheet doesn't mention
 leaves that part of the site alone, so an empty tab, a half-written one, a

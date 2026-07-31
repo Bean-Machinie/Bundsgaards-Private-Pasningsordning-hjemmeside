@@ -33,7 +33,7 @@ import {
 import { stockGallery } from '../../content/photos';
 import snapshotCsv from '../../content/sheet-snapshot.csv?raw';
 import { fetchSheetCsv, hashCsv, readStored, writeStored } from './client';
-import { REVALIDATE_AFTER_MS } from './config';
+import { REVALIDATE_AFTER_MS, USING_PUBLISHED_FALLBACK } from './config';
 import { applySheet, parseSheet } from './parse';
 import type { SheetContent, SheetSource, SheetStatus, SiteData } from './types';
 
@@ -114,6 +114,14 @@ export function SiteDataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (import.meta.env.DEV) {
       console.info(`[sheet] first paint from the ${bootRef.current?.state.source}`);
+      if (USING_PUBLISHED_FALLBACK) {
+        console.warn(
+          '[sheet] reading the published /pub snapshot, not the live document. ' +
+            'That snapshot is served from a CDN whose nodes hold different vintages, ' +
+            'so an edit can appear and disappear between reloads. ' +
+            'Set SHEET_DOC_ID in src/lib/sheet/config.ts to switch to the live endpoint.',
+        );
+      }
     }
 
     const controller = new AbortController();
