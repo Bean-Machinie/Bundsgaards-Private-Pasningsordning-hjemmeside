@@ -3,6 +3,16 @@ export interface Faq {
   answer: string;
 }
 
+/** The FAQ band reads as a section of its own — centred heading, its own lead,
+ *  and a closing line pointing at the contact details — so that framing copy
+ *  lives here with the questions rather than inside the page component. */
+export const faqIntro = {
+  title: 'Ofte stillede spørgsmål',
+  lead: 'De spørgsmål, jeg oftest får fra forældre, inden vi skriver en aftale.',
+  footPrompt: 'Fandt I ikke svaret her?',
+  footLink: 'Skriv til mig',
+};
+
 export const faqs: Faq[] = [
   {
     question: 'Hvordan søger vi tilskud?',

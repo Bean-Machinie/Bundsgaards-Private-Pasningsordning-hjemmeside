@@ -1,6 +1,15 @@
+/* Both card headings are sized off the copy they head rather than picked by
+   eye: one golden-ratio step above the 15px text, so the step is proportional.
+   --heads-text is that text size — keep it in step with .spec-row, the intro,
+   the footnote and the note body below, which all sit at the same size. */
+.praktisk__panel-title,
+.praktisk__note-title {
+  --heads-text: 15px;
+  font-size: calc(var(--heads-text) * var(--ratio-golden));
+}
+
 .praktisk__panel-title {
   margin: 0 0 var(--space-4);
-  font-size: 20px;
 }
 .praktisk__panel-intro {
   margin: 0 0 var(--space-2);
@@ -14,15 +23,17 @@
   border-top: 1px solid var(--color-border);
   border-bottom: 0;
 }
+/* Same size as the rows it follows — it reads as the panel's last line of copy,
+   not as fine print; the muted ink is what sets it apart. */
 .praktisk__footnote {
   margin: var(--space-4) 0 0;
-  font-size: 13px;
+  font-size: 15px;
+  line-height: 1.75;
   color: var(--color-ink-3);
 }
 
 .praktisk__note-title {
   margin: 0 0 var(--space-2);
-  font-size: 19px;
 }
 .praktisk__note-body {
   margin: 0;
@@ -31,14 +42,66 @@
   color: var(--color-ink-2);
 }
 
-/* — FAQ accordion ————————————————————————————————————————————— */
+/* — FAQ accordion ————————————————————————————————————————————————
+   Built to the Motion UI "FAQ: plus-minus" section: a narrow centred column, a
+   centred heading and lead over line-divided rows, a plus that turns into a
+   minus, and a closing line pointing at the contact details.
 
-.praktisk__faq-heading {
-  margin-bottom: var(--space-6);
+   The geometry is that example's, measured off it — a 672px measure, 40px
+   between blocks, 20px rows, a 24px gap holding the mark off the question, an
+   18px icon box with two 13×2 bars — and only the palette and the two faces are
+   this site's. The px values here are deliberate rather than token-shaped for
+   that reason: they are a transcription, not a fresh set of choices. The rest
+   still comes from the theme.
+
+   Note the questions are set in the body sans at 600, not in the display serif
+   the rest of the site heads with — that weight step is what makes the example's
+   rows read as controls. Swap the font-family/font-weight pair on .faq__trigger
+   to bring the serif back. */
+
+/* Every block here is a direct child so the band's stagger can index them one
+   by one, which rules out a single flex `gap` — the heading and its lead sit 16px
+   apart while the three blocks sit 40px apart. So the rhythm is carried by the
+   blocks themselves. */
+.faq-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 672px;
+  margin-inline: auto;
+  padding-inline: var(--space-6);
 }
 
-.faq {
+.faq-section__title {
+  margin: 0;
+  font-size: clamp(2.25rem, 4.4vw, 3rem);
+  line-height: 1;
+  /* The example tracks its sans in tight at this size. A light serif needs far
+     less of that to look gathered rather than cramped. */
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-wrap: balance;
+}
+.faq-section__lead {
+  margin: var(--space-4) 0 0;
+  max-width: 448px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-ink-2);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* The rules belong to the list, not to the page: a line above the first row and
+   one under every row, so the block is closed at both ends by construction. */
+.faq-list {
+  width: 100%;
+  margin-top: var(--space-10);
   border-top: 1px solid var(--color-border);
+}
+.faq {
+  border-bottom: 1px solid var(--color-border);
 }
 .faq__heading {
   margin: 0;
@@ -48,45 +111,92 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-6);
   width: 100%;
   padding: var(--space-5) 0;
   background: transparent;
   border: 0;
   cursor: pointer;
   text-align: left;
-  font-family: var(--font-display);
-  font-weight: var(--font-display-weight);
-  font-size: 19px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
   color: var(--color-ink);
-  transition: color 0.2s ease;
+  text-wrap: balance;
+  transition: color 0.15s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .faq__trigger:hover {
   color: var(--color-primary);
 }
-.faq__sign {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
+
+/* Both bars are centred by inset:0 + margin:auto, so the one that rotates turns
+   about the middle of the mark rather than about an end of itself. */
+.faq__icon {
+  position: relative;
+  display: inline-block;
   flex: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1;
+  width: 18px;
+  height: 18px;
+  color: var(--color-ink-3);
 }
-.faq__answer {
-  margin: -4px 0 var(--space-5);
-  max-width: 56ch;
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--color-ink-2);
+.faq__bar {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 13px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: currentColor;
 }
 
-/* The list's closing rule — it used to belong to the block that held the CTA
-   button, so the last question keeps an edge under it. */
-.faq:last-of-type {
-  border-bottom: 1px solid var(--color-border);
+/* --faq-reveal is set by the panel's variants (see Praktisk.tsx) and travels
+   from 0 to 100% in step with the height. The mask is one hard stop, so the
+   answer is uncovered from the top down instead of being clipped by the
+   collapsing edge — at rest, open, the stop sits at 100% and the mask is inert. */
+.faq__panel {
+  --faq-reveal: 0%;
+  overflow: hidden;
+  mask-image: linear-gradient(#000 var(--faq-reveal), transparent var(--faq-reveal));
+}
+.faq__answer {
+  margin: 0;
+  padding: var(--space-1) 0 var(--space-6);
+  max-width: 65ch;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-ink-2);
+  text-wrap: pretty;
+}
+/* The example steps the answer *down* once there is room for it — the wide
+   layout gives the paragraph its measure, so it no longer needs the size. */
+@media (min-width: 640px) {
+  .faq__answer {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.faq-section__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1) var(--space-2);
+  margin: var(--space-10) 0 0;
+  font-size: 14px;
+  color: var(--color-ink-2);
+  text-wrap: pretty;
+}
+.faq-section__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.faq-section__link:hover {
+  color: var(--color-primary-hover);
 }
