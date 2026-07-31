@@ -9,6 +9,7 @@ import { photos } from '../content/photos';
 import { headlineFacts } from '../content/practical';
 import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useSiteData } from '../lib/sheet/provider';
 import { routes } from '../routes';
 
 import './Forside.css';
@@ -23,14 +24,20 @@ const dayTeasers = [
 
 export default function Forside() {
   useDocumentTitle();
+  const { openingHours, stamp } = useSiteData();
 
   return (
     <div className="enter">
       {/* — hero carousel ——————————————————————————————————————— */}
       <HeroCarousel />
 
-      {/* The wax seal straddles the hero/welcome boundary. */}
-      <SealStamp lines={['Ledige', 'pladser']} subline={['August', '2027']} />
+      {/* The wax seal straddles the hero/welcome boundary — when there is one
+          to press. Clearing the month in the sheet takes it off the page
+          altogether rather than leaving an empty seal: an availability notice
+          with no date on it says less than no notice at all. It costs the
+          layout nothing either way, since the seal is a zero-height anchor
+          hanging between two sections. */}
+      {stamp && <SealStamp lines={stamp.lines} subline={stamp.sublines} />}
 
       {/* — welcome intro ——————————————————————————————————————— */}
       <section className="shell section welcome">
@@ -42,7 +49,7 @@ export default function Forside() {
         </p>
 
         <div className="welcome__facts">
-          {headlineFacts.map((fact, index) => (
+          {headlineFacts(openingHours).map((fact, index) => (
             <Fragment key={fact.label}>
               {index > 0 && <span className="welcome__dot" aria-hidden="true" />}
               <div className="welcome__fact">

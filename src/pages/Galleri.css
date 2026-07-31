@@ -40,6 +40,19 @@
   gap: clamp(8px, 1.1vw, 16px);
 }
 
+/* No photographs at all — the folder is empty, or the links haven't been added
+   yet. A page with a title and nothing under it reads as broken, so it says so
+   in the page's own voice instead. */
+.galleri__empty {
+  margin: 0;
+  padding-block: clamp(32px, 6vw, 72px);
+  max-width: 44ch;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--color-ink-3);
+  text-wrap: pretty;
+}
+
 .gtile--small {
   aspect-ratio: 1;
 }
@@ -88,7 +101,11 @@
    this tight reads as broken if tiles lift out of line. */
 .gtile img {
   transform: scale(1);
-  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* opacity is re-listed because this rule outranks .image-slot img and the
+     shorthand would otherwise drop the fade a Drive-hosted photo arrives on. */
+  transition:
+    transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.45s ease;
 }
 .gtile:hover img,
 .gtile:focus-visible img {

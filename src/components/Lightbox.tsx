@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import KeenSlider, { type KeenSliderInstance } from 'keen-slider';
 import 'keen-slider/keen-slider.min.css';
@@ -17,6 +17,54 @@ interface LightboxProps {
 
 /** Everything the trap has to cycle through — the three controls, in DOM order. */
 const FOCUSABLE = 'button';
+
+/** Slides within one step of the open one, the loop counted the short way
+ *  round. These are fetched at once; the rest wait to be approached. Stepping
+ *  through the gallery then never waits on a download, and opening it never
+ *  pulls fourteen full-size photographs to show one. */
+function isNear(index: number, current: number, count: number): boolean {
+  const straight = Math.abs(index - current);
+  return Math.min(straight, count - straight) <= 1;
+}
+
+/**
+ * One photograph in the viewer.
+ *
+ * Its own component for its own `loaded` flag: a photo fades up when it has
+ * decoded rather than painting in bands down the frame, and each slide needs
+ * to track that separately.
+ *
+ * `sizes="90vw"` is what makes the picture arrive quickly: for a Drive-hosted
+ * photo it puts the browser near the top of the same rendition ladder the
+ * mosaic reads from the bottom of, so the viewer gets a sharp copy without
+ * anyone downloading the caretaker's original 6 MB upload.
+ */
+function LightboxPhoto({ photo, priority }: { photo: GalleryItem; priority: boolean }) {
+  const ref = useRef<HTMLImageElement>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  // Already in cache — mark it before the first paint so it doesn't fade in
+  // from nothing on a second visit to the same slide.
+  useLayoutEffect(() => {
+    const img = ref.current;
+    if (img?.complete && img.naturalWidth > 0) setLoaded(true);
+  }, []);
+
+  return (
+    <img
+      ref={ref}
+      className={loaded ? 'lightbox__img is-loaded' : 'lightbox__img'}
+      src={photo.full ?? photo.src ?? undefined}
+      srcSet={photo.srcSet}
+      sizes={photo.srcSet ? '90vw' : undefined}
+      alt={photo.alt ?? ''}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+      draggable={false}
+      onLoad={() => setLoaded(true)}
+    />
+  );
+}
 
 /**
  * Full-screen photo viewer.
@@ -174,19 +222,12 @@ export default function Lightbox({ items, startIndex, onClose }: LightboxProps) 
 
       <div ref={trackRef} className="keen-slider lightbox__track">
         {items.map((photo, index) => (
-          <div className="keen-slider__slide lightbox__slide" key={photo.placeholder}>
+          <div className="keen-slider__slide lightbox__slide" key={`${index}-${photo.caption}`}>
             <figure className="lightbox__figure">
               {photo.src ? (
-                <img
-                  className="lightbox__img"
-                  src={photo.src}
-                  alt={photo.alt ?? ''}
-                  /* Only the opening photo is fetched up front; the rest load as
-                     they are slid into view, so opening the viewer never pulls
-                     the whole gallery at full size. */
-                  loading={index === startIndex ? 'eager' : 'lazy'}
-                  decoding="async"
-                  draggable={false}
+                <LightboxPhoto
+                  photo={photo}
+                  priority={isNear(index, current, items.length)}
                 />
               ) : (
                 <span className="lightbox__placeholder">{photo.placeholder}</span>

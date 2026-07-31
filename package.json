@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "sync:sheet": "node scripts/sync-sheet.mjs",
+    "prebuild": "node scripts/sync-sheet.mjs --soft",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit"

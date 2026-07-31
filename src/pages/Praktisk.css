@@ -32,6 +32,54 @@
   color: var(--color-ink-3);
 }
 
+/* — a card with nothing in it yet ————————————————————————————————
+   The holiday dates are settled once a year and unknown until they are, so an
+   empty card is a normal state of this page rather than a fault. It gets the
+   same language the site already uses for a photo it hasn't been given — a
+   dashed outline over the page ground instead of a filled surface — so the
+   card reads as reserved space rather than as a card that failed to load.
+
+   Doubled selector: .panel lives in global.css, which lands after this file in
+   the bundle, so a single class would lose the tie on border and background. */
+.panel.praktisk__panel--awaiting {
+  border-style: dashed;
+  border-color: var(--color-border-strong);
+  /* The same recessed ground an empty image well takes, one step below the
+     filled cards beside it — so the card reads as waiting for something rather
+     than as sitting level with the ones that have their answer. */
+  background: var(--color-muted);
+}
+.praktisk__panel-empty {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--color-ink-3);
+  text-wrap: pretty;
+}
+/* The intro, when there is one, is copy in its own right and needs its usual
+   gap before the line that stands in for the rows. */
+.praktisk__panel-intro + .praktisk__panel-empty {
+  margin-top: var(--space-2);
+}
+
+/* — waiting on the sheet ——————————————————————————————————————————
+   Placeholder lines stand at the size of the type they replace, so the page
+   holds the height it will settle at. The heights themselves are passed to
+   <Skeleton> as props rather than set here: they have to beat .skeleton's own
+   default, and an inline style wins that outright rather than by stylesheet
+   order. Only the rhythm between them belongs in CSS. */
+.praktisk__skeleton-title {
+  margin-bottom: var(--space-4);
+}
+.praktisk__skeleton-line {
+  margin-bottom: var(--space-2);
+}
+/* Matches .faq__trigger's padding, so a row that arrives lands where its
+   placeholder stood. */
+.praktisk__faq-skeleton {
+  padding: var(--space-5) 0;
+}
+
 .praktisk__note-title {
   margin: 0 0 var(--space-2);
 }

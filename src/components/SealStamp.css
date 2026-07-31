@@ -52,6 +52,28 @@
   /* Decoration only: no clicks swallowed, no drag-to-save ghost. */
   pointer-events: none;
   user-select: none;
+  /* Pressed on, briefly: it settles from a touch oversized, the way a stamp
+     does when the hand lifts. It also covers the one moment this component can
+     look unstable — the seal is driven by the sheet, so a visitor arriving
+     just as the caretaker takes it down sees the compiled-in copy for a beat
+     before the fresh one lands. Arriving mid-fade, that reads as the seal
+     never quite settling rather than as the page changing its mind. */
+  animation: seal-press 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes seal-press {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(8deg) scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(8deg) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seal-stamp__body {
+    animation: none;
+  }
 }
 
 .seal-stamp__img {

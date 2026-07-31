@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import ImageSlot from '../components/ImageSlot';
 import Lightbox from '../components/Lightbox';
-import { gallery } from '../content/photos';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useSiteData } from '../lib/sheet/provider';
 import { routes } from '../routes';
 
 import './Galleri.css';
@@ -52,8 +52,49 @@ const TILE_PATTERN = [
   'wide',
 ] as const;
 
+type Shape = (typeof TILE_PATTERN)[number];
+
+/**
+ * A shape for every photo.
+ *
+ * The photo count used to be ours to keep at a multiple of seven. It isn't any
+ * more — it is however many links are in the sheet that morning — and a block
+ * cut off partway through leaves the big shapes without the small tiles that
+ * give their rows a height, which is the one rule this layout can't break.
+ *
+ * So only whole blocks take the pattern, and whatever is left over is laid as
+ * plain squares. A tail of squares is a shape the mosaic already uses and can
+ * end on at any count; a half-drawn block is a hole in the page.
+ */
+function tileShapes(count: number): Shape[] {
+  const period = TILE_PATTERN.length;
+  const whole = count - (count % period);
+  return Array.from({ length: count }, (_, index) =>
+    index < whole ? TILE_PATTERN[index % period] : 'small',
+  );
+}
+
+/**
+ * How wide each shape is laid out, so the browser can pick a rendition.
+ *
+ * Only meaningful for Drive-hosted photos, which come with a `srcSet` of four
+ * widths — a phone then fetches the 480px copy of a tile it will draw at 190,
+ * instead of whatever the caretaker uploaded from her camera roll. The wide
+ * shapes are two of four columns above 860px and one of two below it, which is
+ * half the viewport either way.
+ */
+const TILE_SIZES: Record<Shape, string> = {
+  small: '(max-width: 860px) 50vw, 25vw',
+  tall: '(max-width: 860px) 50vw, 25vw',
+  wide: '50vw',
+  feature: '50vw',
+};
+
 export default function Galleri() {
   useDocumentTitle(routes.galleri.title);
+
+  const { gallery } = useSiteData();
+  const shapes = tileShapes(gallery.length);
 
   /** Index of the photo the viewer is open on, or null while it is closed. */
   const [openAt, setOpenAt] = useState<number | null>(null);
@@ -67,22 +108,37 @@ export default function Galleri() {
       </section>
 
       <section className="shell section--loose galleri__body">
-        <div className="galleri__mosaic">
-          {gallery.map((item, index) => (
-            <button
-              key={item.placeholder}
-              type="button"
-              className={`gtile gtile--${TILE_PATTERN[index % TILE_PATTERN.length]}`}
-              aria-haspopup="dialog"
-              onClick={() => setOpenAt(index)}
-            >
-              {/* ratio="auto" hands the frame's shape to the grid: the tile's
-                  cell span decides it, and the photo covers whatever it gets. */}
-              <ImageSlot photo={item} ratio="auto" eager={index < 4} />
-              <span className="gtile__caption">{item.caption}</span>
-            </button>
-          ))}
-        </div>
+        {gallery.length === 0 ? (
+          <p className="galleri__empty">
+            Der er ingen billeder her lige nu. Kig forbi igen — der kommer nye
+            løbende.
+          </p>
+        ) : (
+          <div className="galleri__mosaic">
+            {gallery.map((item, index) => (
+              <button
+                key={`${index}-${item.src ?? item.placeholder}`}
+                type="button"
+                className={`gtile gtile--${shapes[index]}`}
+                aria-haspopup="dialog"
+                onClick={() => setOpenAt(index)}
+              >
+                {/* ratio="auto" hands the frame's shape to the grid: the tile's
+                    cell span decides it, and the photo covers whatever it gets.
+                    The first four are above the fold on every viewport, so they
+                    are fetched at once; the rest wait for the browser to decide
+                    they are close enough to matter. */}
+                <ImageSlot
+                  photo={item}
+                  ratio="auto"
+                  eager={index < 4}
+                  sizes={TILE_SIZES[shapes[index]]}
+                />
+                <span className="gtile__caption">{item.caption}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </section>
 
       {openAt !== null && (

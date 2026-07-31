@@ -1,14 +1,19 @@
 /**
  * Photo registry.
  *
- * Every picture on the site is named here and resolved from local files in
- * `src/assets/` (via the `stock` barrel) — no external image hosts. `<ImageSlot>`
- * renders the photo when an entry has a `src`, and a labelled placeholder
- * describing the wanted picture when `src` is null.
+ * Every picture *in the page furniture* is named here and resolved from local
+ * files in `src/assets/` (via the `stock` barrel). `<ImageSlot>` renders the
+ * photo when an entry has a `src`, and a labelled placeholder describing the
+ * wanted picture when `src` is null.
  *
  * To use a caretaker's own photography: drop the file in `src/assets/images/`,
  * import it in `src/assets/stock.ts`, and reference it here — or replace a file
  * in place, keeping its import name.
+ *
+ * The Galleri page is the exception: it reads a list of Google Drive links out
+ * of the sheet (see src/lib/sheet), so the caretaker adds photos by dropping
+ * them in a Drive folder. `stockGallery` at the bottom of this file is what it
+ * falls back to until she does.
  */
 
 import { stock } from '../assets/stock';
@@ -20,6 +25,15 @@ export interface Photo {
   src: string | null;
   /** Alt text. Required once src is set; ignored while it's null. */
   alt?: string;
+  /** Candidate renditions of the same picture, widest to the browser's taste.
+   *  Set for Drive-hosted photos, which Google resizes on demand; local files
+   *  ship at one size and leave it undefined. */
+  srcSet?: string;
+  /** Full-size URL for the viewer. Defaults to `src`. */
+  full?: string;
+  /** A second URL to try once if `src` fails — Drive serves the same picture
+   *  from two endpoints with two different rate limits. */
+  retry?: string;
 }
 
 export const photos = {
@@ -98,9 +112,15 @@ export interface GalleryItem extends Photo {
 }
 
 /**
- * The gallery, in mosaic order.
+ * The gallery the site falls back to, in mosaic order.
  *
- * The Galleri page lays these out in seven-tile blocks that alternate between
+ * Once the sheet's "# BILLEDER" block has links in it, the Galleri page shows
+ * those instead and this list is unused — it is what stands there in the
+ * meantime, and what the page reverts to if the block is ever deleted. It is
+ * therefore stock imagery, and replacing it is a matter of adding photos to the
+ * Drive folder, not of editing this file.
+ *
+ * The Galleri page lays photos out in seven-tile blocks that alternate between
  * two mirrored arrangements (see `TILE_PATTERN` in pages/Galleri.tsx). A photo's
  * position therefore decides both its shape and how it gets cropped, so the
  * order below is chosen to match each picture: the portrait photographs sit in
@@ -114,7 +134,7 @@ export interface GalleryItem extends Photo {
  * to end on a complete pair), and when reordering, move photos between slots of
  * the same shape.
  */
-export const gallery: GalleryItem[] = [
+export const stockGallery: GalleryItem[] = [
   // ── Block one ────────────────────────────────────────────────────────────
   {
     placeholder: 'Morgen i haven',

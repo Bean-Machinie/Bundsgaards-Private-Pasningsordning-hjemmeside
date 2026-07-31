@@ -1,4 +1,8 @@
 .image-slot {
+  /* Containing block for the shimmer that stands in while a photo loads.
+     Tiles that place the slot themselves (the gallery mosaic) override this
+     with `position: absolute`, which serves the same purpose. */
+  position: relative;
   overflow: hidden;
   width: 100%;
   background: var(--color-muted);
@@ -17,10 +21,30 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Held back until it has decoded, so a half-painted photo never appears.
+     A bundled or cached image is complete before the first paint and is marked
+     loaded in the same commit — the browser never paints the transparent
+     state, so there is nothing to transition from and no fade happens. Only a
+     photo that genuinely arrived late fades. */
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.image-slot img.is-loaded {
+  opacity: 1;
+}
+
+/* Fills the frame under the photo while it is on its way. Flush with the
+   frame, so it takes the same corners. */
+.image-slot__pending {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
 }
 
 /* Waiting for a photo: a muted field with the brief written on it, so an
-   unfinished page still reads as intentional rather than broken. */
+   unfinished page still reads as intentional rather than broken. Also where a
+   photo lands when its link is wrong or the file was never shared — the frame
+   says what should be there instead of showing a torn-image icon. */
 .image-slot--empty {
   display: grid;
   place-items: center;

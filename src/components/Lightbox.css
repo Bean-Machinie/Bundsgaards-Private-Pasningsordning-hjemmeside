@@ -64,6 +64,15 @@
   border-radius: var(--radius-xl);
   user-select: none;
   -webkit-user-drag: none;
+  /* Photographs come off Google Drive here, so a slide can genuinely be
+     waiting. It fades up once decoded rather than painting in bands down the
+     frame — and a photo that was already in cache is marked loaded before the
+     first paint, so it never fades at all. */
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.lightbox__img.is-loaded {
+  opacity: 1;
 }
 /* Photos that haven't been shot yet still get a frame, as on the pages. */
 .lightbox__placeholder {

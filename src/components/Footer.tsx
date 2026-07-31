@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
 
 import { FAQ_ANCHOR } from '../content/faqs';
-import { fullAddress, hoursOf, openingHours, site } from '../content/site';
+import { fullAddress, hoursOf, site } from '../content/site';
+import { useSheetStatus, useSiteData } from '../lib/sheet/provider';
 import { footerNav, routes } from '../routes';
 import titleImage from '../assets/images/title-images/title-image-short-cream.png';
+import Skeleton from './Skeleton';
 
 import './Footer.css';
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { openingHours } = useSiteData();
+  const { status } = useSheetStatus();
 
   // Keyless satellite embed built from the address in site.ts, so the pin
   // follows the source of truth. `t=k` selects the satellite ("Keyhole") view.
@@ -65,15 +69,36 @@ export default function Footer() {
             {/* One block per opening row — Friday closes earlier, so a single
                 "mandag – fredag" line would be wrong. The blocks keep the
                 column's spacing between them and their own tighter spacing
-                inside, so each pair reads as one thing. */}
-            <div className="site-footer__col">
+                inside, so each pair reads as one thing.
+
+                The rows come from the sheet, so this column has two states the
+                rest of the footer doesn't: waiting for them, and being told
+                there are none. Neither may leave the label standing over
+                nothing — a heading with a gap under it reads as a bug, where a
+                sentence reads as an answer. */}
+            <div className="site-footer__col" aria-busy={status === 'loading'}>
               <span className="site-footer__label">Åbningstider</span>
-              {openingHours.map((row) => (
-                <div key={row.days} className="site-footer__hours-row">
-                  <span>{row.days}</span>
-                  <span className="site-footer__hours">{hoursOf(row)}</span>
-                </div>
-              ))}
+              {status === 'loading' ? (
+                <>
+                  <div className="site-footer__hours-row">
+                    <Skeleton tone="dark" width="11ch" />
+                    <Skeleton tone="dark" width="8ch" />
+                  </div>
+                  <div className="site-footer__hours-row">
+                    <Skeleton tone="dark" width="6ch" delay={120} />
+                    <Skeleton tone="dark" width="8ch" delay={120} />
+                  </div>
+                </>
+              ) : openingHours.length === 0 ? (
+                <span>Oplyses ved kontakt</span>
+              ) : (
+                openingHours.map((row) => (
+                  <div key={row.days} className="site-footer__hours-row">
+                    <span>{row.days}</span>
+                    <span className="site-footer__hours">{hoursOf(row)}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
