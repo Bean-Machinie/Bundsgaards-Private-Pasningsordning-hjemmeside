@@ -183,6 +183,16 @@ blanking the page. A block that *is* present and empty is an instruction, and
 the page shows its empty state — that is how "the holiday dates aren't settled
 yet" is expressed.
 
+**Links inside sheet prose** are written `[ord](https://…)` and rendered by
+`components/SheetText.tsx`. A cell can't carry a real hyperlink — the CSV
+export is plain text, so a `Ctrl+K` link in Sheets is silently stripped — so
+the address has to be typed. A bare address is linked too. Anything that isn't
+`http(s)`, `mailto:` or `tel:` renders as the literal text that was typed,
+which is both the same fail-soft rule as the rest of this layer and what stops
+a public spreadsheet putting a `javascript:` URL on the page. Applies to every
+sheet-authored string on the Praktisk page: card intros, footnotes, empty-state
+text, row values, notes and FAQ answers.
+
 Two blocks bend that rule, each for a stated reason (both documented where they
 are made, in `parse.ts`):
 

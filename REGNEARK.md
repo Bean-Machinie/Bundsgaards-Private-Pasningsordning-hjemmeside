@@ -41,6 +41,43 @@ står under den linje, hører til den blok, indtil den næste `#`-linje begynder
 Alt hvad der står *over* den allerførste `#`-linje, bliver ikke vist nogen
 steder. Der kan du skrive noter til dig selv.
 
+### Links i teksten
+
+Vil du have et klikbart link midt i en tekst, skriver du ordene i kantede
+parenteser og adressen lige efter i almindelige parenteser:
+
+```
+Tilskuddet søges hos [Egedal Kommune](https://www.egedalkommune.dk).
+```
+
+På hjemmesiden bliver `Egedal Kommune` til et grønt, klikbart link, og resten
+af sætningen står, som du har skrevet den. Linket åbner i en ny fane, så
+familien ikke mister sin plads på siden.
+
+Det virker i alle tekstfelterne: `Intro`, `Fodnote`, afsnittene under
+`# Godt at vide` og svarene under `# Spørgsmål og svar`.
+
+Tre ting værd at vide:
+
+- **Kopiér adressen fra browserens adresselinje.** Den skal begynde med
+  `https://`. Gør den ikke det, sker der ikke noget — teksten står bare, som du
+  skrev den, så du kan ikke ødelægge noget ved at prøve.
+- **Sætter du bare adressen ind uden kantede parenteser**, bliver den også et
+  link — det er så bare selve adressen, der står på siden.
+- **Skriv gerne, hvad man klikker sig hen til**, altså `[Egedal Kommune](…)`
+  frem for `[klik her](…)`. Det læser bedre, og folk der får siden læst højt
+  af en skærmlæser, hører kun selve linkordene.
+
+Du kan også linke til en mailadresse eller et telefonnummer:
+
+```
+Skriv til [Dorte](mailto:dorte@thygesen.mail.dk) eller ring på [20 87 93 97](tel:+4520879397).
+```
+
+> Bemærk: Google Sheets' egen "Indsæt link" (`Ctrl + K`) virker **ikke** her.
+> Den slags link findes kun inde i regnearket og følger ikke med ud på
+> hjemmesiden. Adressen skal skrives i teksten, som vist ovenfor.
+
 ### Hvis du sletter noget
 
 Det er med vilje bygget, så du ikke kan komme til at ødelægge siden:

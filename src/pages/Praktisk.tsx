@@ -3,6 +3,7 @@ import { MotionConfig, motion, type Variants } from 'motion/react';
 
 import Backdrop from '../components/Backdrop';
 import { ArrowRightIcon } from '../components/Icons';
+import SheetText from '../components/SheetText';
 import Skeleton from '../components/Skeleton';
 import { FAQ_ANCHOR, faqFoot } from '../content/faqs';
 import type { SpecPanel } from '../content/practical';
@@ -84,20 +85,32 @@ function InfoCard({ card }: { card: SpecPanel }) {
   return (
     <div className={awaiting ? 'panel praktisk__panel--awaiting' : 'panel'}>
       <h2 className="praktisk__panel-title">{card.title}</h2>
-      {card.intro && <p className="praktisk__panel-intro">{card.intro}</p>}
+      {card.intro && (
+        <p className="praktisk__panel-intro">
+          <SheetText text={card.intro} />
+        </p>
+      )}
 
       {awaiting ? (
-        <p className="praktisk__panel-empty">{card.emptyText ?? CARD_EMPTY_FALLBACK}</p>
+        <p className="praktisk__panel-empty">
+          <SheetText text={card.emptyText ?? CARD_EMPTY_FALLBACK} />
+        </p>
       ) : (
         card.rows.map((row, index) => (
           <div key={`${index}-${row.label}`} className="spec-row">
             <span>{row.label}</span>
-            <span className={row.muted ? 'muted' : undefined}>{row.value}</span>
+            <span className={row.muted ? 'muted' : undefined}>
+              <SheetText text={row.value} />
+            </span>
           </div>
         ))
       )}
 
-      {card.footnote && <p className="praktisk__footnote">{card.footnote}</p>}
+      {card.footnote && (
+        <p className="praktisk__footnote">
+          <SheetText text={card.footnote} />
+        </p>
+      )}
     </div>
   );
 }
@@ -208,7 +221,9 @@ export default function Praktisk() {
                 notes.map((note, index) => (
                   <div key={`${index}-${note.title}`}>
                     <h2 className="praktisk__note-title">{note.title}</h2>
-                    <p className="praktisk__note-body">{note.body}</p>
+                    <p className="praktisk__note-body">
+                      <SheetText text={note.body} />
+                    </p>
                   </div>
                 ))
               )}
@@ -302,7 +317,7 @@ export default function Praktisk() {
                         variants={panelVariants}
                       >
                         <motion.p className="faq__answer" variants={answerVariants}>
-                          {faq.answer}
+                          <SheetText text={faq.answer} />
                         </motion.p>
                       </motion.div>
                     </motion.div>
