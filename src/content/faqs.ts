@@ -3,15 +3,18 @@ export interface Faq {
   answer: string;
 }
 
-/** The FAQ band reads as a section of its own — centred heading, its own lead,
- *  and a closing line pointing at the contact details — so that framing copy
- *  lives here with the questions rather than inside the page component. */
-export const faqIntro = {
-  title: 'Ofte stillede spørgsmål',
-  lead: 'De spørgsmål, jeg oftest får fra forældre, inden vi skriver en aftale.',
-  footPrompt: 'Fandt I ikke svaret her?',
-  footLink: 'Skriv til mig',
+/** The FAQ band reads as a section of its own, so its closing line — the one
+ *  pointing at the contact details — lives here with the questions rather than
+ *  inside the page component. The heading is in the page, like every other
+ *  title on the site: the accented word is markup, not a string. */
+export const faqFoot = {
+  prompt: 'Fandt I ikke svaret her?',
+  link: 'Skriv til mig',
 };
+
+/** The FAQ band's anchor. The footer links straight to it, so the id and the
+ *  href have to agree — hence one constant rather than two literals. */
+export const FAQ_ANCHOR = 'faq';
 
 export const faqs: Faq[] = [
   {

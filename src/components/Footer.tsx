@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import { fullAddress, site } from '../content/site';
+import { FAQ_ANCHOR } from '../content/faqs';
+import { fullAddress, hoursOf, openingHours, site } from '../content/site';
 import { footerNav, routes } from '../routes';
 import titleImage from '../assets/images/title-images/title-image-short-cream.png';
 
@@ -38,6 +39,16 @@ export default function Footer() {
                   {routes[key].longLabel}
                 </Link>
               ))}
+              {/* Not a page of its own but the band partway down Praktisk, so it
+                  sits after the pages. The hash does the scrolling — ScrollToTop
+                  picks it up — which is why this is an ordinary Link and needs no
+                  handler of its own. */}
+              <Link
+                to={`${routes.praktisk.path}#${FAQ_ANCHOR}`}
+                className="site-footer__link"
+              >
+                Ofte stillede spørgsmål
+              </Link>
             </nav>
 
             <div className="site-footer__col">
@@ -51,10 +62,18 @@ export default function Footer() {
               </a>
             </div>
 
+            {/* One block per opening row — Friday closes earlier, so a single
+                "mandag – fredag" line would be wrong. The blocks keep the
+                column's spacing between them and their own tighter spacing
+                inside, so each pair reads as one thing. */}
             <div className="site-footer__col">
               <span className="site-footer__label">Åbningstider</span>
-              <span>Mandag – fredag</span>
-              <span className="site-footer__hours">6.00 – 15.30</span>
+              {openingHours.map((row) => (
+                <div key={row.days} className="site-footer__hours-row">
+                  <span>{row.days}</span>
+                  <span className="site-footer__hours">{hoursOf(row)}</span>
+                </div>
+              ))}
             </div>
           </div>
 

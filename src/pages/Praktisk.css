@@ -59,10 +59,15 @@
    rows read as controls. Swap the font-family/font-weight pair on .faq__trigger
    to bring the serif back. */
 
-/* Every block here is a direct child so the band's stagger can index them one
-   by one, which rules out a single flex `gap` — the heading and its lead sit 16px
-   apart while the three blocks sit 40px apart. So the rhythm is carried by the
-   blocks themselves. */
+/* The footer links straight here, so the band has to stop clear of the sticky
+   header rather than sliding under it. */
+.faq-band {
+  scroll-margin-top: var(--header-height);
+}
+
+/* Every block here is a direct child of the column so the band's stagger can
+   index them one by one; the rhythm is therefore carried by the blocks
+   themselves rather than by a flex `gap`. */
 .faq-section {
   display: flex;
   flex-direction: column;
@@ -76,23 +81,16 @@
 .faq-section__title {
   margin: 0;
   font-size: clamp(2.25rem, 4.4vw, 3rem);
-  line-height: 1;
-  /* The example tracks its sans in tight at this size. A light serif needs far
-     less of that to look gathered rather than cramped. */
+  /* The example sets its sans solid at 1. This one carries a Caveat word, whose
+     descenders run well below the serif's — so it takes the same 1.1 the page
+     title above it uses, which is the leading that word is known to sit in. */
+  line-height: 1.1;
+  /* The example also tracks in tight at this size. A light serif needs far less
+     of that to look gathered rather than cramped. */
   letter-spacing: -0.02em;
   text-align: center;
   text-wrap: balance;
 }
-.faq-section__lead {
-  margin: var(--space-4) 0 0;
-  max-width: 448px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--color-ink-2);
-  text-align: center;
-  text-wrap: pretty;
-}
-
 /* The rules belong to the list, not to the page: a line above the first row and
    one under every row, so the block is closed at both ends by construction. */
 .faq-list {

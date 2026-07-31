@@ -1,3 +1,5 @@
+import { hoursOf, openingHours } from './site';
+
 export interface SpecRow {
   label: string;
   value: string;
@@ -16,8 +18,10 @@ export const practicalPanels: SpecPanel[] = [
   {
     title: 'Åbningstider',
     rows: [
-      { label: 'Mandag–torsdag', value: '6.00–15.30' },
-      { label: 'Fredag', value: '6.00–15.30' },
+      // One row per opening row, straight from site.ts — this panel is the
+      // fullest listing on the site, so it must not carry its own copy of the
+      // times.
+      ...openingHours.map((row) => ({ label: row.days, value: hoursOf(row) })),
       { label: 'Weekend', value: 'Lukket', muted: true },
     ],
     footnote:
@@ -74,18 +78,18 @@ export interface Fact {
   label: string;
 }
 
-/** The dot-separated strip of headline facts under the front-page welcome. */
+/** The dot-separated strip of headline facts under the front-page welcome.
+ *  Each cell is one big value over one small label, so the hours can't be two
+ *  rows here — the value quotes the week's span and the label carries Friday's
+ *  earlier close, rather than the strip claiming a single time for all five
+ *  days. */
 export const headlineFacts: Fact[] = [
   { value: '4 børn', label: 'fast lille gruppe' },
   { value: '0-3 år', label: 'til start i børnehave' },
-  { value: '6.00-15.30', label: 'mandag til fredag' },
+  {
+    value: hoursOf(openingHours[0]),
+    label: `mandag til torsdag, fredag til ${openingHours[1].closes}`,
+  },
   { value: 'Udenfor', label: 'hver dag, året rundt' },
-];
-
-export const quickFacts: Fact[] = [
-  { value: 'Man-fre 6.00-15.30', label: 'Åbningstider' },
-  { value: '0-3 år', label: 'Aldersgruppe' },
-  { value: 'Alle måltider er med', label: 'Mad' },
-  { value: 'Efter tilskud — spørg mig', label: 'Pris' },
 ];
 

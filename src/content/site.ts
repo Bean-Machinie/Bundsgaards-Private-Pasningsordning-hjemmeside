@@ -21,7 +21,6 @@ export interface SiteInfo {
   email: string;
   bestReachedAt: string;
   municipality: string;
-  openingHours: string;
   ageRange: string;
   childCount: number;
   mapsUrl: string;
@@ -41,7 +40,6 @@ export const site: SiteInfo = {
   email: 'dorte@bundsgaard.dk',
   bestReachedAt: 'Efter kl. 16, når børnene er hentet',
   municipality: 'Egedal Kommune',
-  openingHours: 'Man-fre 6.00-15.30',
   ageRange: '0-3 år',
   childCount: 4,
   mapsUrl:
@@ -51,3 +49,31 @@ export const site: SiteInfo = {
 };
 
 export const fullAddress = `${site.street}, ${site.postalCode} ${site.city}`;
+
+/* ── Opening hours ────────────────────────────────────────────────────────
+   Friday closes earlier than the rest of the week, so there is no single
+   "mandag – fredag" line that tells the truth: the hours are a *list of rows*,
+   and every place on the site that prints them prints the rows.
+
+   This replaced a lone `site.openingHours` string. Keep it that way — a second
+   copy of a closing time somewhere else is how the site ends up promising two
+   different things on two different pages. */
+
+export interface OpeningRow {
+  /** The days this row covers, as printed. */
+  days: string;
+  /** Opening and closing time. Kept apart so the one-line summaries — which
+   *  have no room for two rows — can quote a closing time on its own. */
+  opens: string;
+  closes: string;
+}
+
+export const openingHours: OpeningRow[] = [
+  { days: 'Mandag – torsdag', opens: '6.00', closes: '15.30' },
+  { days: 'Fredag', opens: '6.00', closes: '15.00' },
+];
+
+/** A row's printed span — "6.00 – 15.30". */
+export function hoursOf(row: OpeningRow) {
+  return `${row.opens} – ${row.closes}`;
+}

@@ -3,7 +3,7 @@ import { MotionConfig, motion, type Variants } from 'motion/react';
 
 import Backdrop from '../components/Backdrop';
 import { ArrowRightIcon } from '../components/Icons';
-import { faqIntro, faqs } from '../content/faqs';
+import { FAQ_ANCHOR, faqFoot, faqs } from '../content/faqs';
 import { practicalNotes, practicalPanels } from '../content/practical';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { gridMin } from '../lib/css';
@@ -126,7 +126,8 @@ export default function Praktisk() {
           treatment the header's menus get. */}
       <MotionConfig reducedMotion="user">
         <motion.section
-          className="band band--surface"
+          id={FAQ_ANCHOR}
+          className="band band--surface faq-band"
           aria-labelledby={`${faqId}-heading`}
           initial="hidden"
           whileInView="shown"
@@ -142,11 +143,8 @@ export default function Praktisk() {
               className="faq-section__title"
               variants={riseVariants}
             >
-              {faqIntro.title}
+              Ofte stillede <em className="title-em">spørgsmål</em>
             </motion.h2>
-            <motion.p className="faq-section__lead" variants={riseVariants}>
-              {faqIntro.lead}
-            </motion.p>
 
             <div className="faq-list">
               {faqs.map((faq, index) => {
@@ -202,13 +200,13 @@ export default function Praktisk() {
             </div>
 
             <motion.p className="faq-section__foot" variants={riseVariants}>
-              <span>{faqIntro.footPrompt}</span>
+              <span>{faqFoot.prompt}</span>
               <a
                 href="#kontakt"
                 className="faq-section__link"
                 onClick={scrollToContact}
               >
-                {faqIntro.footLink}
+                {faqFoot.link}
                 <ArrowRightIcon size={16} />
               </a>
             </motion.p>

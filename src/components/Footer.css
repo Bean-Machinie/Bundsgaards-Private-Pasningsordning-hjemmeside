@@ -183,6 +183,13 @@
   line-height: 1.6;
   color: var(--color-on-dark-3);
 }
+/* A days line over its times. The pair sits tighter than the column's own
+   12px, so the two rows read as two blocks rather than as four loose lines. */
+.site-footer__hours-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
 /* Same emphasised-body treatment as the other key facts (owner, address),
    rather than the display serif — keeps the footer's type to one voice. */
 .site-footer__hours {
