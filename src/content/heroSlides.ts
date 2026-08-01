@@ -25,27 +25,27 @@ export const heroSlides: HeroSlide[] = [
     headline: 'Et lille sted at være ',
     highlight: 'lille',
     subtext:
-      'Fire børn, ét hjem, og god tid til hver enkelt — hver dag, året rundt.',
-    ctaLabel: 'Kontakt',
+      'Hos os er der kun fire børn, hjemlige rammer og god tid til at se det enkelte barn.',
+    ctaLabel: 'Kontakt os',
     ctaTo: 'contact',
   },
   {
     image: stock.explorers,
     alt: 'To børn på opdagelse med kikkert ved et træ',
     headline: 'Naturen er vores ',
-    highlight: 'stue nummer to',
+    highlight: 'andet hjem',
     subtext:
-      'Have, mark og skovsti ligger lige uden for døren — i al slags vejr.',
+      'Vi bruger haven, marken og skovstien som en naturlig del af hverdagen — i al slags vejr.',
     ctaLabel: 'Se hverdagen',
     ctaTo: 'hverdagen',
   },
   {
     image: stock.pinecones,
     alt: 'Lille barn, der samler grankogler i skovbunden',
-    headline: 'Tid til at kigge på ',
-    highlight: 'en snegl',
+    headline: 'Tid til de små ',
+    highlight: 'opdagelser',
     subtext:
-      'Vi skal ikke nå så meget. Der er tid til det, der er vigtigt for det enkelte barn.',
+      'Her er der tid til at stoppe op, være nysgerrig og undersøge det, barnet finder på sin vej.',
     ctaLabel: 'Læs om værdierne',
     ctaTo: 'vaerdier',
   },
@@ -55,7 +55,7 @@ export const heroSlides: HeroSlide[] = [
     headline: 'Den samme voksne, ',
     highlight: 'hver morgen',
     subtext:
-      'Ingen vikarer, ingen skiftende stuer — bare en relation, der får lov at vokse.',
+      'Ingen vikarer og ingen skiftende stuer — bare trygge rammer og en relation, der får lov at vokse.',
     ctaLabel: 'Om Bundsgård',
     ctaTo: 'om',
   },

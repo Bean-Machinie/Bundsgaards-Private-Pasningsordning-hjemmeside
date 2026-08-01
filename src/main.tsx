@@ -19,7 +19,7 @@ if (!container) throw new Error('Root element #root not found');
 // copy for the whole session, not one per page visit.
 createRoot(container).render(
   <SiteDataProvider>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <App />
     </BrowserRouter>
   </SiteDataProvider>,
