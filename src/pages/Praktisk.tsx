@@ -83,7 +83,9 @@ function InfoCard({ card }: { card: SpecPanel }) {
   const awaiting = card.rows.length === 0;
 
   return (
-    <div className={awaiting ? 'panel praktisk__panel--awaiting' : 'panel'}>
+    <div
+      className={awaiting ? 'panel praktisk__panel praktisk__panel--awaiting' : 'panel praktisk__panel'}
+    >
       <h2 className="praktisk__panel-title">{card.title}</h2>
       {card.intro && (
         <p className="praktisk__panel-intro">
@@ -194,7 +196,7 @@ export default function Praktisk() {
 
         {/* Cards come out in the order their blocks appear in the sheet, so
             adding one is adding a block — nothing here counts or names them. */}
-        <section className="shell section" aria-busy={waiting}>
+        <section className="shell section praktisk__cards-section" aria-busy={waiting}>
           <div className="grid" style={gridMin('250px')}>
             {waiting ? (
               <>
