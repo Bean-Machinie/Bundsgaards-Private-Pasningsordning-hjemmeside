@@ -298,19 +298,14 @@
   display: none;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
   margin-right: -8px;
   flex: none;
-  border: 0;
-  border-radius: var(--radius-md);
-  background: transparent;
   color: var(--color-ink);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
-.menu-toggle:hover {
-  background: color-mix(in srgb, var(--color-ink) 7%, transparent);
+
+.menu-toggle .hamburger-react:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: -6px;
 }
 
 /* — mobile menu card ——————————————————————————————————————————

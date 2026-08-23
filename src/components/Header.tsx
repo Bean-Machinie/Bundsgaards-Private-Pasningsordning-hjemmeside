@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import Hamburger from 'hamburger-react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { MotionConfig, motion, type Variants } from 'motion/react';
 
 import { site } from '../content/site';
 import { scrollToContact } from '../lib/scrollToContact';
 import { mobileNav, primaryNav, routes, type NavMenuEntry } from '../routes';
-import { CloseIcon, MenuIcon } from './Icons';
 import titleImage from '../assets/images/title-images/title-image-lockup-green.png';
 
 import './Header.css';
@@ -511,16 +511,13 @@ function HeaderInner() {
           </a>
         </nav>
 
-        <button
-          type="button"
-          className="menu-toggle"
-          aria-expanded={menuOpen}
-          aria-controls={menuId}
-          aria-label={menuOpen ? 'Luk menu' : 'Åbn menu'}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <CloseIcon size={22} /> : <MenuIcon size={22} />}
-        </button>
+        <div className="menu-toggle">
+          <Hamburger
+            toggled={menuOpen}
+            toggle={setMenuOpen}
+            label={menuOpen ? 'Luk menu' : 'Åbn menu'}
+          />
+        </div>
       </div>
 
       {/* Mobile menu — a floating card in the desktop dropdown's grammar,

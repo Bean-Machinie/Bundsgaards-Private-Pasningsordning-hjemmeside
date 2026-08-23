@@ -12,6 +12,7 @@
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
+    "hamburger-react": "^2.5.2",
     "keen-slider": "^6.8.6",
     "motion": "^12.42.2",
     "react": "^19.1.0",

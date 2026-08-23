@@ -81,10 +81,10 @@ export const primaryNav: NavItem[] = [
     items: [
       { route: 'om', Icon: HouseIcon },
       { route: 'ommig', Icon: UserIcon },
-      { route: 'vaerdier', Icon: HeartIcon },
+      { route: 'hverdagen', Icon: HeartIcon },
     ],
   },
-  { kind: 'link', route: 'hverdagen' },
+  { kind: 'link', route: 'vaerdier' },
   { kind: 'link', route: 'praktisk' },
   { kind: 'link', route: 'galleri' },
 ];
