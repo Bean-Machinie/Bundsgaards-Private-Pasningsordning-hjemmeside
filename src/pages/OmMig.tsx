@@ -27,17 +27,22 @@ export default function OmMig() {
             Om <em className="title-em">mig</em>
           </h1>
           <p className="prose prose--large ommig__para">
-            Jeg er en voksen og moden kvinde. Jeg har altid haft med børn at gøre lige
-            fra min karriere som barnepige som startede da jeg kun var 11 år, som mor til
-            3 døtre, mormor og professionelt som lærer og viceskoleleder. Jeg har altid
-            haft et blødt hjerte for børn og har været optaget af børns progression og
-            deres muligheder for at udvikle sig. Jeg har derfor valgt at skifte til
-            privat passer for at bruge min primære tid sammen med børn
+            Jeg hedder Dorte, og børn har altid fyldt meget i mit liv. Allerede som
+            11-årig begyndte jeg at passe børn, og siden har jeg fået erfaring med børn
+            både som mor til tre døtre, som mormor og gennem mit arbejdsliv som lærer og
+            viceskoleleder.
           </p>
           <p className="prose prose--large ommig__para">
-            Dyr, at være i naturen og bruge mine hænder betyder meget for mig og den
-            glæde vil jeg gerne give videre. Store som små er vores læring afhængig af
-            hjerne og hænder, samt at have hjertet med.
+            Jeg har altid haft et stort hjerte for børn og været optaget af deres
+            udvikling og muligheder for at udfolde sig. Derfor har jeg valgt at blive
+            privat børnepasser, hvor jeg kan bruge min tid på nærvær og samvær med
+            børnene.
+          </p>
+          <p className="prose prose--large ommig__para">
+            Naturen, dyr og det at bruge hænderne betyder meget for mig, og den glæde vil
+            jeg gerne give videre til børnene. Jeg tror på, at børn lærer og udvikler sig
+            gennem hele kroppen. For både store og små afhænger læring af at bruge hjerne
+            og hænder samt at have hjertet med.
           </p>
         </div>
       </section>
