@@ -21,9 +21,12 @@ import { Fragment, type ReactNode } from 'react';
  * otherwise carry onto the page, from ever becoming a link.
  */
 
-/** `[ord](adresse)`, or an address standing on its own. The bare form stops at
- *  a closing bracket so it can never eat into the written form beside it. */
-const LINK = /\[([^\]]+)\]\(([^)\s]+)\)|(\bhttps?:\/\/[^\s<>()[\]]+|\bwww\.[^\s<>()[\]]+)/g;
+/** Sheet-safe inline formatting: written links, bare addresses, bold and
+ *  italic. The text inside emphasis markers deliberately stays plain — this
+ *  small vocabulary is predictable for a non-technical sheet editor and does
+ *  not turn public sheet content into HTML. */
+const INLINE =
+  /\[([^\]]+)\]\(([^)\s]+)\)|(\bhttps?:\/\/[^\s<>()[\]]+|\bwww\.[^\s<>()[\]]+)|(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
 
 /** The schemes a link is allowed to use. Everything else is not a link. */
 const ALLOWED = /^(https?:\/\/|mailto:|tel:)/i;
@@ -45,37 +48,43 @@ export default function SheetText({ text }: { text: string }) {
 
   // Fresh instance: the pattern is global, so a shared one would carry its
   // position between renders and start reading each string partway through.
-  const pattern = new RegExp(LINK.source, 'g');
+  const pattern = new RegExp(INLINE.source, 'g');
   let match = pattern.exec(text);
 
   while (match !== null) {
-    const [whole, label, written, bare] = match;
+    const [whole, label, written, bare, boldToken, bold, italicToken, italic] = match;
     if (match.index > cursor) out.push(text.slice(cursor, match.index));
 
-    // A full stop after a pasted address belongs to the sentence, not to the
-    // address — linking it would send visitors to a page that doesn't exist.
-    const trailing = bare ? (TRAILING.exec(bare)?.[0] ?? '') : '';
-    const address = bare ? bare.slice(0, bare.length - trailing.length) : written;
-    const href = toHref(address);
-
-    if (href) {
-      out.push(
-        <a
-          href={href}
-          /* A page opens in its own tab, so following a link to the
-             municipality doesn't cost a family their place here. A mail or
-             phone address hands off to another app and never navigates, so
-             sending it to a new tab would only strand an empty one. */
-          {...(/^https?:/i.test(href)
-            ? { target: '_blank', rel: 'noopener noreferrer' }
-            : {})}
-        >
-          {label ?? address}
-        </a>,
-      );
-      if (trailing) out.push(trailing);
+    if (boldToken) {
+      out.push(<strong>{bold}</strong>);
+    } else if (italicToken) {
+      out.push(<em>{italic}</em>);
     } else {
-      out.push(whole);
+      // A full stop after a pasted address belongs to the sentence, not to the
+      // address — linking it would send visitors to a page that doesn't exist.
+      const trailing = bare ? (TRAILING.exec(bare)?.[0] ?? '') : '';
+      const address = bare ? bare.slice(0, bare.length - trailing.length) : written;
+      const href = toHref(address);
+
+      if (href) {
+        out.push(
+          <a
+            href={href}
+            /* A page opens in its own tab, so following a link to the
+               municipality doesn't cost a family their place here. A mail or
+               phone address hands off to another app and never navigates, so
+               sending it to a new tab would only strand an empty one. */
+            {...(/^https?:/i.test(href)
+              ? { target: '_blank', rel: 'noopener noreferrer' }
+              : {})}
+          >
+            {label ?? address}
+          </a>,
+        );
+        if (trailing) out.push(trailing);
+      } else {
+        out.push(whole);
+      }
     }
 
     cursor = match.index + whole.length;

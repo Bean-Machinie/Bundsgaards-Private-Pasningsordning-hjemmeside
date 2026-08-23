@@ -6,6 +6,7 @@
 .praktisk__note-title {
   --heads-text: 15px;
   font-size: calc(var(--heads-text) * var(--ratio-golden));
+  font-weight: 600;
 }
 
 .praktisk__panel-title {
@@ -30,6 +31,21 @@
   font-size: 15px;
   line-height: 1.75;
   color: var(--color-ink-3);
+}
+
+/* Close the data rows with a divider before a sheet-provided footnote. */
+.panel .spec-row.spec-row--before-footnote {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Preserve manual line breaks entered inside Google Sheets cells. */
+.praktisk__panel-intro,
+.praktisk__panel-empty,
+.praktisk__footnote,
+.praktisk__note-body,
+.spec-row > span:last-child,
+.faq__answer {
+  white-space: pre-line;
 }
 
 /* — a card with nothing in it yet ————————————————————————————————

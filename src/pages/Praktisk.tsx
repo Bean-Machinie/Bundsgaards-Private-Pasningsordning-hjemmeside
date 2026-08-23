@@ -97,7 +97,14 @@ function InfoCard({ card }: { card: SpecPanel }) {
         </p>
       ) : (
         card.rows.map((row, index) => (
-          <div key={`${index}-${row.label}`} className="spec-row">
+          <div
+            key={`${index}-${row.label}`}
+            className={
+              card.footnote && index === card.rows.length - 1
+                ? 'spec-row spec-row--before-footnote'
+                : 'spec-row'
+            }
+          >
             <span>{row.label}</span>
             <span className={row.muted ? 'muted' : undefined}>
               <SheetText text={row.value} />
