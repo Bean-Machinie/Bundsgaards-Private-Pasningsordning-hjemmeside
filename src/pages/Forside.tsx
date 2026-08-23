@@ -45,7 +45,7 @@ export default function Forside() {
         <h2 className="welcome__script">Privat Pasningsordning tæt på Ganløse</h2>
         <p className="welcome__body">
           Bundsgård er en hyggelig gård med stråtag, stor have og egne høns. Vi er
-          ude hver dag og går ofte ture ned til hestene og fårene i området.
+          ude hver dag og går eller cykler ofte ture ned til hestene og fårene i området.
         </p>
 
         <div className="welcome__facts">
@@ -65,8 +65,7 @@ export default function Forside() {
       <section className="band band--primary dayband">
         <div className="shell">
           <div className="dayband__head">
-            <p className="dayband__script">En helt almindelig tirsdag</p>
-            <h2 className="title-section dayband__title">Sådan ser dagen ud</h2>
+            <h2 className="title-section dayband__title">Sådan kan en dag se ud</h2>
           </div>
 
           <div className="dayband__row">
