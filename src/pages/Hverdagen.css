@@ -135,9 +135,13 @@
    The values page's grammar on a light band: handwritten terracotta titles
    above their own text, separated by the grid's gaps rather than by card
    borders — and no weekday kickers, because none of it is pinned to a day. */
+.band.hverdag__extras-section {
+  padding-block: clamp(40px, 4.5vw, 64px);
+}
+
 .hverdag__extras-title {
   margin-top: 0;
-  margin-bottom: clamp(28px, 3.4vw, 44px);
+  margin-bottom: clamp(30px, 3.2vw, 42px);
 }
 .hverdag__extras {
   display: grid;

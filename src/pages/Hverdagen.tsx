@@ -42,11 +42,12 @@ export default function Hverdagen() {
 
           <ol className="timeline">
             {schedule.map((entry) => (
-              <li key={entry.time} className="timeline__item">
+              <li key={entry.title} className="timeline__item">
                 {/* Title and hour on one line, in the front page's handwritten
                     voice — the welcome section's script line verbatim. */}
                 <h2 className="timeline__title">
-                  {entry.title} - {entry.time}
+                  {entry.title}
+                  {entry.time ? ` - ${entry.time}` : ''}
                 </h2>
                 <p className="timeline__body">{entry.description}</p>
               </li>
@@ -57,7 +58,7 @@ export default function Hverdagen() {
 
       {/* The recurring things, in the values page's grammar: handwritten
           terracotta titles above their own text, no cards and no weekdays. */}
-      <section className="band band--surface">
+      <section className="band band--surface hverdag__extras-section">
         <div className="shell">
           <h2 className="title-section hverdag__extras-title">Det der går igen</h2>
           <div className="hverdag__extras">
