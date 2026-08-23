@@ -16,7 +16,6 @@ import gaardMorning from './images/gaard/bundsgaard-2.jpeg';
 import gaardBeech from './images/gaard/bundsgaard-3.png';
 import pinecones from './images/stock/pexels-2151090197-31497951.jpg';
 import meadowWalk from './images/stock/pexels-blaj-gabriel-80193688-10933642.jpg';
-import explorers from './images/stock/pexels-cottonbro-9292786.jpg';
 import wildflowers from './images/stock/pexels-itfeelslikefilm-2858263.jpg';
 import autumnGirl from './images/stock/pexels-jennifer-moore-352885-974353.jpg';
 import lunchTable from './images/stock/pexels-jep-gambardella-6212570.jpg';
@@ -30,6 +29,7 @@ import handsBw from './images/stock/pexels-raffoux-12235410.jpg';
 import sticks from './images/stock/pexels-stephentcandrews-9305063.jpg';
 import goldenRun from './images/stock/pexels-tam-d-ng-182134290-11217096.jpg';
 import napping from './images/stock/pexels-tatianasyrikova-3933069.jpg';
+import natureToddler from './images/stock/pexels-ronailson-12338862.jpg';
 
 export const stock = {
   /** Dorte's own portrait, square, in low evening sun. */
@@ -44,8 +44,8 @@ export const stock = {
   pinecones,
   /** Two children hand in hand crossing a mountain meadow. */
   meadowWalk,
-  /** Two children exploring with binoculars and a map by a tree. */
-  explorers,
+  /** Toddler sitting in a meadow and examining the plants around them. */
+  natureToddler,
   /** Girl holding wildflowers in a dim forest — moody, calm. */
   wildflowers,
   /** Girl in pink looking down, warm autumn leaves behind. */

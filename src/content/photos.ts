@@ -194,10 +194,10 @@ export const stockGallery: GalleryItem[] = [
     caption: 'Hånd i hånd, hele vejen.',
   },
   {
-    placeholder: 'På opdagelse ved træet',
-    src: stock.explorers,
-    alt: 'To børn på opdagelse med kikkert ved et træ',
-    caption: 'Ekspedition til hækken. Kikkerten er det vigtigste udstyr.',
+    placeholder: 'På opdagelse i græsset',
+    src: stock.natureToddler,
+    alt: 'Lille barn sidder i græsset og undersøger planterne omkring sig',
+    caption: 'Der er meget at opdage helt nede i græsset.',
   },
   {
     placeholder: 'Eftermiddag i efterårslys',

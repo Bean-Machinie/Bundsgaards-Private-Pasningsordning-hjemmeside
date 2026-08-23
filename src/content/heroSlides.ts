@@ -30,8 +30,8 @@ export const heroSlides: HeroSlide[] = [
     ctaTo: 'contact',
   },
   {
-    image: stock.explorers,
-    alt: 'To børn på opdagelse med kikkert ved et træ',
+    image: stock.natureToddler,
+    alt: 'Lille barn sidder i græsset og undersøger planterne omkring sig',
     headline: 'Naturen er vores ',
     highlight: 'andet hjem',
     subtext:
