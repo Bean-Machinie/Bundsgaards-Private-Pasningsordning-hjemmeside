@@ -17,7 +17,7 @@ export interface Faq {
  *  title on the site: the accented word is markup, not a string. */
 export const faqFoot = {
   prompt: 'Fandt I ikke svaret her?',
-  link: 'Skriv til mig',
+  link: 'Ring eller skriv til mig',
 };
 
 /** The FAQ band's anchor. The footer links straight to it, so the id and the
