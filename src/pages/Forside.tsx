@@ -124,17 +124,15 @@ export default function Forside() {
         </div>
       </section>
 
-      {/* — values teaser ——————————————————————————————————————— */}
+      {/* — values call to action ——————————————————————————————— */}
       <section className="shell section--loose values-section">
         <Backdrop variant="values" />
-        <div className="stack values-intro">
-          <div>
-            <h2 className="title-section">Det vigtigste sker i hverdagen</h2>
-            <p className="values-body measure--tight">
-              I de små rutiner, i legen, på turen og i relationen til hinanden. Det er her
-              tryghed, læring og udvikling får lov at vokse frem.
-            </p>
-          </div>
+        <div className="values-intro">
+          <h2 className="title-section">Det vigtigste sker i hverdagen</h2>
+          <p className="values-body">
+            I de små rutiner, i legen, på turen og i relationen til hinanden. Det er her
+            tryghed, læring og udvikling får lov at vokse frem.
+          </p>
           <Link to={routes.vaerdier.path} className="btn values-btn">
             Læs mere om vores værdier
           </Link>

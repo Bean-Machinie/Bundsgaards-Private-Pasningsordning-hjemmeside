@@ -284,7 +284,7 @@
   }
 }
 
-/* — values teaser ————————————————————————————————————————————— */
+/* — values call to action ————————————————————————————————————— */
 
 /* The front page's closing section, so it gets more air than the shared
    .section--loose gives the inner pages — it sits between the day band and
@@ -297,54 +297,24 @@
   position: relative;
 }
 
-/* Intro column beside a 2×2 grid of the four values: the intro takes the
-   narrower share (≈40/60) and centres vertically on the grid's height. */
-.values-split {
+.values-intro {
   display: grid;
-  grid-template-columns: 2fr 3fr;
-  gap: clamp(32px, 5vw, 72px);
-  align-items: center;
-}
-.values-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(28px, 3.5vw, 48px) clamp(28px, 4vw, 56px);
-}
-/* The shared .fact rows carry hairline dividers for stacked lists; here the
-   grid gaps do the separating. The :last-child selector is load-bearing —
-   global.css lands after this file in the bundle, so the plain descendant
-   selector alone would lose to .fact:last-child's border-bottom. */
-.values-grid .fact,
-.values-grid .fact:last-child {
-  padding: 0;
-  border: 0;
+  width: 100%;
+  justify-items: center;
+  gap: var(--space-4);
+  text-align: center;
 }
 
-/* Value titles speak in the handwritten voice — the welcome section's
-   script line verbatim: same font, weight, size and colour. */
-.values-grid .fact__title {
-  margin-bottom: var(--space-2);
-  font-family: var(--font-script);
-  font-weight: 700;
-  font-size: clamp(21px, 2.2vw, 27px);
-  line-height: 1.25;
-  color: var(--color-accent);
-}
-/* Body copy in the section — intro and value texts alike — matches the
-   welcome paragraph's size, so the two sections read in one voice. */
-.values-body,
-.values-grid .fact__body {
+.values-intro .title-section {
   margin: 0;
+}
+
+.values-body {
+  width: min(100%, 44rem);
+  margin: 0 auto;
   font-size: clamp(15px, 1.5vw, 18px);
   line-height: 1.75;
   color: var(--color-ink-2);
-}
-
-.values-intro {
-  max-width: 44rem;
-  margin-inline: auto;
-  align-items: center;
-  text-align: center;
 }
 
 /* The section's call to action: the Kontakt button's grammar in the acting
@@ -352,6 +322,7 @@
    CTAs match. Doubled class so it outranks the .btn base no matter how the
    stylesheets end up ordered in the bundle. */
 .btn.values-btn {
+  justify-self: center;
   padding: 11px var(--space-8);
   font-size: clamp(15px, 1.5vw, 18px);
   background: var(--color-primary);
@@ -369,19 +340,4 @@
   background: color-mix(in srgb, var(--color-primary) 88%, var(--color-ink));
   color: var(--color-on-primary);
   transform: scale(1.06);
-}
-
-/* The split stacks first (the grid keeps two columns on tablets), then the
-   grid itself goes single-column on phones. */
-@media (max-width: 900px) {
-  .values-split {
-    grid-template-columns: 1fr;
-    gap: clamp(32px, 6vw, 48px);
-  }
-}
-@media (max-width: 560px) {
-  .values-grid {
-    grid-template-columns: 1fr;
-    row-gap: var(--space-6);
-  }
 }
