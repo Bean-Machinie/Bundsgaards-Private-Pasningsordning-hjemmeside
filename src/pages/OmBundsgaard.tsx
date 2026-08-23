@@ -27,7 +27,7 @@ export default function OmBundsgaard() {
           <p className="lead lead--page">
             {site.name} er en gammel gård fra 1788 med stråtag, høje træer og en stor
             have, hvor der er plads til at gå på opdagelse. Her bor jeg, og her passer
-            jeg børn. På gården har vi høns, katte og hunde.
+            jeg børn. På gården har vi høns, katte og hunde, og det er en naturlig del af børnenes hverdag at have kontakt med dyrene. 
           </p>
         </div>
 

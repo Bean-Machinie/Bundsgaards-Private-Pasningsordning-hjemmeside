@@ -19,11 +19,11 @@ export const values: Value[] = [
   },
   {
     title: 'Naturen hver dag',
-    body: 'Vi er ude i al slags vejr. Ude er der plads til høje stemmer og store bevægelser. Børnene vil lære gennem deres aktiviteter og lege. Blandt andet gennem legen lærer de at sætte ord på deres verden. Børnene sover også bedre bagefter og i søvnen forarbejder de deres indtryk.',
+    body: 'Vi er ude i al slags vejr. Ude er der plads til høje stemmer og store bevægelser. Børnene vil lære gennem deres aktiviteter og lege. Blandt andet gennem legen lærer de at sætte ord på deres verden. Børnene sover også bedre bagefter, og i søvnen bearbejder de dagens indtryk.',
   },
   {
-    title: 'Leg er arbejde',
-    body: 'Jeg blander mig ikke i alt. Børn lærer at vente, dele og forhandle, når de får lov at være i legen selv, men jeg er tæt på og hjælper, hvor det er nødvendigt. De lærer at sige og respektere både et ja og et nej. De lærer også at aflæse blandt andet glæde, tristhed og vrede.',
+    title: 'Tid til leg',
+    body: 'Jeg blander mig ikke i alt. Børnene får lov til at fordybe sig i legen, alene eller sammen med andre. Jeg er tæt på og deltager, når det giver mening, og hjælper, når der er brug for det. I legen er der tid til at mærke egne grænser, finde sin egen stemme og være i samspillet med andre.',
   },
   {
     title: 'Et tæt samarbejde med jer',

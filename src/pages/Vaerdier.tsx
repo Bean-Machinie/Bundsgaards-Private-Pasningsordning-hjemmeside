@@ -20,8 +20,8 @@ export default function Vaerdier() {
           Værdier og <em className="title-em">pædagogik</em>
         </h1>
         <p className="lead lead--page">
-          Jeg skriver det som jeg ville sige det til jer i køkkenet — ikke som en politik,
-          nogen skal skrive under på.
+          Her kan I læse om de værdier, der ligger til grund for hverdagen hos mig, og den
+          måde jeg møder børnene på.
         </p>
 
         {/* The front page's values grid, carried straight over: the same

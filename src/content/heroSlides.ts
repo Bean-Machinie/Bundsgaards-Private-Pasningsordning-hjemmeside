@@ -35,7 +35,7 @@ export const heroSlides: HeroSlide[] = [
     headline: 'Naturen er vores ',
     highlight: 'andet hjem',
     subtext:
-      'Vi bruger haven, marken og skovstien som en naturlig del af hverdagen — i al slags vejr.',
+      'Vi bruger haven, marken og skovstien som en naturlig del af hverdagen, i al slags vejr.',
     ctaLabel: 'Se hverdagen',
     ctaTo: 'hverdagen',
   },
@@ -55,7 +55,7 @@ export const heroSlides: HeroSlide[] = [
     headline: 'Den samme voksne, ',
     highlight: 'hver morgen',
     subtext:
-      'Ingen vikarer og ingen skiftende stuer — bare trygge rammer og en relation, der får lov at vokse.',
+      'Ingen vikarer og ingen skiftende stuer, bare trygge rammer og en relation, der får lov at vokse.',
     ctaLabel: 'Om Bundsgård',
     ctaTo: 'om',
   },
