@@ -181,8 +181,7 @@ export default function Praktisk() {
             Praktisk <em className="title-em">information</em>
           </h1>
           <p className="lead lead--page">
-            Er der noget, der ikke står her, så spørg endelig. Jeg svarer hellere en gang
-            for meget.
+            Er der noget, der ikke står her, så spørg endelig.
           </p>
         </section>
 
