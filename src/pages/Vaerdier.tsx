@@ -21,12 +21,12 @@ export default function Vaerdier() {
         </h1>
         <p className="lead lead--page">
           Jeg skriver det som jeg ville sige det til jer i køkkenet — ikke som en politik,
-          I skal skrive under på.
+          nogen skal skrive under på.
         </p>
 
         {/* The front page's values grid, carried straight over: the same
             handwritten terracotta title standing above its own text, the same
-            body voice, two to a row — six values here instead of four. */}
+            body voice, two to a row — six values here instead of two. */}
         <div className="vaerdi-grid">
           {values.map((value) => (
             <article key={value.title} className="vaerdi">

@@ -7,7 +7,6 @@ import ImageSlot from '../components/ImageSlot';
 import SealStamp from '../components/SealStamp';
 import { photos } from '../content/photos';
 import { headlineFacts } from '../content/practical';
-import { valueTeasers } from '../content/values';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { useSiteData } from '../lib/sheet/provider';
 import { routes } from '../routes';
@@ -16,10 +15,10 @@ import './Forside.css';
 
 /** The four moments from the day teased above the fold on the front page. */
 const dayTeasers = [
-  { photo: photos.day1, time: '07.30', title: 'Ankomst' },
-  { photo: photos.day2, time: '09.00', title: 'Ude og lege i naturen' },
-  { photo: photos.day3, time: '11.00', title: 'Frokost ved det samme bord' },
-  { photo: photos.day4, time: '11.45', title: 'Middagslur' },
+  { photo: photos.day1, title: 'Ankomst' },
+  { photo: photos.day2, title: 'Ude og lege i naturen' },
+  { photo: photos.day3, title: 'Frokost ved det samme bord' },
+  { photo: photos.day4, title: 'Middagslur' },
 ];
 
 export default function Forside() {
@@ -110,9 +109,8 @@ export default function Forside() {
               />
             </svg>
             {dayTeasers.map((entry, index) => (
-              <div key={entry.time} className={index % 2 === 1 ? 'daycard daycard--offset' : 'daycard'}>
+              <div key={entry.title} className={index % 2 === 1 ? 'daycard daycard--offset' : 'daycard'}>
                 <ImageSlot photo={entry.photo} ratio="1 / 1" className="daycard__circle" />
-                <div className="daycard__time">{entry.time}</div>
                 <div className="daycard__title">{entry.title}</div>
               </div>
             ))}
@@ -129,31 +127,17 @@ export default function Forside() {
       {/* — values teaser ——————————————————————————————————————— */}
       <section className="shell section--loose values-section">
         <Backdrop variant="values" />
-        <div className="values-split">
-          <div className="stack">
-            <div>
-              <h2 className="title-section">Vores Værdier</h2>
-              <p className="values-body measure--tight">
-                Jeg lægger vægt på trygge relationer, genkendelige rutiner og plads til det
-                enkelte barn. Det lyder enkelt og det er det også. Men det kræver, at der
-                ikke er for mange om buddet.
-              </p>
-            </div>
-            <Link to={routes.vaerdier.path} className="btn values-btn link-more">
-              Læs mere
-            </Link>
+        <div className="stack values-intro">
+          <div>
+            <h2 className="title-section">Det vigtigste sker i hverdagen</h2>
+            <p className="values-body measure--tight">
+              I de små rutiner, i legen, på turen og i relationen til hinanden. Det er her
+              tryghed, læring og udvikling får lov at vokse frem.
+            </p>
           </div>
-
-          <div className="values-grid">
-            {valueTeasers.map((value) => (
-              <div key={value.number} className="fact">
-                <div>
-                  <h3 className="fact__title">{value.title}</h3>
-                  <p className="fact__body">{value.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Link to={routes.vaerdier.path} className="btn values-btn">
+            Læs mere om vores værdier
+          </Link>
         </div>
       </section>
     </div>

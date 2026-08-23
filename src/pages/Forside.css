@@ -237,14 +237,8 @@
 .daycard:hover .daycard__circle img {
   transform: scale(1.08);
 }
-.daycard__time {
-  margin: var(--space-3) 0 var(--space-1);
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(19px, 1.8vw, 24px);
-  color: var(--color-highlight);
-}
 .daycard__title {
+  margin-top: var(--space-3);
   font-size: 14px;
   color: var(--color-on-dark-2);
 }
@@ -346,12 +340,19 @@
   color: var(--color-ink-2);
 }
 
+.values-intro {
+  max-width: 44rem;
+  margin-inline: auto;
+  align-items: center;
+  text-align: center;
+}
+
 /* The section's call to action: the Kontakt button's grammar in the acting
    green, sized like the day band's "Se hele dagen" pill so the two section
    CTAs match. Doubled class so it outranks the .btn base no matter how the
    stylesheets end up ordered in the bundle. */
 .btn.values-btn {
-  padding: 14px var(--space-8);
+  padding: 11px var(--space-8);
   font-size: clamp(15px, 1.5vw, 18px);
   background: var(--color-primary);
   color: var(--color-on-primary);
